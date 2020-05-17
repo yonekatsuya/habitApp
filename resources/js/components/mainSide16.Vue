@@ -74,15 +74,8 @@
         var year = now.getFullYear();
         var month = now.getMonth() + 1;
         axios.get('http://localhost:100/habitPost?habitText=' + inputText + '&year=' + year + '&month=' + month)
-        .then(function(response) {
-          console.log(response);
-        })
-        .catch(function(error) {
-          console.log(error)
-        });
-        axios.get('http://localhost:100/habitGet')
-          .then(response => this.habitLists = response.data)
-          .catch(response => console.log(response))
+        .then(response => this.habitLists = response.data)
+        .catch(response => console.log(response))
       }
     },
     created : function(){

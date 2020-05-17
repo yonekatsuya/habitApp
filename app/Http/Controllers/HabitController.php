@@ -13,6 +13,8 @@ class HabitController extends Controller
         $habitPost->month = $request->month;
         $habitPost->item = $request->habitText;
         $habitPost->save();
+        $habitPosts = HabitPost::get();
+        return response()->json($habitPosts);
     }
 
     public function habitGet() {
