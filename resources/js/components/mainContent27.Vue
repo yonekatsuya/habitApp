@@ -40,6 +40,7 @@
     },
     mounted: function() {
       var now   = new Date();
+      var date = now.getDate();
       now.setDate(1);
       var year  = now.getFullYear();
       var month = now.getMonth() + 1;
@@ -66,6 +67,9 @@
           var tdElemLast = trElemLast.lastElementChild;
           if (i >= (week - 1)) {
             tdElemLast.innerText = now.getDate();
+            if (tdElemLast.innerText == date && (now.getMonth() + 1) == month && now.getFullYear() == year) {
+              tdElemLast.classList.add('backGray');
+            }
             now.setDate(now.getDate() + 1);
           }
         }
