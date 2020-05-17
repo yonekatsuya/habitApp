@@ -34,7 +34,16 @@
             </div>
           </div>
           <div class="overlay-content-wrapper-list">
-            <ol id="olElement"></ol>
+            <table id="olElement">
+              <tr v-for="habitList in habitLists">
+                <td>{{habitList.id}}</td>
+                <td>{{habitList.year}}</td>
+                <td>{{habitList.month}}</td>
+                <td>{{habitList.item}}</td>
+                <td>{{habitList.created_at}}</td>
+                <td>{{habitList.updated_at}}</td>
+              </tr>
+            </table>
           </div>
           <p><button @click="habitRegisterModalHidden">close</button></p>
         </div>
@@ -50,6 +59,7 @@
         overlay: false,
         disp: false,
         habitText: '',
+        habitLists: null
       }
     },
     methods: {
@@ -62,12 +72,19 @@
         this.disp = false;
       },
       addList: function() {
-        var olNode = document.getElementById('olElement');
-        var newElement = document.createElement('li');
-        newElement.textContent = this.habitText;
-        olNode.appendChild(newElement);
         this.habitText = '';
+        axios.get('http://localhost:100/habitPost')
+          .then(response => console.log(response))
+          .catch(response => console.log(response))
+        axios.get('http://localhost:100/habitGet')
+          .then(response => this.habitLists = response.data)
+          .catch(response => console.log(response))
       }
+    },
+    created : function(){
+      axios.get('http://localhost:100/habitGet')
+          .then(response => this.habitLists = response.data)
+          .catch(response => console.log(response))
     }
   }
 </script>

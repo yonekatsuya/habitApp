@@ -2,7 +2,7 @@
   <div class="calendar-head">
     <div class="calendar-head-left"><a href="#">前月へ</a></div>
     <div class="calendar-head-center">2020年5月</div>
-    <div class="calendar-head-right"><a href="#">前月へ</a></div>
+    <div class="calendar-head-right"><a href="#">次月へ</a></div>
   </div>
   <div class="calendar-content">
     <div class="calendar-content-wrapper">
