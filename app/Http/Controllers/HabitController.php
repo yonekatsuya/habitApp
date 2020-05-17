@@ -4,20 +4,18 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\HabitPost;
-use Log;
 
 class HabitController extends Controller
 {
-    public function habitPost() {
+    public function habitPost(Request $request) {
         $habitPost = new HabitPost();
-        $habitPost->year = 2020;
-        $habitPost->month = 05;
-        $habitPost->item = '毎朝6時に起きる';
+        $habitPost->year = $request->year;
+        $habitPost->month = $request->month;
+        $habitPost->item = $request->habitText;
         $habitPost->save();
     }
 
     public function habitGet() {
-        Log::debug('test');
         $habitPosts = HabitPost::get();
         return response()->json($habitPosts);
     }

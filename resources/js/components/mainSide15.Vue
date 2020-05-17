@@ -23,6 +23,7 @@
       <div id="content" v-show="disp">
         <div class="overlay-content-title">
           <p>2020年6月の習慣項目登録</p>
+          <span @click="habitRegisterModalHidden">×</span>
         </div>
         <div class="overlay-content-wrapper" v-show="overlay">
           <div class="overlay-content-wrapper-register">
@@ -35,17 +36,12 @@
           </div>
           <div class="overlay-content-wrapper-list">
             <table id="olElement">
-              <tr v-for="habitList in habitLists">
-                <td>{{habitList.id}}</td>
-                <td>{{habitList.year}}</td>
-                <td>{{habitList.month}}</td>
+              <tr v-for="(habitList, index) in habitLists">
+                <td>{{index + 1}}</td>
                 <td>{{habitList.item}}</td>
-                <td>{{habitList.created_at}}</td>
-                <td>{{habitList.updated_at}}</td>
               </tr>
             </table>
           </div>
-          <p><button @click="habitRegisterModalHidden">close</button></p>
         </div>
       </div>
     </div>
@@ -72,10 +68,18 @@
         this.disp = false;
       },
       addList: function() {
+        var inputText = this.habitText;
         this.habitText = '';
-        axios.get('http://localhost:100/habitPost')
-          .then(response => console.log(response))
-          .catch(response => console.log(response))
+        var now = new Date();
+        var year = now.getFullYear();
+        var month = now.getMonth() + 1;
+        axios.get('http://localhost:100/habitPost?habitText=' + inputText + '&year=' + year + '&month=' + month)
+        .then(function(response) {
+          console.log(response);
+        })
+        .catch(function(error) {
+          console.log(error)
+        });
         axios.get('http://localhost:100/habitGet')
           .then(response => this.habitLists = response.data)
           .catch(response => console.log(response))
