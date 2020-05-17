@@ -67,8 +67,12 @@
           var tdElemLast = trElemLast.lastElementChild;
           if (i >= (week - 1)) {
             tdElemLast.innerText = now.getDate();
+            if (now.getDay() == 0 || now.getDay() == 6) {
+              tdElemLast.classList.add('holidayColor');
+            }
             if (tdElemLast.innerText == date && (now.getMonth() + 1) == month && now.getFullYear() == year) {
-              tdElemLast.classList.add('backGray');
+              tdElemLast.classList.remove('holidayColor');
+              tdElemLast.classList.add('currentDateColor');
             }
             now.setDate(now.getDate() + 1);
           }
