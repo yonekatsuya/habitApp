@@ -130,6 +130,8 @@
 
             /* 日付をインクリメントする */
             now.setDate(now.getDate() + 1);
+          } else {
+            tdElemLast.classList.add('beforeMonthDataColor');
           }
         }
       }
@@ -140,6 +142,7 @@
       if (tdElemCount < 7) {
         for (var i = 0;i < tdAddCount;i++) {
           var tdElem = document.createElement('td');
+          tdElem.classList.add('nextMonthDateColor');
           tbody.lastElementChild.appendChild(tdElem);
         }
       }
