@@ -85,7 +85,7 @@
 
           /* 月初を対応する曜日列から始める */
           if (i >= week) {
-            /* 今日の日付を挿入する */
+            /* 今日の日付テキストを挿入する */
             tdElemLast.innerText = now.getDate();
 
             /* 土日であれば背景色をつける */
@@ -102,6 +102,16 @@
             /* 日付をインクリメントする */
             now.setDate(now.getDate() + 1);
           }
+        }
+      }
+
+      /* カレンダー最終行のtdの数が7未満であれば、7になるまでtdを追加する */
+      var tdElemCount = tbody.lastElementChild.childElementCount;
+      var tdAddCount = 7 - tdElemCount;
+      if (tdElemCount < 7) {
+        for (var i = 0;i < tdAddCount;i++) {
+          var tdElem = document.createElement('td');
+          tbody.lastElementChild.appendChild(tdElem);
         }
       }
     }
