@@ -43,18 +43,31 @@
       now.setDate(1);
       var year  = now.getFullYear();
       var month = now.getMonth() + 1;
+      var week = now.getDay();
       this.$refs.year.textContent = year;
       this.$refs.month.textContent = month;
-      var firstDate = now.getDate();
       now.setMonth(now.getMonth() + 1);
       now.setDate(0);
       var lastDate = now.getDate();
+      now.setMonth(now.getMonth() - 1);
+      now.setDate(1);
+      var firstDate = now.getDate();
 
       var tbody = this.$refs.tbody;
-      for (var i = 0;i < lastDate;i++) {
-        if (i === 0) {
-          var trElem = document.createElement('tr');
-          tbody.appendChild(trElem);
+      for (var i = 0;i <= (lastDate + week);i++) {
+        if (month === (now.getMonth() + 1)) {
+          if (i === 0 || i % 7 === 0) {
+            var trElem = document.createElement('tr');
+            tbody.appendChild(trElem);
+          }
+          var trElemLast = tbody.lastElementChild;
+          var tdElem = document.createElement('td');
+          trElemLast.appendChild(tdElem);
+          var tdElemLast = trElemLast.lastElementChild;
+          if (i >= (week - 1)) {
+            tdElemLast.innerText = now.getDate();
+            now.setDate(now.getDate() + 1);
+          }
         }
       }
     }
