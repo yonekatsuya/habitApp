@@ -44,6 +44,7 @@
       toNextMonth: function() {
         monthFlag++;
         var now   = new Date();
+        var currentYear = now.getFullYear();
         var currentMonth = now.getMonth() + 1;
         now.setMonth(now.getMonth() + monthFlag);
 
@@ -120,7 +121,7 @@
               }
 
               /* 今日の日付であれば背景色をつける */
-              if (tdElemLast.innerText == date && (now.getMonth() + 1) == currentMonth && now.getFullYear() == year) {
+              if (tdElemLast.innerText == date && (now.getMonth() + 1) == currentMonth && currentYear == year) {
                 tdElemLast.classList.remove('SundayColor');
                 tdElemLast.classList.remove('SaturDayColor');
                 tdElemLast.classList.add('currentDateColor');
@@ -159,6 +160,7 @@
       toBeforeMonth: function() {
         monthFlag--;
         var now   = new Date();
+        var currentYear = now.getFullYear();
         var currentMonth = now.getMonth() + 1;
         now.setMonth(now.getMonth() + monthFlag);
 
@@ -235,7 +237,7 @@
               }
 
               /* 今日の日付であれば背景色をつける */
-              if (tdElemLast.innerText == date && (now.getMonth() + 1) == currentMonth && now.getFullYear() == year) {
+              if (tdElemLast.innerText == date && (now.getMonth() + 1) == currentMonth && currentYear == year) {
                 tdElemLast.classList.remove('SundayColor');
                 tdElemLast.classList.remove('SaturDayColor');
                 tdElemLast.classList.add('currentDateColor');
@@ -274,6 +276,7 @@
     },
     mounted: function() {
       var now   = new Date();
+      var currentYear = now.getFullYear();
       var currentMonth = now.getMonth() + 1;
       now.setMonth(now.getMonth());
 
@@ -349,7 +352,7 @@
             }
 
             /* 今日の日付であれば背景色をつける */
-            if (tdElemLast.innerText == date && (now.getMonth() + 1) == currentMonth && now.getFullYear() == year) {
+            if (tdElemLast.innerText == date && (now.getMonth() + 1) == currentMonth && currentYear == year) {
               tdElemLast.classList.remove('SundayColor');
               tdElemLast.classList.remove('SaturDayColor');
               tdElemLast.classList.add('currentDateColor');
