@@ -21,4 +21,11 @@ class HabitController extends Controller
         $habitPosts = HabitPost::get();
         return response()->json($habitPosts);
     }
+
+    public function habitDelete(Request $request) {
+        $id = $request->id;
+        HabitPost::where('id',$id)->delete();
+        $habitPosts = HabitPost::get();
+        return response()->json($habitPosts);
+    }
 }

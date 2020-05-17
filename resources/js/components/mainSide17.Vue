@@ -22,7 +22,7 @@
     <div class="overlay" v-show="overlay">
       <div id="content" v-show="disp">
         <div class="overlay-content-title">
-          <p>2020年6月の習慣項目登録</p>
+          <p>2020年5月の習慣項目登録</p>
           <span @click="habitRegisterModalHidden">×</span>
         </div>
         <div class="overlay-content-wrapper" v-show="overlay">
@@ -39,6 +39,8 @@
               <tr v-for="(habitList, index) in habitLists">
                 <td>{{index + 1}}</td>
                 <td>{{habitList.item}}</td>
+                <td @click="deleteList(habitList.id)"><i class="fas fa-trash-alt"></i></td>
+                <td><i class="fas fa-edit"></i></td>
               </tr>
             </table>
           </div>
@@ -76,6 +78,13 @@
         axios.get('http://localhost:100/habitPost?habitText=' + inputText + '&year=' + year + '&month=' + month)
         .then(response => this.habitLists = response.data)
         .catch(response => console.log(response))
+      },
+      deleteList: function(id) {
+        if (window.confirm('選択した項目を削除しますか？')) {
+          axios.get('http://localhost:100/habitDelete?id=' + id)
+          .then(response => this.habitLists = response.data)
+          .catch(response => console.log(response))
+        }
       }
     },
     created : function(){
