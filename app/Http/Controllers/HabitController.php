@@ -13,7 +13,7 @@ class HabitController extends Controller
         $habitPost->month = $request->month;
         $habitPost->item = $request->habitText;
         $habitPost->save();
-        $habitPosts = HabitPost::get();
+        $habitPosts = HabitPost::where('month',5)->get();
         return response()->json($habitPosts);
     }
 
@@ -25,7 +25,7 @@ class HabitController extends Controller
     public function habitDelete(Request $request) {
         $id = $request->id;
         HabitPost::where('id',$id)->delete();
-        $habitPosts = HabitPost::get();
+        $habitPosts = HabitPost::where('month',5)->get();
         return response()->json($habitPosts);
     }
 }
