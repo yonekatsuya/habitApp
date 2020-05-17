@@ -40,6 +40,7 @@
     },
     mounted: function() {
       var now   = new Date();
+      now.setMonth(now.getMonth() + 1);
 
       /* 今日の日付を取得設定 */
       var date = now.getDate();
@@ -49,7 +50,7 @@
 
       /* 今年・今月・今日の曜日の値を取得 */
       var year  = now.getFullYear();
-      var month = now.getMonth() + 2;
+      var month = now.getMonth() + 1;
       var week = now.getDay();
 
       /* 今年の値と今月の値をカレンダーのタイトルに設定 */
@@ -57,12 +58,12 @@
       this.$refs.month.textContent = month;
 
       /* 今月の値を次月に設定し、今月の末日の値を取得 */
-      now.setMonth(now.getMonth() + 2);
+      now.setMonth(now.getMonth() + 1);
       now.setDate(0);
       var lastDate = now.getDate();
 
       /* 今月の値を今月に戻し、月初の値を取得 */
-      now.setMonth(now.getMonth() - 2);
+      now.setMonth(now.getMonth());
       now.setDate(1);
       var firstDate = now.getDate();
 
@@ -83,8 +84,7 @@
 
       /* 曜日の値をループ回数に足して末日まで表示されるようにする */
       for (var i = 0;i <= (lastDate + week);i++) {
-        
-
+        if (month === (now.getMonth() + 1)) {
           /* 0もしくは7の倍数でtrタグを挿入 */
           if (i === 0 || i % 7 === 0) {
             var trElem = document.createElement('tr');
@@ -111,7 +111,7 @@
             }
 
             /* 今日の日付であれば背景色をつける */
-            if (tdElemLast.innerText == date && (now.getMonth() + 2) == month && now.getFullYear() == year) {
+            if (tdElemLast.innerText == date && (now.getMonth() + 1) == month && now.getFullYear() == year) {
               tdElemLast.classList.remove('SundayColor');
               tdElemLast.classList.remove('SaturDayColor');
               tdElemLast.classList.add('currentDateColor');
@@ -133,7 +133,7 @@
           } else {
             tdElemLast.classList.add('beforeMonthDataColor');
           }
-        
+        }
       }
 
       /* カレンダー最終行のtdの数が7未満であれば、7になるまでtdを追加する */
