@@ -40,7 +40,7 @@
                 <td>{{index + 1}}</td>
                 <td>{{habitList.item}}</td>
                 <td @click="deleteList(habitList.id)"><i class="fas fa-trash-alt"></i></td>
-                <td><i class="fas fa-edit"></i></td>
+                <td @click="editList(habitList.id,habitList.item)"><i class="fas fa-edit"></i></td>
               </tr>
             </table>
           </div>
@@ -85,6 +85,12 @@
           .then(response => this.habitLists = response.data)
           .catch(response => console.log(response))
         }
+      },
+      editList: function(id,item) {
+        axios.get('http://localhost:100/habitDelete?id=' + id)
+          .then(response => this.habitLists = response.data)
+          .catch(response => console.log(response))
+        this.habitText = item;
       }
     },
     created : function(){
