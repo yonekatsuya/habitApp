@@ -430,6 +430,8 @@
 
             /* 日付欄押下時の処理 */
             tdElemLast.onclick = function() {
+              modalTbody.textContent = null;
+
               /* 習慣チェックモーダルを表示する */
               modal.classList.remove('hidden');
               modalContent.classList.remove('hidden');
@@ -451,14 +453,25 @@
                         var newTdElement = document.createElement('td');
                         lastTr.appendChild(newTdElement);
                         var lastTd = lastTr.lastElementChild;
-                        if (i == 0) {
-                          lastTd.textContent = index + 1;
-                        }
-                        if (i == 1) {
-                          lastTd.textContent = value.item;
-                        }
-                        if (i != 0 && i != 1) {
-                          lastTd.textContent = '□';
+                        switch (i) {
+                          case 0:
+                            lastTd.textContent = index + 1;
+                            break;
+                          case 1:
+                            lastTd.textContent = value.item;
+                            break;
+                          case 2:
+                            lastTd.innerHTML = '<input type="radio" name="' + (index + 1) + '" value="' + value.item + 'verygood' + '">';
+                            break;
+                          case 3:
+                            lastTd.innerHTML = '<input type="radio" name="' + (index + 1) + '" value="' + value.item + 'good' + '">';
+                            break;
+                          case 4:
+                            lastTd.innerHTML = '<input type="radio" name="' + (index + 1) + '" value="' + value.item + 'soso' + '">';
+                            break;
+                          case 5:
+                            lastTd.innerHTML = '<input type="radio" name="' + (index + 1) + '" value="' + value.item + 'bad' + '">';
+                            break;
                         }
                       }
                     });
