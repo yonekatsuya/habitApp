@@ -23,7 +23,7 @@
       <div id="content" v-show="disp">
         <div class="overlay-content-title">
           <p>2020年5月の習慣項目登録</p>
-          <span @click="habitRegisterModalHidden">×</span>
+          <span @click="habitRegisterModalHidden" class="modalClose">×</span>
         </div>
         <div class="overlay-content-wrapper" v-show="overlay">
           <div class="overlay-content-wrapper-register">

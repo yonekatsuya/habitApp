@@ -29,8 +29,8 @@
     <div class="overlay hidden" ref="modal">
       <div id="content" class="hidden" ref="modalContent">
         <div class="overlay-content-title">
-          <p>今日の習慣チェック</p>
-          <span @click="modalClose">×</span>
+          <p><span ref="modalYear"></span>年<span ref="modalMonth"></span>月<span ref="modalDate"></span>日の習慣チェック</p>
+          <span class="modalClose" @click="modalClose">×</span>
         </div>
         <div class="overlay-content-wrapper">
           <p ref="item"></p>
@@ -329,6 +329,9 @@
       var modal = this.$refs.modal;
       var modalContent = this.$refs.modalContent;
       var item = this.$refs.item;
+      var modalYear = this.$refs.modalYear;
+      var modalMonth = this.$refs.modalMonth;
+      var modalDate = this.$refs.modalDate;
 
       var now   = new Date();
       var currentYear = now.getFullYear();
@@ -409,6 +412,9 @@
               modal.classList.remove('hidden');
               modalContent.classList.remove('hidden');
               item.textContent = this.getAttribute('data-date');
+              modalYear.textContent = this.getAttribute('data-year');
+              modalMonth.textContent = this.getAttribute('data-month');
+              modalDate.textContent = this.getAttribute('data-date');
             }
 
             /* 今日の日付テキストを挿入する */

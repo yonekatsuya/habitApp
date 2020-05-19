@@ -1,13 +1,13 @@
 import Vue from 'vue'
 import mainHeader from './components/mainHeader'
-import mainSide17 from './components/mainSide17'
-import mainContent73 from './components/mainContent73'
+import mainSide18 from './components/mainSide18'
+import mainContent75 from './components/mainContent75'
 
 const app = new Vue({
   el: '#app',
   components: {
     mainHeader,
-    mainSide17,
-    mainContent73,
+    mainSide18,
+    mainContent75,
   }
 })
