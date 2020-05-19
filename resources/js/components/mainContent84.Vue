@@ -33,7 +33,25 @@
           <span class="modalClose" @click="modalClose">×</span>
         </div>
         <div class="overlay-content-wrapper">
-          <p ref="item"></p>
+          <div class="overlay-content-wrapper-table">
+            <table id="tableElement">
+              <thead>
+                <tr>
+                  <th>No</th>
+                  <th>習慣項目</th>
+                  <th>◎</th>
+                  <th>◯</th>
+                  <th>△</th>
+                  <th>×</th>
+                </tr>
+              </thead>
+              <tbody ref="modalTbody">
+              </tbody>
+            </table>
+          </div>
+          <div class="overlay-content-wrapper-check">
+
+          </div>
         </div>
       </div>
     </div>
@@ -49,7 +67,7 @@
     },
     data() {
       return {
-
+        habitLists: null
       }
     },
     methods: {
@@ -332,6 +350,8 @@
       var modalYear = this.$refs.modalYear;
       var modalMonth = this.$refs.modalMonth;
       var modalDate = this.$refs.modalDate;
+      var habitLists = this.habitLists;
+      var modalTbody = this.$refs.modalTbody;
 
       var now   = new Date();
       var currentYear = now.getFullYear();
@@ -408,13 +428,44 @@
             tdElemLast.setAttribute('data-date',now.getDate());
             tdElemLast.setAttribute('data-week',now.getDay());
 
+            /* 日付欄押下時の処理 */
             tdElemLast.onclick = function() {
+              /* 習慣チェックモーダルを表示する */
               modal.classList.remove('hidden');
               modalContent.classList.remove('hidden');
-              item.textContent = this.getAttribute('data-date');
+
+              /* タイトル行に年月日を表示する */
               modalYear.textContent = this.getAttribute('data-year');
               modalMonth.textContent = this.getAttribute('data-month');
               modalDate.textContent = this.getAttribute('data-date');
+              
+                            
+              axios.get('http://localhost:100/habitGet')
+                  .then(function (response) {
+                    habitLists = response.data;
+                    habitLists.forEach(function(value,index) {
+                      var newTrElement = document.createElement('tr');
+                      modalTbody.appendChild(newTrElement);
+                      var lastTr = modalTbody.lastElementChild;
+                      for (var i = 0;i < 6;i++) {
+                        var newTdElement = document.createElement('td');
+                        lastTr.appendChild(newTdElement);
+                        var lastTd = lastTr.lastElementChild;
+                        if (i == 0) {
+                          lastTd.textContent = index + 1;
+                        }
+                        if (i == 1) {
+                          lastTd.textContent = value.item;
+                        }
+                        if (i != 0 && i != 1) {
+                          lastTd.textContent = '□';
+                        }
+                      }
+                    });
+                  })
+                  .catch(function (error) {
+                    console.log(error);
+                  })
             }
 
             /* 今日の日付テキストを挿入する */
