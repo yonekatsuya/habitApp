@@ -50,7 +50,9 @@
             </table>
           </div>
           <div class="overlay-content-wrapper-check">
-
+            <div>
+              <button @click="register">登録</button>
+            </div>
           </div>
         </div>
       </div>
@@ -71,6 +73,38 @@
       }
     },
     methods: {
+      register: function() {
+        var trCount = this.$refs.modalTbody.childElementCount;
+        var param = [];
+        for (var i = 0;i < trCount;i++) {
+          var trElem = this.$refs.modalTbody.children[i];
+          if (trElem.children[2].lastElementChild.checked) {
+            param.push(trElem.children[2].lastElementChild.getAttribute('value'));
+          }
+          if (trElem.children[3].lastElementChild.checked) {
+            param.push(trElem.children[3].lastElementChild.getAttribute('value'));
+          }
+          if (trElem.children[4].lastElementChild.checked) {
+            param.push(trElem.children[4].lastElementChild.getAttribute('value'));
+          }
+          if (trElem.children[5].lastElementChild.checked) {
+            param.push(trElem.children[5].lastElementChild.getAttribute('value'));
+          }
+        }
+
+        const url = 'http://localhost:100/habitResult';
+        const params = {
+          result: param
+        }
+        axios.get(url, {params})
+                  .then(function (response) {
+                    console.log(response.data.result);
+                  })
+                  .catch(function (error) {
+                    console.log(error);
+                  })
+        this.modalClose();
+      },
       modalClose: function() {
         this.$refs.modal.classList.add('hidden');
         this.$refs.modalContent.classList.add('hidden');
@@ -461,16 +495,16 @@
                             lastTd.textContent = value.item;
                             break;
                           case 2:
-                            lastTd.innerHTML = '<input type="radio" name="' + (index + 1) + '" value="' + value.item + 'verygood' + '">';
+                            lastTd.innerHTML = '<input type="radio" name="' + (index + 1) + '" value="' + value.year + '/' + value.month + '/' + modalDate.textContent + '/' + 'verygood' + '/' +  value.id + '">';
                             break;
                           case 3:
-                            lastTd.innerHTML = '<input type="radio" name="' + (index + 1) + '" value="' + value.item + 'good' + '">';
+                            lastTd.innerHTML = '<input type="radio" name="' + (index + 1) + '" value="' + value.year + '/' + value.month + '/' + modalDate.textContent + '/' + 'good' + '/' + value.id + '">';
                             break;
                           case 4:
-                            lastTd.innerHTML = '<input type="radio" name="' + (index + 1) + '" value="' + value.item + 'soso' + '">';
+                            lastTd.innerHTML = '<input type="radio" name="' + (index + 1) + '" value="' + value.year + '/' + value.month + '/' + modalDate.textContent + '/' + 'soso' + '/' + value.id + '">';
                             break;
                           case 5:
-                            lastTd.innerHTML = '<input type="radio" name="' + (index + 1) + '" value="' + value.item + 'bad' + '">';
+                            lastTd.innerHTML = '<input type="radio" name="' + (index + 1) + '" value="' + value.year + '/' + value.month + '/' + modalDate.textContent + '/' + 'bad' + '/' + value.id + '">';
                             break;
                         }
                       }

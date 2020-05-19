@@ -16,3 +16,4 @@ Route::get('/','MainController@index');
 Route::get('habitPost','HabitController@habitPost')->name('habitPost');
 Route::get('habitGet','HabitController@habitGet')->name('habitGet');
 Route::get('habitDelete','HabitController@habitDelete')->name('habitDelete');
+Route::get('habitResult','HabitController@habitResult')->name('habitResult');

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\HabitPost;
+use Log;
 
 class HabitController extends Controller
 {
@@ -27,5 +28,10 @@ class HabitController extends Controller
         HabitPost::where('id',$id)->delete();
         $habitPosts = HabitPost::where('month',5)->get();
         return response()->json($habitPosts);
+    }
+
+    public function habitResult(Request $request) {
+        Log::debug($request);
+        return response()->json($request);
     }
 }
