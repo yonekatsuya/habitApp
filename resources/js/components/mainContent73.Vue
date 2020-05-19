@@ -19,18 +19,21 @@
               <th>土</th>
             </tr>
           </thead>
-          <tbody ref="tbody" @click="modalDisp">
+          <tbody ref="tbody">
             
           </tbody>
         </table>
       </div>
     </div>
 
-    <div class="overlay" v-show="overlay">
-      <div id="content" v-show="disp">
+    <div class="overlay hidden" ref="modal">
+      <div id="content" class="hidden" ref="modalContent">
         <div class="overlay-content-title">
           <p>今日の習慣チェック</p>
           <span @click="modalClose">×</span>
+        </div>
+        <div class="overlay-content-wrapper">
+          <p ref="item"></p>
         </div>
       </div>
     </div>
@@ -46,18 +49,13 @@
     },
     data() {
       return {
-        overlay: false,
-        disp: false
+
       }
     },
     methods: {
-      modalDisp: function() {
-        this.overlay = true;
-        this.disp = true;
-      },
       modalClose: function() {
-        this.overlay = false;
-        this.disp = false;
+        this.$refs.modal.classList.add('hidden');
+        this.$refs.modalContent.classList.add('hidden');
       },
       toNextMonth: function() {
         var now   = new Date();
@@ -328,6 +326,10 @@
       },
     },
     mounted: function() {
+      var modal = this.$refs.modal;
+      var modalContent = this.$refs.modalContent;
+      var item = this.$refs.item;
+
       var now   = new Date();
       var currentYear = now.getFullYear();
       var currentMonth = now.getMonth() + 1;
@@ -402,6 +404,12 @@
             tdElemLast.setAttribute('data-month',now.getMonth() + 1);
             tdElemLast.setAttribute('data-date',now.getDate());
             tdElemLast.setAttribute('data-week',now.getDay());
+
+            tdElemLast.onclick = function() {
+              modal.classList.remove('hidden');
+              modalContent.classList.remove('hidden');
+              item.textContent = this.getAttribute('data-date');
+            }
 
             /* 今日の日付テキストを挿入する */
             tdElemLast.innerText = now.getDate();
