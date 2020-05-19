@@ -32,14 +32,33 @@ class HabitController extends Controller
     }
 
     public function habitResult(Request $request) {
-        for ($i = 0;$i < count($request['result']);$i++) {
+        // 習慣項目数を取得
+        $itemCount = count($request['result']);
+        $resultCount = [];
+        // 習慣チェックの中で「verygood」がいくつあるかを確認
+        for ($i = 0;$i < $itemCount;$i++) {
             $array = explode("/",$request['result'][$i]);
-            $habitResult = new habitResult();
-            $habitResult->year = $array[0];
-            $habitResult->month = $array[1];
-            $habitResult->date = $array[2];
-            $habitResult->result = $array[3];
-            $habitResult->save();
+            if ($array[3] == 'verygood') {
+                $resultCount[] = 1;
+            }
         }
+        $habitResult = new HabitResult();
+        // とりあえず一番最初の習慣項目チェックデータを配列にして、年月日を登録できるよう準備
+        $array = explode("/",$request['result'][0]);
+        // もう既に同じ年月日のデータがhabit_resultsテーブルに存在すれば、削除する
+        if (HabitResult::where('year',$array[0])->where('month',$array[1])->where('date',$array[2])->exists()) {
+            HabitResult::where('year',$array[0])->where('month',$array[1])->where('date',$array[2])->delete();
+        }
+        $habitResult->year = $array[0];
+        $habitResult->month = $array[1];
+        $habitResult->date = $array[2];
+        // 「verygood」が一つ以上あれば目標達成率を計算し、一つもなければ「0」を格納する
+        if (count($resultCount) >= 1) {
+            $result = (count($resultCount) / $itemCount) * 100;
+            $habitResult->result = $result;
+        } else {
+            $habitResult->result = 0;
+        }
+        $habitResult->save();
     }
 }
