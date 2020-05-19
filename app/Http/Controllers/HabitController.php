@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\HabitPost;
+use App\HabitResult;
 use Log;
 
 class HabitController extends Controller
@@ -31,7 +32,14 @@ class HabitController extends Controller
     }
 
     public function habitResult(Request $request) {
-        Log::debug($request);
-        return response()->json($request);
+        for ($i = 0;$i < count($request['result']);$i++) {
+            $array = explode("/",$request['result'][$i]);
+            $habitResult = new habitResult();
+            $habitResult->year = $array[0];
+            $habitResult->month = $array[1];
+            $habitResult->date = $array[2];
+            $habitResult->result = $array[3];
+            $habitResult->save();
+        }
     }
 }

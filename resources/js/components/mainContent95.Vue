@@ -98,7 +98,7 @@
         }
         axios.get(url, {params})
                   .then(function (response) {
-                    console.log(response.data.result);
+                    console.log(response);
                   })
                   .catch(function (error) {
                     console.log(error);
@@ -495,16 +495,16 @@
                             lastTd.textContent = value.item;
                             break;
                           case 2:
-                            lastTd.innerHTML = '<input type="radio" name="' + (index + 1) + '" value="' + value.year + '/' + value.month + '/' + modalDate.textContent + '/' + 'verygood' + '/' +  value.id + '">';
+                            lastTd.innerHTML = '<input type="radio" name="' + (index + 1) + '" value="' + value.year + '/' + value.month + '/' + modalDate.textContent + '/' + 'verygood' + '">';
                             break;
                           case 3:
-                            lastTd.innerHTML = '<input type="radio" name="' + (index + 1) + '" value="' + value.year + '/' + value.month + '/' + modalDate.textContent + '/' + 'good' + '/' + value.id + '">';
+                            lastTd.innerHTML = '<input type="radio" name="' + (index + 1) + '" value="' + value.year + '/' + value.month + '/' + modalDate.textContent + '/' + 'good' + '">';
                             break;
                           case 4:
-                            lastTd.innerHTML = '<input type="radio" name="' + (index + 1) + '" value="' + value.year + '/' + value.month + '/' + modalDate.textContent + '/' + 'soso' + '/' + value.id + '">';
+                            lastTd.innerHTML = '<input type="radio" name="' + (index + 1) + '" value="' + value.year + '/' + value.month + '/' + modalDate.textContent + '/' + 'soso' + '">';
                             break;
                           case 5:
-                            lastTd.innerHTML = '<input type="radio" name="' + (index + 1) + '" value="' + value.year + '/' + value.month + '/' + modalDate.textContent + '/' + 'bad' + '/' + value.id + '">';
+                            lastTd.innerHTML = '<input type="radio" name="' + (index + 1) + '" value="' + value.year + '/' + value.month + '/' + modalDate.textContent + '/' + 'bad' + '">';
                             break;
                         }
                       }
