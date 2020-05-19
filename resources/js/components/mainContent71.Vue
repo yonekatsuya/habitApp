@@ -1,31 +1,40 @@
 <template>
   <div class="main">
-  <div class="calendar-head">
-    <div class="calendar-head-left"><button @click="toBeforeMonth">前月へ</button></div>
-    <div class="calendar-head-center"><span ref="year"></span>年<span ref="month"></span>月</div>
-    <div class="calendar-head-right"><button @click="toNextMonth">次月へ</button></div>
-  </div>
-  <div class="calendar-content">
-    <div class="calendar-content-wrapper">
-      <table>
-        <thead>
-          <tr>
-            <th>日</th>
-            <th>月</th>
-            <th>火</th>
-            <th>水</th>
-            <th>木</th>
-            <th>金</th>
-            <th>土</th>
-          </tr>
-        </thead>
-        <tbody ref="tbody">
-          
-        </tbody>
-      </table>
+    <div class="calendar-head">
+      <div class="calendar-head-left"><button @click="toBeforeMonth">前月へ</button></div>
+      <div class="calendar-head-center"><span ref="year"></span>年<span ref="month"></span>月</div>
+      <div class="calendar-head-right"><button @click="toNextMonth">次月へ</button></div>
+    </div>
+    <div class="calendar-content">
+      <div class="calendar-content-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>日</th>
+              <th>月</th>
+              <th>火</th>
+              <th>水</th>
+              <th>木</th>
+              <th>金</th>
+              <th>土</th>
+            </tr>
+          </thead>
+          <tbody ref="tbody" @click="modalDisp">
+            
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="overlay" v-show="overlay">
+      <div id="content" v-show="disp">
+        <div class="overlay-content-title">
+          <p>今日の習慣チェック</p>
+          <span @click="modalClose">×</span>
+        </div>
+      </div>
     </div>
   </div>
-</div>
 </template>
 
 <script>
@@ -37,10 +46,19 @@
     },
     data() {
       return {
-        
+        overlay: false,
+        disp: false
       }
     },
     methods: {
+      modalDisp: function() {
+        this.overlay = true;
+        this.disp = true;
+      },
+      modalClose: function() {
+        this.overlay = false;
+        this.disp = false;
+      },
       toNextMonth: function() {
         var now   = new Date();
         var currentYear = now.getFullYear();
@@ -121,18 +139,19 @@
             /* 月初を対応する曜日列から始める */
             if (i >= week) {
               /* tdタグに年月日のメタ情報を属性値として持たせる */
-              tdElemLast.setAttribute('year',now.getFullYear());
-              tdElemLast.setAttribute('month',now.getMonth() + 1);
-              tdElemLast.setAttribute('date',now.getDate());
-              tdElemLast.setAttribute('week',now.getDay());
+              tdElemLast.setAttribute('data-year',now.getFullYear());
+              tdElemLast.setAttribute('data-month',now.getMonth() + 1);
+              tdElemLast.setAttribute('data-date',now.getDate());
+              tdElemLast.setAttribute('data-week',now.getDay());
 
               /* 今日の日付テキストを挿入する */
               tdElemLast.innerText = now.getDate();
 
-              /* 土日であれば背景色をつける */
+              /* 日曜日であれば背景色をつける */
               if (now.getDay() == 0) {
                 tdElemLast.classList.add('SundayColor');
               }
+              /* 土曜日であれば背景色をつける */
               if (now.getDay() == 6) {
                 tdElemLast.classList.add('SaturDayColor');
               }
@@ -254,10 +273,10 @@
             /* 月初を対応する曜日列から始める */
             if (i >= week) {
               /* tdタグに年月日のメタ情報を属性値として持たせる */
-              tdElemLast.setAttribute('year',now.getFullYear());
-              tdElemLast.setAttribute('month',now.getMonth() + 1);
-              tdElemLast.setAttribute('date',now.getDate());
-              tdElemLast.setAttribute('week',now.getDay());
+              tdElemLast.setAttribute('data-year',now.getFullYear());
+              tdElemLast.setAttribute('data-month',now.getMonth() + 1);
+              tdElemLast.setAttribute('data-date',now.getDate());
+              tdElemLast.setAttribute('data-week',now.getDay());
 
               /* 今日の日付テキストを挿入する */
               tdElemLast.innerText = now.getDate();
@@ -379,10 +398,10 @@
           /* 月初を対応する曜日列から始める */
           if (i >= week) {
             /* tdタグに年月日のメタ情報を属性値として持たせる */
-            tdElemLast.setAttribute('year',now.getFullYear());
-            tdElemLast.setAttribute('month',now.getMonth() + 1);
-            tdElemLast.setAttribute('date',now.getDate());
-            tdElemLast.setAttribute('week',now.getDay());
+            tdElemLast.setAttribute('data-year',now.getFullYear());
+            tdElemLast.setAttribute('data-month',now.getMonth() + 1);
+            tdElemLast.setAttribute('data-date',now.getDate());
+            tdElemLast.setAttribute('data-week',now.getDay());
 
             /* 今日の日付テキストを挿入する */
             tdElemLast.innerText = now.getDate();
