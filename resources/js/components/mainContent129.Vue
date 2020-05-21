@@ -76,6 +76,7 @@
       /* 習慣チェックモーダルで登録ボタンを押下した時に実行 */
       register: function() {
         var vm = this;
+        var preventFlag = 0;
         /* 習慣項目数を取得 */
         var trCount = this.$refs.modalTbody.childElementCount;
         var param = [];
@@ -91,7 +92,7 @@
           } else if (trElem.children[5].lastElementChild.checked) {
             param.push(trElem.children[5].lastElementChild.getAttribute('value'));
           } else {
-            var preventFlag = 1;
+            preventFlag = 1;
             if (this.$refs.modalError.childElementCount === 0) {
               var div = document.createElement('div');
               div.classList.add('modalError');
@@ -125,6 +126,7 @@
       modalClose: function() {
         this.$refs.modal.classList.add('hidden');
         this.$refs.modalContent.classList.add('hidden');
+        this.$refs.modalError.textContent = null;
       },
       /* 今月のカレンダーデータを取得する */
       dispCurrentMonth: function() {
@@ -628,9 +630,6 @@
             /* 日付欄押下時の処理 */
             tdElemLast.onclick = function() {
               modalTbody.textContent = null;
-              if (root.$refs.modalError.childElementCount > 0) {
-                root.$refs.modalError.textContent = null;
-              }
               /* 習慣チェックモーダルを表示する */
               modal.classList.remove('hidden');
               modalContent.classList.remove('hidden');
