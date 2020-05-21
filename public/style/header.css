@@ -1,0 +1,14 @@
+header {
+  height: 5vh;
+  background-color: #ffffe0;
+  position: relative;
+}
+
+#header {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  font-size: 20px;
+  font-weight: bold;
+}

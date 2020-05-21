@@ -1,0 +1,266 @@
+#main {
+  display: flex;
+  height: 95vh;
+}
+
+.side {
+  width: 20%;
+  border-right: 1px solid black;
+}
+
+.side .side-tab {
+  height: 12vh;
+  position: relative;
+  border-bottom: 1px solid black;
+  cursor: pointer;
+}
+
+.side .side-tab:hover {
+  background-color: #e6e6fa;
+}
+
+.side .side-tab p {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+}
+
+.overlay {
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background-color:rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+#content{
+  z-index:2;
+  width:70%;
+  height: 80%;
+  background:#fff;
+}
+
+.overlay-content-title {
+  height: 6%;
+  background-color: #f5f5dc;
+  position: relative;
+}
+
+.overlay-content-title p {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  font-weight: bold;
+}
+
+.overlay-content-title span.modalClose {
+  position: absolute;
+  top: -80%;
+  right: -2%;
+  font-weight: bold;
+  font-size: 60px;
+  cursor: pointer;
+}
+
+.overlay-content-wrapper {
+  height: 94%;
+}
+
+.overlay-content-wrapper-register {
+  height: 15%;
+  display: flex;
+}
+
+.overlay-content-wrapper-register-left {
+  width: 90%;
+}
+
+.overlay-content-wrapper-register-left input {
+  width: 98%;
+  padding: 10px 15px;
+  font-size: 16px;
+  border-radius: 3px;
+  border: 2px solid #ddd;
+  box-sizing: border-box;
+  margin: 20px;
+}
+
+.overlay-content-wrapper-register-right {
+  width: 10%;
+}
+
+.overlay-content-wrapper-register-right button {
+  display: block;
+  padding: 10px 15px;
+  margin: 20px;
+  font-size: 16px;
+  border-radius: 3px;
+}
+
+.overlay-content-wrapper-list {
+  height: 80%;
+  overflow-y: scroll;
+}
+
+#olElement {
+  width: 90%;
+  font-size: 30px;
+  margin: 0 auto;
+}
+
+#olElement td {
+  border: 1px solid black;
+  border-collapse: collapse;
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
+#olElement td:nth-child(1) {
+  padding-left: 20px;
+  padding-right: 20px;
+  text-align: center;
+}
+
+#olElement td:nth-child(2) {
+  padding-left: 10px;
+  word-break: break-all;
+  word-wrap: break-word;
+}
+
+#olElement td:nth-child(3), #olElement td:nth-child(4) {
+  padding-left: 20px;
+  padding-right: 20px;
+  cursor: pointer;
+}
+
+.main {
+  width: 80%;
+}
+
+.calendar-head {
+  height: 10%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.calendar-head-left {
+  margin-top: 60px;
+  margin-left: 50px;
+}
+
+.calendar-head-center {
+  margin-top: 40px;
+  font-size: 25px;
+  font-weight: bold;
+}
+
+.calendar-head-right {
+  margin-top: 60px;
+  margin-right: 50px;
+}
+
+.calendar-content {
+  height: 90%;
+  position: relative;
+}
+
+.calendar-content-wrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  font-weight: bold;
+}
+
+.calendar-content-wrapper table th {
+  padding: 10px 70px;
+  border: 1px solid black;
+  border-collapse: collapse;
+  background-color: #f0f8ff;
+}
+
+.calendar-content-wrapper table td {
+  height: 100px;
+  width: 5%;
+  padding: 10px;
+  border: 1px solid black;
+  border-collapse: collapse;
+  font-size: 25px;
+  cursor: pointer;
+}
+
+.calendar-content-wrapper table td[data-year]:hover {
+  opacity: 0.3;
+}
+
+.calendar-content-wrapper table td span {
+  font-size: 14px;
+}
+
+.currentDateColor {
+  background-color: rgb(255, 255, 107);
+  color: red;
+}
+
+.SundayColor {
+  background-color: #fff0f5;
+}
+
+.SaturDayColor {
+  background-color: #f0ffff;
+}
+
+.publicHoliday {
+  background-color: #ffe4b5;
+}
+
+.nextMonthDateColor, .beforeMonthDataColor {
+  background-color: #DEDEDE;
+}
+
+.hidden {
+  display: none;
+}
+
+.overlay-content-wrapper-table {
+  height: 93%;
+  overflow-y: scroll;
+}
+
+.overlay-content-wrapper-check {
+  height: 7%;
+}
+
+#tableElement {
+  width: 90%;
+  font-size: 30px;
+  margin: 0 auto;
+  margin-top: 10px;
+}
+
+#tableElement td,#tableElement th {
+  border: 1px solid black;
+  border-collapse: collapse;
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
+.overlay-content-wrapper-check {
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* 習慣チェックモーダルで登録ボタン押下時のエラーメッセージのスタイル */
+.modalError {
+  color: red;
+  text-align: center;
+  font-size: 25px;
+  padding: 10px;
+}
