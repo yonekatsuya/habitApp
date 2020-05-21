@@ -62,7 +62,6 @@
 
 <script>
   var monthFlag = 0;
-
   export default {
     props: {
       
@@ -95,7 +94,6 @@
             param.push(trElem.children[5].lastElementChild.getAttribute('value'));
           }
         }
-
         const url = 'http://localhost:100/habitResult';
         const params = {
           result: param
@@ -110,17 +108,14 @@
                   })
         this.modalClose();
       },
-
       /* モーダルを非表示にする */
       modalClose: function() {
         this.$refs.modal.classList.add('hidden');
         this.$refs.modalContent.classList.add('hidden');
       },
-
       /* 今月のカレンダーデータを取得する */
       dispCurrentMonth: function() {
         var root = this;
-
         var modal = this.$refs.modal;
         var modalContent = this.$refs.modalContent;
         var item = this.$refs.item;
@@ -129,37 +124,29 @@
         var modalDate = this.$refs.modalDate;
         var habitLists = this.habitLists;
         var modalTbody = this.$refs.modalTbody;
-
         var now   = new Date();
         var currentYear = now.getFullYear();
         var currentMonth = now.getMonth() + 1;
         now.setMonth(now.getMonth());
-
         /* 今日の日付を取得設定 */
         var date = now.getDate();
-
         /* 今日の日付を月初に設定 */
         now.setDate(1);
-
         /* 今年・今月・今日の曜日の値を取得 */
         var year  = now.getFullYear();
         var month = now.getMonth() + 1;
         var week = now.getDay();
-
         /* 今年の値と今月の値をカレンダーのタイトルに設定 */
         this.$refs.year.textContent = year;
         this.$refs.month.textContent = month;
-
         /* 今月の値を次月に設定し、今月の末日の値を取得 */
         now.setMonth(now.getMonth() + 1);
         now.setDate(0);
         var lastDate = now.getDate();
-
         /* 今月の値を今月に戻し、月初の値を取得 */
         now.setMonth(now.getMonth());
         now.setDate(1);
         var firstDate = now.getDate();
-
         /* 2018年~2022年までの祝日一覧を用意 */
         const holidayList = {
           2017: {0: [1,2,9],1: [11],2: [20],3: [29],4: [3,4,5],5: [],6: [17],7: [11],8: [18,23],9: [9],10: [3,23],11:[]},
@@ -172,20 +159,16 @@
           2024: {0: [1,8],1: [11,12,23],2: [20],3: [29],4: [3, 4, 5,6],5: [],6: [15],7: [11,12],8: [16, 22,23],9: [14],10: [3, 4,23],11: []},
           2025: {0: [1,13],1: [11,23,24],2: [20],3: [29],4: [3, 4, 5,6],5: [],6: [21],7: [11],8: [15,23],9: [13],10: [3,23,24],11: []}
         };
-
         function isHoliday (year,month,day) {
           return holidayList[year][month].indexOf(day) !== -1;
         }
-
         var tbody = this.$refs.tbody;
         tbody.textContent = null;
-
         /* 曜日の値をループ回数に足して末日まで表示されるようにする */
         for (var i = 0;i <= (lastDate + week);i++) {
           
           /* 今月の場合にだけ行やセルを付け足す処理をする */
           if (month === (now.getMonth() + 1)) {
-
             /* 0もしくは7の倍数でtrタグを挿入 */
             if (i === 0 || i % 7 === 0) {
               var trElem = document.createElement('tr');
@@ -197,7 +180,6 @@
             var tdElem = document.createElement('td');
             trElemLast.appendChild(tdElem);
             var tdElemLast = trElemLast.lastElementChild;
-
             /* 月初を対応する曜日列から始める */
             if (i >= week) {
               /* tdタグに年月日のメタ情報を属性値として持たせる */
@@ -205,20 +187,16 @@
               tdElemLast.setAttribute('data-month',now.getMonth() + 1);
               tdElemLast.setAttribute('data-date',now.getDate());
               tdElemLast.setAttribute('data-week',now.getDay());
-
               /* axiosの非同期で年月日の目標達成率データを取得するのに使用 */
               var nowYear = tdElemLast.getAttribute('data-year');
               var nowMonth = tdElemLast.getAttribute('data-month');
               var nowDate = tdElemLast.getAttribute('data-date');
-
               /* 日付欄押下時の処理 */
               tdElemLast.onclick = function() {
                 modalTbody.textContent = null;
-
                 /* 習慣チェックモーダルを表示する */
                 modal.classList.remove('hidden');
                 modalContent.classList.remove('hidden');
-
                 /* タイトル行に年月日を表示する */
                 modalYear.textContent = this.getAttribute('data-year');
                 modalMonth.textContent = this.getAttribute('data-month');
@@ -266,10 +244,8 @@
                       console.log(error);
                     })
               }
-
               /* 今日の日付テキストを挿入する */
               tdElemLast.innerText = now.getDate();
-
               /* 目標達成率データを取得し、該当のtdの日付欄に表示する */
               function getResult(resultTd) {
                 axios.get('http://localhost:100/habitResultGet?year=' + nowYear + '&month=' + nowMonth + '&date=' + nowDate)
@@ -287,10 +263,7 @@
                         console.log(error);
                       })
               }
-
               getResult(tdElemLast);
-
-
               /* 土日であれば背景色をつける */
               if (now.getDay() == 0) {
                 tdElemLast.classList.add('SundayColor');
@@ -298,14 +271,12 @@
               if (now.getDay() == 6) {
                 tdElemLast.classList.add('SaturDayColor');
               }
-
               /* 今日の日付であれば背景色をつける */
               if (tdElemLast.innerText == date && (now.getMonth() + 1) == currentMonth && currentYear == year) {
                 tdElemLast.classList.remove('SundayColor');
                 tdElemLast.classList.remove('SaturDayColor');
                 tdElemLast.classList.add('currentDateColor');
               }
-
               /* 祝日であれば背景色を付ける */
               var dummyYear = now.getFullYear();
               var dummyMonth = now.getMonth();
@@ -316,7 +287,6 @@
                 tdElemLast.classList.remove('currentDateColor');
                 tdElemLast.classList.add('publicHoliday');
               }
-
               /* 日付をインクリメントする */
               now.setDate(now.getDate() + 1);
             } else {
@@ -324,7 +294,6 @@
             }
           }
         }
-
         /* カレンダー最終行のtdの数が7未満であれば、7になるまでtdを追加する */
         var tdElemCount = tbody.lastElementChild.childElementCount;
         var tdAddCount = 7 - tdElemCount;
@@ -336,47 +305,37 @@
           }
         }
       },
-
       /* 次月のカレンダーデータを取得する */
       toNextMonth: function() {
         var now   = new Date();
         var currentYear = now.getFullYear();
         var currentMonth = now.getMonth() + 1;
-
         monthFlag++;
         now.setMonth(now.getMonth() + monthFlag);
-
         if (now.getFullYear() >= 2026) {
           monthFlag--;
           now.setMonth(now.getMonth() + monthFlag);
           return;
         }
-
         /* 今日の日付を取得設定 */
         var date = now.getDate();
-
         /* 今日の日付を月初に設定 */
         now.setDate(1);
-
         /* 今年・今月・今日の曜日の値を取得 */
         var year  = now.getFullYear();
         var month = now.getMonth() + 1;
         var week = now.getDay();
-
         /* 今年の値と今月の値をカレンダーのタイトルに設定 */
         this.$refs.year.textContent = year;
         this.$refs.month.textContent = month;
-
         /* 今月の値を次月に設定し、今月の末日の値を取得 */
         now.setMonth(now.getMonth() + 1);
         now.setDate(0);
         var lastDate = now.getDate();
-
         /* 今月の値を今月に戻し、月初の値を取得 */
         now.setMonth(now.getMonth());
         now.setDate(1);
         var firstDate = now.getDate();
-
         /* 2018年~2022年までの祝日一覧を用意 */
         const holidayList = {
           2017: {0: [1,2,9],1: [11],2: [20],3: [29],4: [3,4,5],5: [],6: [17],7: [11],8: [18,23],9: [9],10: [3,23],11:[]},
@@ -389,20 +348,16 @@
           2024: {0: [1,8],1: [11,12,23],2: [20],3: [29],4: [3, 4, 5,6],5: [],6: [15],7: [11,12],8: [16, 22,23],9: [14],10: [3, 4,23],11: []},
           2025: {0: [1,13],1: [11,23,24],2: [20],3: [29],4: [3, 4, 5,6],5: [],6: [21],7: [11],8: [15,23],9: [13],10: [3,23,24],11: []}
         };
-
         function isHoliday (year,month,day) {
           return holidayList[year][month].indexOf(day) !== -1;
         }
-
         var tbody = this.$refs.tbody;
         tbody.textContent = null;
-
         /* 曜日の値をループ回数に足して末日まで表示されるようにする */
         for (var i = 0;i <= (lastDate + week);i++) {
           
           /* 今月の場合にだけ行やセルを付け足す処理をする */
           if (month === (now.getMonth() + 1)) {
-
             /* 0もしくは7の倍数でtrタグを挿入 */
             if (i === 0 || i % 7 === 0) {
               var trElem = document.createElement('tr');
@@ -414,7 +369,6 @@
             var tdElem = document.createElement('td');
             trElemLast.appendChild(tdElem);
             var tdElemLast = trElemLast.lastElementChild;
-
             /* 月初を対応する曜日列から始める */
             if (i >= week) {
               /* tdタグに年月日のメタ情報を属性値として持たせる */
@@ -422,10 +376,8 @@
               tdElemLast.setAttribute('data-month',now.getMonth() + 1);
               tdElemLast.setAttribute('data-date',now.getDate());
               tdElemLast.setAttribute('data-week',now.getDay());
-
               /* 今日の日付テキストを挿入する */
               tdElemLast.innerText = now.getDate();
-
               /* 日曜日であれば背景色をつける */
               if (now.getDay() == 0) {
                 tdElemLast.classList.add('SundayColor');
@@ -434,14 +386,12 @@
               if (now.getDay() == 6) {
                 tdElemLast.classList.add('SaturDayColor');
               }
-
               /* 今日の日付であれば背景色をつける */
               if (tdElemLast.innerText == date && (now.getMonth() + 1) == currentMonth && currentYear == year) {
                 tdElemLast.classList.remove('SundayColor');
                 tdElemLast.classList.remove('SaturDayColor');
                 tdElemLast.classList.add('currentDateColor');
               }
-
               /* 祝日であれば背景色を付ける */
               var dummyYear = now.getFullYear();
               var dummyMonth = now.getMonth();
@@ -452,7 +402,6 @@
                 tdElemLast.classList.remove('currentDateColor');
                 tdElemLast.classList.add('publicHoliday');
               }
-
               /* 日付をインクリメントする */
               now.setDate(now.getDate() + 1);
             } else {
@@ -460,7 +409,6 @@
             }
           }
         }
-
         /* カレンダー最終行のtdの数が7未満であれば、7になるまでtdを追加する */
         var tdElemCount = tbody.lastElementChild.childElementCount;
         var tdAddCount = 7 - tdElemCount;
@@ -472,47 +420,37 @@
           }
         }
       },
-
       /* 前月のカレンダーデータを取得する */
       toBeforeMonth: function() {
         var now   = new Date();
         var currentYear = now.getFullYear();
         var currentMonth = now.getMonth() + 1;
-
         monthFlag--;
         now.setMonth(now.getMonth() + monthFlag);
-
         if (now.getFullYear() <= 2016) {
           monthFlag++;
           now.setMonth(now.getMonth() + monthFlag);
           return;
         }
-
         /* 今日の日付を取得設定 */
         var date = now.getDate();
-
         /* 今日の日付を月初に設定 */
         now.setDate(1);
-
         /* 今年・今月・今日の曜日の値を取得 */
         var year  = now.getFullYear();
         var month = now.getMonth() + 1;
         var week = now.getDay();
-
         /* 今年の値と今月の値をカレンダーのタイトルに設定 */
         this.$refs.year.textContent = year;
         this.$refs.month.textContent = month;
-
         /* 今月の値を次月に設定し、今月の末日の値を取得 */
         now.setMonth(now.getMonth() + 1);
         now.setDate(0);
         var lastDate = now.getDate();
-
         /* 今月の値を今月に戻し、月初の値を取得 */
         now.setMonth(now.getMonth());
         now.setDate(1);
         var firstDate = now.getDate();
-
         /* 2018年~2022年までの祝日一覧を用意 */
         const holidayList = {
           2017: {0: [1,2,9],1: [11],2: [20],3: [29],4: [3,4,5],5: [],6: [17],7: [11],8: [18,23],9: [9],10: [3,23],11:[]},
@@ -525,20 +463,16 @@
           2024: {0: [1,8],1: [11,12,23],2: [20],3: [29],4: [3, 4, 5,6],5: [],6: [15],7: [11,12],8: [16, 22,23],9: [14],10: [3, 4,23],11: []},
           2025: {0: [1,13],1: [11,23,24],2: [20],3: [29],4: [3, 4, 5,6],5: [],6: [21],7: [11],8: [15,23],9: [13],10: [3,23,24],11: []}
         };
-
         function isHoliday (year,month,day) {
           return holidayList[year][month].indexOf(day) !== -1;
         }
-
         var tbody = this.$refs.tbody;
         tbody.textContent = null;
-
         /* 曜日の値をループ回数に足して末日まで表示されるようにする */
         for (var i = 0;i <= (lastDate + week);i++) {
           
           /* 今月の場合にだけ行やセルを付け足す処理をする */
           if (month === (now.getMonth() + 1)) {
-
             /* 0もしくは7の倍数でtrタグを挿入 */
             if (i === 0 || i % 7 === 0) {
               var trElem = document.createElement('tr');
@@ -550,7 +484,6 @@
             var tdElem = document.createElement('td');
             trElemLast.appendChild(tdElem);
             var tdElemLast = trElemLast.lastElementChild;
-
             /* 月初を対応する曜日列から始める */
             if (i >= week) {
               /* tdタグに年月日のメタ情報を属性値として持たせる */
@@ -558,10 +491,8 @@
               tdElemLast.setAttribute('data-month',now.getMonth() + 1);
               tdElemLast.setAttribute('data-date',now.getDate());
               tdElemLast.setAttribute('data-week',now.getDay());
-
               /* 今日の日付テキストを挿入する */
               tdElemLast.innerText = now.getDate();
-
               /* 土日であれば背景色をつける */
               if (now.getDay() == 0) {
                 tdElemLast.classList.add('SundayColor');
@@ -569,14 +500,12 @@
               if (now.getDay() == 6) {
                 tdElemLast.classList.add('SaturDayColor');
               }
-
               /* 今日の日付であれば背景色をつける */
               if (tdElemLast.innerText == date && (now.getMonth() + 1) == currentMonth && currentYear == year) {
                 tdElemLast.classList.remove('SundayColor');
                 tdElemLast.classList.remove('SaturDayColor');
                 tdElemLast.classList.add('currentDateColor');
               }
-
               /* 祝日であれば背景色を付ける */
               var dummyYear = now.getFullYear();
               var dummyMonth = now.getMonth();
@@ -587,7 +516,6 @@
                 tdElemLast.classList.remove('currentDateColor');
                 tdElemLast.classList.add('publicHoliday');
               }
-
               /* 日付をインクリメントする */
               now.setDate(now.getDate() + 1);
             } else {
@@ -595,7 +523,6 @@
             }
           }
         }
-
         /* カレンダー最終行のtdの数が7未満であれば、7になるまでtdを追加する */
         var tdElemCount = tbody.lastElementChild.childElementCount;
         var tdAddCount = 7 - tdElemCount;
@@ -611,7 +538,6 @@
     mounted: function() {
       /* 今月のカレンダーデータをマウント時に取得する */
       var root = this;
-
       var modal = this.$refs.modal;
       var modalContent = this.$refs.modalContent;
       var item = this.$refs.item;
@@ -620,37 +546,29 @@
       var modalDate = this.$refs.modalDate;
       var habitLists = this.habitLists;
       var modalTbody = this.$refs.modalTbody;
-
       var now   = new Date();
       var currentYear = now.getFullYear();
       var currentMonth = now.getMonth() + 1;
       now.setMonth(now.getMonth());
-
       /* 今日の日付を取得設定 */
       var date = now.getDate();
-
       /* 今日の日付を月初に設定 */
       now.setDate(1);
-
       /* 今年・今月・今日の曜日の値を取得 */
       var year  = now.getFullYear();
       var month = now.getMonth() + 1;
       var week = now.getDay();
-
       /* 今年の値と今月の値をカレンダーのタイトルに設定 */
       this.$refs.year.textContent = year;
       this.$refs.month.textContent = month;
-
       /* 今月の値を次月に設定し、今月の末日の値を取得 */
       now.setMonth(now.getMonth() + 1);
       now.setDate(0);
       var lastDate = now.getDate();
-
       /* 今月の値を今月に戻し、月初の値を取得 */
       now.setMonth(now.getMonth());
       now.setDate(1);
       var firstDate = now.getDate();
-
       /* 2018年~2022年までの祝日一覧を用意 */
       const holidayList = {
         2017: {0: [1,2,9],1: [11],2: [20],3: [29],4: [3,4,5],5: [],6: [17],7: [11],8: [18,23],9: [9],10: [3,23],11:[]},
@@ -663,19 +581,15 @@
         2024: {0: [1,8],1: [11,12,23],2: [20],3: [29],4: [3, 4, 5,6],5: [],6: [15],7: [11,12],8: [16, 22,23],9: [14],10: [3, 4,23],11: []},
         2025: {0: [1,13],1: [11,23,24],2: [20],3: [29],4: [3, 4, 5,6],5: [],6: [21],7: [11],8: [15,23],9: [13],10: [3,23,24],11: []}
       };
-
       function isHoliday (year,month,day) {
         return holidayList[year][month].indexOf(day) !== -1;
       }
-
       var tbody = this.$refs.tbody;
-
       /* 曜日の値をループ回数に足して末日まで表示されるようにする */
       for (var i = 0;i <= (lastDate + week);i++) {
         
         /* 今月の場合にだけ行やセルを付け足す処理をする */
         if (month === (now.getMonth() + 1)) {
-
           /* 0もしくは7の倍数でtrタグを挿入 */
           if (i === 0 || i % 7 === 0) {
             var trElem = document.createElement('tr');
@@ -687,7 +601,6 @@
           var tdElem = document.createElement('td');
           trElemLast.appendChild(tdElem);
           var tdElemLast = trElemLast.lastElementChild;
-
           /* 月初を対応する曜日列から始める */
           if (i >= week) {
             /* tdタグに年月日のメタ情報を属性値として持たせる */
@@ -695,20 +608,16 @@
             tdElemLast.setAttribute('data-month',now.getMonth() + 1);
             tdElemLast.setAttribute('data-date',now.getDate());
             tdElemLast.setAttribute('data-week',now.getDay());
-
             /* axiosの非同期で年月日の目標達成率データを取得するのに使用 */
             var nowYear = tdElemLast.getAttribute('data-year');
             var nowMonth = tdElemLast.getAttribute('data-month');
             var nowDate = tdElemLast.getAttribute('data-date');
-
             /* 日付欄押下時の処理 */
             tdElemLast.onclick = function() {
               modalTbody.textContent = null;
-
               /* 習慣チェックモーダルを表示する */
               modal.classList.remove('hidden');
               modalContent.classList.remove('hidden');
-
               /* タイトル行に年月日を表示する */
               modalYear.textContent = this.getAttribute('data-year');
               modalMonth.textContent = this.getAttribute('data-month');
@@ -756,10 +665,8 @@
                     console.log(error);
                   })
             }
-
             /* 今日の日付テキストを挿入する */
             tdElemLast.innerText = now.getDate();
-
             /* 目標達成率データを取得し、該当のtdの日付欄に表示する */
             function getResult(resultTd) {
               axios.get('http://localhost:100/habitResultGet?year=' + nowYear + '&month=' + nowMonth + '&date=' + nowDate)
@@ -777,10 +684,7 @@
                       console.log(error);
                     })
             }
-
             getResult(tdElemLast);
-
-
             /* 土日であれば背景色をつける */
             if (now.getDay() == 0) {
               tdElemLast.classList.add('SundayColor');
@@ -788,14 +692,12 @@
             if (now.getDay() == 6) {
               tdElemLast.classList.add('SaturDayColor');
             }
-
             /* 今日の日付であれば背景色をつける */
             if (tdElemLast.innerText == date && (now.getMonth() + 1) == currentMonth && currentYear == year) {
               tdElemLast.classList.remove('SundayColor');
               tdElemLast.classList.remove('SaturDayColor');
               tdElemLast.classList.add('currentDateColor');
             }
-
             /* 祝日であれば背景色を付ける */
             var dummyYear = now.getFullYear();
             var dummyMonth = now.getMonth();
@@ -806,7 +708,6 @@
               tdElemLast.classList.remove('currentDateColor');
               tdElemLast.classList.add('publicHoliday');
             }
-
             /* 日付をインクリメントする */
             now.setDate(now.getDate() + 1);
           } else {
@@ -814,7 +715,6 @@
           }
         }
       }
-
       /* カレンダー最終行のtdの数が7未満であれば、7になるまでtdを追加する */
       var tdElemCount = tbody.lastElementChild.childElementCount;
       var tdAddCount = 7 - tdElemCount;
