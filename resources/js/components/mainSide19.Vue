@@ -75,9 +75,11 @@
         var now = new Date();
         var year = now.getFullYear();
         var month = now.getMonth() + 1;
-        axios.get('http://localhost:100/habitPost?habitText=' + inputText + '&year=' + year + '&month=' + month)
-        .then(response => this.habitLists = response.data)
-        .catch(response => console.log(response))
+        if (inputText !== '') {
+          axios.get('http://localhost:100/habitPost?habitText=' + inputText + '&year=' + year + '&month=' + month)
+          .then(response => this.habitLists = response.data)
+          .catch(response => console.log(response))
+        }
       },
       deleteList: function(id) {
         if (window.confirm('選択した項目を削除しますか？')) {
