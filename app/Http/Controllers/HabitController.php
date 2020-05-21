@@ -54,11 +54,23 @@ class HabitController extends Controller
         $habitResult->date = $array[2];
         // 「verygood」が一つ以上あれば目標達成率を計算し、一つもなければ「0」を格納する
         if (count($resultCount) >= 1) {
-            $result = (count($resultCount) / $itemCount) * 100;
+            $result = floor((count($resultCount) / $itemCount) * 100);
             $habitResult->result = $result;
         } else {
             $habitResult->result = 0;
         }
         $habitResult->save();
+    }
+
+    public function habitResultGet(Request $request) {
+        $year = $request->year;
+        $month = $request->month;
+        $date = $request->date;
+        if (HabitResult::where('year',$year)->where('month',$month)->where('date',$date)->exists()) {
+            $result = HabitResult::where('year',$year)->where('month',$month)->where('date',$date)->get(['result']);
+        } else {
+            $result = null;
+        }
+        return response()->json($result);
     }
 }
