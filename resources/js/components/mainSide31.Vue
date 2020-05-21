@@ -22,7 +22,7 @@
     <div class="overlay" v-show="overlay">
       <div id="content" v-show="disp">
         <div class="overlay-content-title">
-          <p>2020年5月の習慣項目登録</p>
+          <p><span ref="year"></span>年<span ref="month"></span>月の習慣項目登録</p>
           <span @click="habitRegisterModalHidden" class="modalClose">×</span>
         </div>
         <div class="overlay-content-wrapper" v-show="overlay">
@@ -61,44 +61,74 @@
       }
     },
     methods: {
+      /* クッキーから特定の値を取得する */
+      getCookie: function(name) {
+        var cookies = document.cookie;
+        cookies = cookies.replace(/\s+/g, "");
+        var cookiesArray = cookies.split(';');
+        var returnStr = '';
+        cookiesArray.forEach(function(c) {
+          var cArray = c.split('=');
+          if( cArray[0] == name){
+              returnStr = cArray[1];
+          }
+        });
+        return returnStr;
+      },
+
       habitRegisterModalDisp: function() {
+        this.$refs.year.textContent = this.getCookie('year');
+        this.$refs.month.textContent = this.getCookie('month');
         this.overlay = true;
         this.disp = true;
+
+        var year = this.getCookie('year');
+        var month = this.getCookie('month');
+        axios.get('http://localhost:100/habitGet?year=' + year + '&month=' + month)
+          .then(response => this.habitLists = response.data)
+          .catch(response => console.log(response))
       },
+
       habitRegisterModalHidden: function() {
         this.overlay = false;
         this.disp = false;
       },
+
       addList: function() {
         var inputText = this.habitText;
         this.habitText = '';
         var now = new Date();
-        var year = now.getFullYear();
-        var month = now.getMonth() + 1;
+        var year = this.getCookie('year');
+        var month = this.getCookie('month');
         if (inputText !== '') {
           axios.get('http://localhost:100/habitPost?habitText=' + inputText + '&year=' + year + '&month=' + month)
           .then(response => this.habitLists = response.data)
           .catch(response => console.log(response))
         }
       },
+
       deleteList: function(id) {
         if (window.confirm('選択した項目を削除しますか？')) {
-          axios.get('http://localhost:100/habitDelete?id=' + id)
+          var year = this.getCookie('year');
+          var month = this.getCookie('month');
+          axios.get('http://localhost:100/habitDelete?id=' + id + '&year=' + year + '&month=' + month)
           .then(response => this.habitLists = response.data)
           .catch(response => console.log(response))
         }
       },
+
       editList: function(id,item) {
-        axios.get('http://localhost:100/habitDelete?id=' + id)
+        var year = this.getCookie('year');
+        var month = this.getCookie('month');
+        axios.get('http://localhost:100/habitDelete?id=' + id + '&year=' + year + '&month=' + month)
           .then(response => this.habitLists = response.data)
           .catch(response => console.log(response))
         this.habitText = item;
       }
     },
+
     created : function(){
-      axios.get('http://localhost:100/habitGet')
-          .then(response => this.habitLists = response.data)
-          .catch(response => console.log(response))
+      
     }
   }
 </script>

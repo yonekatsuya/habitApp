@@ -15,19 +15,19 @@ class HabitController extends Controller
         $habitPost->month = $request->month;
         $habitPost->item = $request->habitText;
         $habitPost->save();
-        $habitPosts = HabitPost::where('month',5)->get();
+        $habitPosts = HabitPost::where('year',$request->year)->where('month',$request->month)->get();
         return response()->json($habitPosts);
     }
 
-    public function habitGet() {
-        $habitPosts = HabitPost::get();
+    public function habitGet(Request $request) {
+        $habitPosts = HabitPost::where('year',$request->year)->where('month',$request->month)->get();
         return response()->json($habitPosts);
     }
 
     public function habitDelete(Request $request) {
         $id = $request->id;
         HabitPost::where('id',$id)->delete();
-        $habitPosts = HabitPost::where('month',5)->get();
+        $habitPosts = HabitPost::where('year',$request->year)->where('month',$request->month)->get();
         return response()->json($habitPosts);
     }
 
