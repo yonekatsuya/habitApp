@@ -33,7 +33,8 @@
           <span class="modalClose" @click="modalClose">×</span>
         </div>
         <div class="overlay-content-wrapper">
-          <div class="overlay-content-wrapper-table">
+          <div class="overlay-content-wrapper-table" ref="modalTableWrapper">
+            <div ref="modalError"></div>
             <table id="tableElement">
               <thead>
                 <tr>
@@ -83,17 +84,29 @@
           var trElem = this.$refs.modalTbody.children[i];
           if (trElem.children[2].lastElementChild.checked) {
             param.push(trElem.children[2].lastElementChild.getAttribute('value'));
-          }
-          if (trElem.children[3].lastElementChild.checked) {
+          } else if (trElem.children[3].lastElementChild.checked) {
             param.push(trElem.children[3].lastElementChild.getAttribute('value'));
-          }
-          if (trElem.children[4].lastElementChild.checked) {
+          } else if (trElem.children[4].lastElementChild.checked) {
             param.push(trElem.children[4].lastElementChild.getAttribute('value'));
-          }
-          if (trElem.children[5].lastElementChild.checked) {
+          } else if (trElem.children[5].lastElementChild.checked) {
             param.push(trElem.children[5].lastElementChild.getAttribute('value'));
+          } else {
+            var preventFlag = 1;
+            if (this.$refs.modalError.childElementCount === 0) {
+              var div = document.createElement('div');
+              div.classList.add('modalError');
+              div.textContent = '全ての項目にチェックを入れてください。';
+              this.$refs.modalError.appendChild(div);
+            }
+            break;
           }
         }
+
+        /* 習慣項目のどれかのラジオボタンにチェックが入っていなかった場合、処理を中断 */
+        if (preventFlag === 1) {
+          return;
+        }
+
         const url = 'http://localhost:100/habitResult';
         const params = {
           result: param
@@ -615,6 +628,9 @@
             /* 日付欄押下時の処理 */
             tdElemLast.onclick = function() {
               modalTbody.textContent = null;
+              if (root.$refs.modalError.childElementCount > 0) {
+                root.$refs.modalError.textContent = null;
+              }
               /* 習慣チェックモーダルを表示する */
               modal.classList.remove('hidden');
               modalContent.classList.remove('hidden');
