@@ -113,7 +113,7 @@
             param.push(trElem.children[5].lastElementChild.getAttribute('value'));
           } else {
             preventFlag = 1;
-            if (this.$refs.modalError.childElementCount === 0) {
+            if (this.$refs.modalError.childElementCount == 0) {
               var div = document.createElement('div');
               div.classList.add('modalError');
               div.textContent = '全ての項目にチェックを入れてください。';
@@ -135,7 +135,8 @@
         axios.get(url, {params})
                   .then(function (response) {
                     console.log(response);
-                    vm.dispCurrentMonth();
+                    var mf = vm.getCookie('monthFlag');
+                    vm.dispCurrentMonth(mf);
                   })
                   .catch(function (error) {
                     console.log(error);
@@ -151,7 +152,7 @@
       },
 
       /* 今月のカレンダーデータを取得する */
-      dispCurrentMonth: function() {
+      dispCurrentMonth: function(mf) {
         var root = this;
         var modal = this.$refs.modal;
         var modalContent = this.$refs.modalContent;
@@ -166,7 +167,11 @@
         var now   = new Date();
         var currentYear = now.getFullYear();
         var currentMonth = now.getMonth() + 1;
-        now.setMonth(now.getMonth());
+        if (mf != 0) {
+          now.setMonth(now.getMonth() + parseInt(mf));
+        } else {
+          now.setMonth(now.getMonth());
+        }
 
         /* 今日の日付を取得設定 */
         var date = now.getDate();
@@ -258,7 +263,9 @@
                 modalDate.textContent = this.getAttribute('data-date');
                 
                 /* habit_resultsテーブルから習慣項目一覧を取得し、ラジオボタンと同じ行となるようテーブルを作成する */
-                axios.get('http://localhost:100/habitGet')
+                var getYear = root.getCookie('year');
+                var getMonth = root.getCookie('month');
+                axios.get('http://localhost:100/habitGet?year=' + getYear + '&month=' + getMonth)
                     .then(function (response) {
                       habitLists = response.data;
 
@@ -527,6 +534,7 @@
         var currentMonth = now.getMonth() + 1;
 
         monthFlag--;
+        document.cookie = 'monthFlag=' + monthFlag;
         now.setMonth(now.getMonth() + monthFlag);
 
         if (now.getFullYear() <= 2016) {
@@ -745,6 +753,7 @@
     },
 
     mounted: function() {
+      document.cookie = 'monthFlag=' + monthFlag;
       /* 今月のカレンダーデータをマウント時に取得する */
       var root = this;
       var modal = this.$refs.modal;
@@ -853,8 +862,8 @@
               modalDate.textContent = this.getAttribute('data-date');
               
               /* habit_resultsテーブルから習慣項目一覧を取得し、ラジオボタンと同じ行となるようテーブルを作成する */
-              var getYear = this.getCookie('year');
-              var getMonth = this.getCookie('month');
+              var getYear = root.getCookie('year');
+              var getMonth = root.getCookie('month');
               axios.get('http://localhost:100/habitGet?year=' + getYear + '&month=' + getMonth)
                   .then(function (response) {
                     habitLists = response.data;
