@@ -891,13 +891,13 @@
                             lastTd.innerHTML = '<input type="radio" name="' + (index + 1) + '" value="' + value.year + '/' + value.month + '/' + modalDate.textContent + '/' + 'verygood/' + value.id + '">';
                             break;
                           case 3:
-                            lastTd.innerHTML = '<input type="radio" name="' + (index + 1) + '" value="' + value.year + '/' + value.month + '/' + modalDate.textContent + '/' + 'good' + value.id + '">';
+                            lastTd.innerHTML = '<input type="radio" name="' + (index + 1) + '" value="' + value.year + '/' + value.month + '/' + modalDate.textContent + '/' + 'good/' + value.id + '">';
                             break;
                           case 4:
-                            lastTd.innerHTML = '<input type="radio" name="' + (index + 1) + '" value="' + value.year + '/' + value.month + '/' + modalDate.textContent + '/' + 'soso' + value.id + '">';
+                            lastTd.innerHTML = '<input type="radio" name="' + (index + 1) + '" value="' + value.year + '/' + value.month + '/' + modalDate.textContent + '/' + 'soso/' + value.id + '">';
                             break;
                           case 5:
-                            lastTd.innerHTML = '<input type="radio" name="' + (index + 1) + '" value="' + value.year + '/' + value.month + '/' + modalDate.textContent + '/' + 'bad' + value.id + '">';
+                            lastTd.innerHTML = '<input type="radio" name="' + (index + 1) + '" value="' + value.year + '/' + value.month + '/' + modalDate.textContent + '/' + 'bad/' + value.id + '">';
                             break;
                         }
                       }
