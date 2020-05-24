@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\HabitPost;
 use App\HabitResult;
+use App\HabitCheckResult;
 use Log;
 
 class HabitController extends Controller
@@ -32,15 +33,26 @@ class HabitController extends Controller
     }
 
     public function habitResult(Request $request) {
+
         // 習慣項目数を取得
         $itemCount = count($request['result']);
         $resultCount = [];
-        // 習慣チェックの中で「verygood」がいくつあるかを確認
+        // 該当月の習慣項目数だけループを回す
         for ($i = 0;$i < $itemCount;$i++) {
             $array = explode("/",$request['result'][$i]);
+            // 習慣チェックの中で「verygood」がいくつあるかを確認
             if ($array[3] == 'verygood') {
                 $resultCount[] = 1;
             }
+
+            // 各習慣項目評価の結果をhabit_check_resultsテーブルに格納する
+            $habitCheckResult = new HabitCheckResult();
+            $habitCheckResult->year = $array[0];
+            $habitCheckResult->month = $array[1];
+            $habitCheckResult->date = $array[2];
+            $habitCheckResult->result = $array[3];
+            $habitCheckResult->habit_post_id = $array[4];
+            $habitCheckResult->save();
         }
         $habitResult = new HabitResult();
         // とりあえず一番最初の習慣項目チェックデータを配列にして、年月日を登録できるよう準備
