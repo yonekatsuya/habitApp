@@ -861,7 +861,7 @@
               modalMonth.textContent = this.getAttribute('data-month');
               modalDate.textContent = this.getAttribute('data-date');
               
-              /* habit_resultsテーブルから習慣項目一覧を取得し、ラジオボタンと同じ行となるようテーブルを作成する */
+              /* habit_postsテーブルから習慣項目一覧を取得し、ラジオボタンと同じ行となるようテーブルを作成する */
               var getYear = root.getCookie('year');
               var getMonth = root.getCookie('month');
               axios.get('http://localhost:100/habitGet?year=' + getYear + '&month=' + getMonth)
@@ -888,16 +888,16 @@
                             break;
                           case 2:
                             /* ラジオボタンについては、後のテーブル格納に必要となる情報をvalue値として持たせておく */
-                            lastTd.innerHTML = '<input type="radio" name="' + (index + 1) + '" value="' + value.year + '/' + value.month + '/' + modalDate.textContent + '/' + 'verygood' + '">';
+                            lastTd.innerHTML = '<input type="radio" name="' + (index + 1) + '" value="' + value.year + '/' + value.month + '/' + modalDate.textContent + '/' + 'verygood/' + value.id + '">';
                             break;
                           case 3:
-                            lastTd.innerHTML = '<input type="radio" name="' + (index + 1) + '" value="' + value.year + '/' + value.month + '/' + modalDate.textContent + '/' + 'good' + '">';
+                            lastTd.innerHTML = '<input type="radio" name="' + (index + 1) + '" value="' + value.year + '/' + value.month + '/' + modalDate.textContent + '/' + 'good' + value.id + '">';
                             break;
                           case 4:
-                            lastTd.innerHTML = '<input type="radio" name="' + (index + 1) + '" value="' + value.year + '/' + value.month + '/' + modalDate.textContent + '/' + 'soso' + '">';
+                            lastTd.innerHTML = '<input type="radio" name="' + (index + 1) + '" value="' + value.year + '/' + value.month + '/' + modalDate.textContent + '/' + 'soso' + value.id + '">';
                             break;
                           case 5:
-                            lastTd.innerHTML = '<input type="radio" name="' + (index + 1) + '" value="' + value.year + '/' + value.month + '/' + modalDate.textContent + '/' + 'bad' + '">';
+                            lastTd.innerHTML = '<input type="radio" name="' + (index + 1) + '" value="' + value.year + '/' + value.month + '/' + modalDate.textContent + '/' + 'bad' + value.id + '">';
                             break;
                         }
                       }
