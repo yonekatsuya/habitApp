@@ -85,4 +85,12 @@ class HabitController extends Controller
         }
         return response()->json($result);
     }
+
+    public function habitGetDateResult(Request $request) {
+        $habitCheckResult = 'no';
+        if (HabitCheckResult::where('habit_post_id',$request['result'][0])->where('year',$request['result'][1])->where('month',$request['result'][2])->where('date',$request['result'][3])->exists()) {
+            $habitCheckResult = HabitCheckResult::where('habit_post_id',$request['result'][0])->where('year',$request['result'][1])->where('month',$request['result'][2])->where('date',$request['result'][3])->get(['result']);
+        }
+        return response()->json($habitCheckResult);
+    }
 }

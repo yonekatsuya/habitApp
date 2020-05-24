@@ -54,7 +54,7 @@
     <div class="overlay" v-show="overlay2">
       <div id="content2" v-show="disp2">
         <div class="overlay-content-title">
-          <p><span ref="year"></span>年<span ref="month"></span>月の習慣履歴</p>
+          <p><span ref="year2"></span>年<span ref="month2"></span>月の習慣履歴</p>
           <span @click="habitRegisterModalHidden2" class="modalClose">×</span>
         </div>
         <div class="overlay-content-wrapper" v-show="overlay2">
@@ -71,7 +71,7 @@
                 <tr v-for="(habitList, index) in habitLists">
                   <td>{{index + 1}}</td>
                   <td>{{habitList.item}}</td>
-                  <td v-for="n in getCountCurrentMonthDate(getCurrentMonth())"></td>
+                  <td v-for="n in getCountCurrentMonthDate(getCurrentMonth())" :data-id="habitList.id" :data-year="habitList.year" :data-month="habitList.month" :data-date="n">{{getDateResult(habitList.id,habitList.year,habitList.month,n)}}</td>
                 </tr>
               </tbody>
             </table>
@@ -110,6 +110,23 @@
         return returnStr;
       },
 
+      getDateResult: function(id,year,month,date) {
+        var response = '◎';
+        const url = 'http://localhost:100/habitGetDateResult';
+        var param = [id,year,month,date];
+        const params = {
+          result: param
+        }
+        axios.get(url, {params})
+                  .then(function (response) {
+                    response = response.data;
+                  })
+                  .catch(function (error) {
+                    console.log(error);
+                  })
+        return response;
+      },
+
       getCountCurrentMonthDate: function(num) {
         num = parseInt(num);
         var countMonthDate = {1:31,2:29,3:31,4:30,5:31,6:30,7:31,8:31,9:30,10:31,11:30,12:31};
@@ -134,8 +151,8 @@
       },
 
       habitHistoryModalDisp: function() {
-        this.$refs.year.textContent = this.getCookie('year');
-        this.$refs.month.textContent = this.getCookie('month');
+        this.$refs.year2.textContent = this.getCookie('year');
+        this.$refs.month2.textContent = this.getCookie('month');
         this.overlay2 = true;
         this.disp2 = true;
 
