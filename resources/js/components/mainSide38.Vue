@@ -9,6 +9,9 @@
     <div class="side-tab" @click="habitRegisterModalDisp">
       <p>習慣項目</p>
     </div>
+    <div class="side-tab" @click="habitHistoryModalDisp">
+      <p>習慣履歴</p>
+    </div>
     <div class="side-tab">
       <p>プロフィールページ</p>
     </div>
@@ -47,6 +50,35 @@
         </div>
       </div>
     </div>
+
+    <div class="overlay" v-show="overlay2">
+      <div id="content2" v-show="disp2">
+        <div class="overlay-content-title">
+          <p><span ref="year"></span>年<span ref="month"></span>月の習慣履歴</p>
+          <span @click="habitRegisterModalHidden2" class="modalClose">×</span>
+        </div>
+        <div class="overlay-content-wrapper" v-show="overlay2">
+          <div class="overlay-content-wrapper-list2">
+            <table id="olElement2">
+              <thead>
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td v-for="n in getCountCurrentMonthDate(getCurrentMonth())">{{n}}</td>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(habitList, index) in habitLists">
+                  <td>{{index + 1}}</td>
+                  <td>{{habitList.item}}</td>
+                  <td v-for="n in getCountCurrentMonthDate(getCurrentMonth())"></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -56,6 +88,8 @@
       return {
         overlay: false,
         disp: false,
+        overlay2: false,
+        disp2: false,
         habitText: '',
         habitLists: null
       }
@@ -76,6 +110,16 @@
         return returnStr;
       },
 
+      getCountCurrentMonthDate: function(num) {
+        num = parseInt(num);
+        var countMonthDate = {1:31,2:29,3:31,4:30,5:31,6:30,7:31,8:31,9:30,10:31,11:30,12:31};
+        return countMonthDate[num];
+      },
+
+      getCurrentMonth: function() {
+        return this.getCookie('month');
+      },
+
       habitRegisterModalDisp: function() {
         this.$refs.year.textContent = this.getCookie('year');
         this.$refs.month.textContent = this.getCookie('month');
@@ -89,9 +133,27 @@
           .catch(response => console.log(response))
       },
 
+      habitHistoryModalDisp: function() {
+        this.$refs.year.textContent = this.getCookie('year');
+        this.$refs.month.textContent = this.getCookie('month');
+        this.overlay2 = true;
+        this.disp2 = true;
+
+        var year = this.getCookie('year');
+        var month = this.getCookie('month');
+        axios.get('http://localhost:100/habitGet?year=' + year + '&month=' + month)
+          .then(response => this.habitLists = response.data)
+          .catch(response => console.log(response))
+      },
+
       habitRegisterModalHidden: function() {
         this.overlay = false;
         this.disp = false;
+      },
+
+      habitRegisterModalHidden2: function() {
+        this.overlay2 = false;
+        this.disp2 = false;
       },
 
       addList: function() {
