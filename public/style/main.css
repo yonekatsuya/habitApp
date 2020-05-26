@@ -26,6 +26,33 @@
   transform: translate(-50%,-50%);
 }
 
+.side .side-tab:nth-child(1) p {
+  width: 80%;
+}
+
+.side .side-tab p span {
+  display: block;
+  text-align: center;
+  padding: 5px;
+}
+
+.side .side-tab .achiveGraph {
+  height: 20px;
+  width: 100%;
+  border-radius: 30px;
+  text-align: center;
+  border: 1px solid black;
+  padding: 0px;
+}
+
+.side .side-tab .achiveGraph > span {
+  height: 100%;
+  width: 0%;
+  background-color: #87cefa;
+  padding: 0px;
+  border-radius: 30px;
+}
+
 .overlay {
   position:fixed;
   top:0;

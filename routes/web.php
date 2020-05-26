@@ -19,3 +19,4 @@ Route::get('habitDelete','HabitController@habitDelete')->name('habitDelete');
 Route::get('habitResult','HabitController@habitResult')->name('habitResult');
 Route::get('habitResultGet','HabitController@habitResultGet')->name('habitResultGet');
 Route::get('habitGetDateResult','HabitController@habitGetDateResult')->name('habitGetDateResult');
+Route::get('habitGetMonthAchiveRate', 'HabitController@habitGetMonthAchiveRate')->name('habitGetMonthAchiveRate');

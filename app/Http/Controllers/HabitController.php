@@ -10,31 +10,35 @@ use Log;
 
 class HabitController extends Controller
 {
+    // 該当年月の習慣項目を登録する（habit_postsテーブル）
     public function habitPost(Request $request) {
         $habitPost = new HabitPost();
         $habitPost->year = $request->year;
         $habitPost->month = $request->month;
         $habitPost->item = $request->habitText;
         $habitPost->save();
+        // 登録後、該当年月の最新の習慣項目を取得する（habit_postsテーブル）
         $habitPosts = HabitPost::where('year',$request->year)->where('month',$request->month)->get();
         return response()->json($habitPosts);
     }
 
     public function habitGet(Request $request) {
+        // 該当年月の習慣項目を取得する（habit_postsテーブル）
         $habitPosts = HabitPost::where('year',$request->year)->where('month',$request->month)->get();
         return response()->json($habitPosts);
     }
 
+    // 習慣項目を削除する
     public function habitDelete(Request $request) {
         $id = $request->id;
         HabitPost::where('id',$id)->delete();
+        // 削除後、最新の該当年月の習慣項目を取得する（habit_postsテーブル）
         $habitPosts = HabitPost::where('year',$request->year)->where('month',$request->month)->get();
         return response()->json($habitPosts);
     }
 
+    // 習慣チェックの評価結果を登録する
     public function habitResult(Request $request) {
-        Log::debug($request);
-
         // 習慣項目数を取得
         $itemCount = count($request['result']);
         $resultCount = [];
@@ -75,10 +79,12 @@ class HabitController extends Controller
         $habitResult->save();
     }
 
+    // 習慣目標達成率を取得する（habit_resultsテーブル）
     public function habitResultGet(Request $request) {
         $year = $request->year;
         $month = $request->month;
         $date = $request->date;
+        // 該当年月日のデータが存在する場合のみ、目標達成率を取得する
         if (HabitResult::where('year',$year)->where('month',$month)->where('date',$date)->exists()) {
             $result = HabitResult::where('year',$year)->where('month',$month)->where('date',$date)->get(['result']);
         } else {
@@ -87,8 +93,24 @@ class HabitController extends Controller
         return response()->json($result);
     }
 
+    // 該当年月の習慣チェック評価結果を取得する（habit_check_resultsテーブル）
     public function habitGetDateResult(Request $request) {
         $habitCheckResult = HabitCheckResult::where('year',$request->year)->where('month',$request->month)->get(['habit_post_id','date','result']);
         return response()->json($habitCheckResult);
+    }
+
+    public function habitGetMonthAchiveRate(Request $request) {
+        $habitResults = HabitResult::where('year',$request->year)->where('month',$request->month)->get(['result']);
+        $array = [];
+        for ($i = 0;$i < count($habitResults);$i++) {
+            $array[] = $habitResults[$i]['result'];
+        }
+        $max = count($array) * 100;
+        $num = 0;
+        for ($i = 0;$i < count($array);$i++) {
+            $num += $array[$i];
+        }
+        $response = ($num / $max) * 100;
+        return response()->json($response);
     }
 }

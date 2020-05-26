@@ -1,7 +1,13 @@
 <template>
   <div class="side">
     <div class="side-tab">
-      <p>目標達成率</p>
+      <p>
+        <span>今月の目標達成率</span>
+        <span class="achiveGraph">
+          <span ref="monthAchiveRateGraph"></span>
+        </span>
+        <span ref="monthAchiveRate"></span>
+      </p>
     </div>
     <div class="side-tab">
       <p>目標管理</p>
@@ -220,8 +226,17 @@
       }
     },
 
-    created : function(){
-      
+    mounted : function(){
+      var vm = this;
+      var year = this.getCookie('year');
+      var month = this.getCookie('month');
+      axios.get('http://localhost:100/habitGetMonthAchiveRate?year=' + year + '&month=' + month)
+        .then(function(response) {
+          var result = parseInt(response.data);
+          vm.$refs.monthAchiveRate.textContent = result + '%';
+          vm.$refs.monthAchiveRateGraph.style.width = result + '%';
+        })
+        .catch(response => console.log(response))
     }
   }
 </script>
