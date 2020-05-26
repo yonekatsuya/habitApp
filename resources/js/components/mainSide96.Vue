@@ -71,7 +71,7 @@
                 <tr v-for="(habitList, index) in habitLists" ref="tr">
                   <td>{{index + 1}}</td>
                   <td>{{habitList.item}}</td>
-                  <td v-for="n in getCountCurrentMonthDate(getCurrentMonth())" :data-id="habitList.id" :data-year="habitList.year" :data-month="habitList.month" :data-date="n" ref="td">{{((countHabitLists - 1) == index && n == getCountCurrentMonthDate(getCurrentMonth())) ? habitGetDateResult() : '2'}}</td>
+                  <td v-for="n in getCountCurrentMonthDate(getCurrentMonth())" :data-id="habitList.id" :data-year="habitList.year" :data-month="habitList.month" :data-date="n" ref="td">{{((countHabitLists - 1) == index && n == getCountCurrentMonthDate(getCurrentMonth())) ? habitGetDateResult() : ''}}</td>
                 </tr>
               </tbody>
             </table>
@@ -139,7 +139,6 @@
 
       habitGetDateResult: function() {
         this.changeFlg = 1;
-        return 1;
       },
 
       getCountCurrentMonthDate: function(num) {

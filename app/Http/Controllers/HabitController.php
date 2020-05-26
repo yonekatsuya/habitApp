@@ -33,6 +33,7 @@ class HabitController extends Controller
     }
 
     public function habitResult(Request $request) {
+        Log::debug($request);
 
         // 習慣項目数を取得
         $itemCount = count($request['result']);

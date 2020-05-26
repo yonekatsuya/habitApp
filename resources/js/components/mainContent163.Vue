@@ -289,16 +289,16 @@
                               break;
                             case 2:
                               /* ラジオボタンについては、後のテーブル格納に必要となる情報をvalue値として持たせておく */
-                              lastTd.innerHTML = '<input type="radio" name="' + (index + 1) + '" value="' + value.year + '/' + value.month + '/' + modalDate.textContent + '/' + '◎' + '">';
+                              lastTd.innerHTML = '<input type="radio" name="' + (index + 1) + '" value="' + value.year + '/' + value.month + '/' + modalDate.textContent + '/' + '◎/' + value.id + '">';
                               break;
                             case 3:
-                              lastTd.innerHTML = '<input type="radio" name="' + (index + 1) + '" value="' + value.year + '/' + value.month + '/' + modalDate.textContent + '/' + '◯' + '">';
+                              lastTd.innerHTML = '<input type="radio" name="' + (index + 1) + '" value="' + value.year + '/' + value.month + '/' + modalDate.textContent + '/' + '◯/' + value.id + '">';
                               break;
                             case 4:
-                              lastTd.innerHTML = '<input type="radio" name="' + (index + 1) + '" value="' + value.year + '/' + value.month + '/' + modalDate.textContent + '/' + '△' + '">';
+                              lastTd.innerHTML = '<input type="radio" name="' + (index + 1) + '" value="' + value.year + '/' + value.month + '/' + modalDate.textContent + '/' + '△/' + value.id + '">';
                               break;
                             case 5:
-                              lastTd.innerHTML = '<input type="radio" name="' + (index + 1) + '" value="' + value.year + '/' + value.month + '/' + modalDate.textContent + '/' + '×' + '">';
+                              lastTd.innerHTML = '<input type="radio" name="' + (index + 1) + '" value="' + value.year + '/' + value.month + '/' + modalDate.textContent + '/' + '×/' + value.id + '">';
                               break;
                           }
                         }
@@ -661,16 +661,16 @@
                             break;
                           case 2:
                             /* ラジオボタンについては、後のテーブル格納に必要となる情報をvalue値として持たせておく */
-                            lastTd.innerHTML = '<input type="radio" name="' + (index + 1) + '" value="' + value.year + '/' + value.month + '/' + modalDate.textContent + '/' + '◎' + '">';
+                            lastTd.innerHTML = '<input type="radio" name="' + (index + 1) + '" value="' + value.year + '/' + value.month + '/' + modalDate.textContent + '/' + '◎/' + value.id + '">';
                             break;
                           case 3:
-                            lastTd.innerHTML = '<input type="radio" name="' + (index + 1) + '" value="' + value.year + '/' + value.month + '/' + modalDate.textContent + '/' + '◯' + '">';
+                            lastTd.innerHTML = '<input type="radio" name="' + (index + 1) + '" value="' + value.year + '/' + value.month + '/' + modalDate.textContent + '/' + '◯/' + value.id + '">';
                             break;
                           case 4:
-                            lastTd.innerHTML = '<input type="radio" name="' + (index + 1) + '" value="' + value.year + '/' + value.month + '/' + modalDate.textContent + '/' + '△' + '">';
+                            lastTd.innerHTML = '<input type="radio" name="' + (index + 1) + '" value="' + value.year + '/' + value.month + '/' + modalDate.textContent + '/' + '△/' + value.id + '">';
                             break;
                           case 5:
-                            lastTd.innerHTML = '<input type="radio" name="' + (index + 1) + '" value="' + value.year + '/' + value.month + '/' + modalDate.textContent + '/' + '×' + '">';
+                            lastTd.innerHTML = '<input type="radio" name="' + (index + 1) + '" value="' + value.year + '/' + value.month + '/' + modalDate.textContent + '/' + '×/' + value.id + '">';
                             break;
                         }
                       }
