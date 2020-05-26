@@ -381,11 +381,23 @@
 
       /* 次月のカレンダーデータを取得する */
       toNextMonth: function() {
+        var root = this;
+        var modal = this.$refs.modal;
+        var modalContent = this.$refs.modalContent;
+        var item = this.$refs.item;
+
+        var modalYear = this.$refs.modalYear;
+        var modalMonth = this.$refs.modalMonth;
+        var modalDate = this.$refs.modalDate;
+        var habitLists = this.habitLists;
+        var modalTbody = this.$refs.modalTbody;
+
         var now   = new Date();
         var currentYear = now.getFullYear();
         var currentMonth = now.getMonth() + 1;
 
         monthFlag++;
+        document.cookie = 'monthFlag=' + monthFlag;
         now.setMonth(now.getMonth() + monthFlag);
 
         if (now.getFullYear() >= 2026) {
@@ -402,7 +414,9 @@
 
         /* 今年・今月・今日の曜日の値を取得 */
         var year  = now.getFullYear();
+        document.cookie = 'year=' + year;
         var month = now.getMonth() + 1;
+        document.cookie = 'month=' + month;
         var week = now.getDay();
 
         /* 今年の値と今月の値をカレンダーのタイトルに設定 */
@@ -465,8 +479,93 @@
               tdElemLast.setAttribute('data-date',now.getDate());
               tdElemLast.setAttribute('data-week',now.getDay());
 
+              /* axiosの非同期で年月日の目標達成率データを取得するのに使用 */
+              var nowYear = tdElemLast.getAttribute('data-year');
+              var nowMonth = tdElemLast.getAttribute('data-month');
+              var nowDate = tdElemLast.getAttribute('data-date');
+
+                /* 日付欄押下時の処理 */
+            tdElemLast.onclick = function() {
+              modalTbody.textContent = null;
+
+              /* 習慣チェックモーダルを表示する */
+              modal.classList.remove('hidden');
+              modalContent.classList.remove('hidden');
+
+              /* タイトル行に年月日を表示する */
+              modalYear.textContent = this.getAttribute('data-year');
+              modalMonth.textContent = this.getAttribute('data-month');
+              modalDate.textContent = this.getAttribute('data-date');
+              
+              /* habit_resultsテーブルから習慣項目一覧を取得し、ラジオボタンと同じ行となるようテーブルを作成する */
+                var getYear = root.getCookie('year');
+                var getMonth = root.getCookie('month');
+                axios.get('http://localhost:100/habitGet?year=' + getYear + '&month=' + getMonth)
+                  .then(function (response) {
+                    habitLists = response.data;
+
+                    /* 習慣項目の数だけループを回す */
+                    habitLists.forEach(function(value,index) {
+                      var newTrElement = document.createElement('tr');
+                      modalTbody.appendChild(newTrElement);
+                      var lastTr = modalTbody.lastElementChild;
+                      for (var i = 0;i < 6;i++) {
+                        var newTdElement = document.createElement('td');
+                        lastTr.appendChild(newTdElement);
+                        var lastTd = lastTr.lastElementChild;
+
+                        /* 各td内に番号・項目名・ラジオボタンを挿入する */
+                        switch (i) {
+                          case 0:
+                            lastTd.textContent = index + 1;
+                            break;
+                          case 1:
+                            lastTd.textContent = value.item;
+                            break;
+                          case 2:
+                            /* ラジオボタンについては、後のテーブル格納に必要となる情報をvalue値として持たせておく */
+                            lastTd.innerHTML = '<input type="radio" name="' + (index + 1) + '" value="' + value.year + '/' + value.month + '/' + modalDate.textContent + '/' + '◎/' + value.id + '">';
+                            break;
+                          case 3:
+                            lastTd.innerHTML = '<input type="radio" name="' + (index + 1) + '" value="' + value.year + '/' + value.month + '/' + modalDate.textContent + '/' + '◯/' + value.id + '">';
+                            break;
+                          case 4:
+                            lastTd.innerHTML = '<input type="radio" name="' + (index + 1) + '" value="' + value.year + '/' + value.month + '/' + modalDate.textContent + '/' + '△/' + value.id + '">';
+                            break;
+                          case 5:
+                            lastTd.innerHTML = '<input type="radio" name="' + (index + 1) + '" value="' + value.year + '/' + value.month + '/' + modalDate.textContent + '/' + '×/' + value.id + '">';
+                            break;
+                        }
+                      }
+                    });
+                  })
+                  .catch(function (error) {
+                    console.log(error);
+                  })
+            }
+
               /* 今日の日付テキストを挿入する */
               tdElemLast.innerText = now.getDate();
+
+              /* 目標達成率データを取得し、該当のtdの日付欄に表示する */
+              function getResult(resultTd) {
+                axios.get('http://localhost:100/habitResultGet?year=' + nowYear + '&month=' + nowMonth + '&date=' + nowDate)
+                      .then(function (response) {
+                        if (response.data instanceof Array) {
+                          var br = document.createElement('br');
+                          resultTd.appendChild(br);
+                          var span = document.createElement('span');
+                          resultTd.appendChild(span);
+                          var span = resultTd.lastElementChild;
+                          span.textContent = '目標達成率：' + response.data[0].result + '%';
+                        }
+                        })
+                      .catch(function (error) {
+                        console.log(error);
+                      })
+              }
+
+              getResult(tdElemLast);
 
               /* 日曜日であれば背景色をつける */
               if (now.getDay() == 0) {
