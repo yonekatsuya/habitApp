@@ -67,11 +67,11 @@
                   <td v-for="n in getCountCurrentMonthDate(getCurrentMonth())">{{n}}</td>
                 </tr>
               </thead>
-              <tbody>
-                <tr v-for="(habitList, index) in habitLists">
+              <tbody ref="tbody">
+                <tr v-for="(habitList, index) in habitLists" ref="tr">
                   <td>{{index + 1}}</td>
                   <td>{{habitList.item}}</td>
-                  <td v-for="n in getCountCurrentMonthDate(getCurrentMonth())" :data-id="habitList.id" :data-year="habitList.year" :data-month="habitList.month" :data-date="n">{{getDateResult(habitList.id,habitList.year,habitList.month,n)}}</td>
+                  <td v-for="n in getCountCurrentMonthDate(getCurrentMonth())" :data-id="habitList.id" :data-year="habitList.year" :data-month="habitList.month" :data-date="n" ref="td">{{((countHabitLists - 1) == index && n == getCountCurrentMonthDate(getCurrentMonth())) ? habitGetDateResult() : '2'}}</td>
                 </tr>
               </tbody>
             </table>
@@ -90,8 +90,35 @@
         disp: false,
         overlay2: false,
         disp2: false,
+        changeFlg: 0,
         habitText: '',
-        habitLists: null
+        habitLists: null,
+      }
+    },
+    computed: {
+      countHabitLists: function() {
+        return this.habitLists.length;
+      }
+    },
+    watch: {
+      /* 習慣履歴テーブルの一番最後（右下）のtdが生成されたタイミングで実行される */
+      changeFlg: function() {
+        var vm = this;
+        var tbody = this.$refs.tbody;
+        var year = this.getCookie('year');
+        var month = this.getCookie('month');
+        const url = 'http://localhost:100/habitGetDateResult?year=' + year + '&month=' + month;
+          axios.get(url)
+              .then(function(response) {
+                for (var i = 0;i < vm.$refs.td.length;i++) {
+                  for (var j = 0;j < response.data.length;j++) {
+                    if (response.data[j].habit_post_id == vm.$refs.td[i].getAttribute('data-id') && response.data[j].date == vm.$refs.td[i].getAttribute('data-date')) {
+                      vm.$refs.td[i].textContent = response.data[j].result;
+                    }
+                  }
+                }
+              })
+              .catch(error => console.error(error))
       }
     },
     methods: {
@@ -110,21 +137,9 @@
         return returnStr;
       },
 
-      getDateResult: function(id,year,month,date) {
-        var response = '◎';
-        const url = 'http://localhost:100/habitGetDateResult';
-        var param = [id,year,month,date];
-        const params = {
-          result: param
-        }
-        axios.get(url, {params})
-                  .then(function (response) {
-                    response = response.data;
-                  })
-                  .catch(function (error) {
-                    console.log(error);
-                  })
-        return response;
+      habitGetDateResult: function() {
+        this.changeFlg = 1;
+        return 1;
       },
 
       getCountCurrentMonthDate: function(num) {

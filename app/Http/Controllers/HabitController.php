@@ -40,8 +40,8 @@ class HabitController extends Controller
         // 該当月の習慣項目数だけループを回す
         for ($i = 0;$i < $itemCount;$i++) {
             $array = explode("/",$request['result'][$i]);
-            // 習慣チェックの中で「verygood」がいくつあるかを確認
-            if ($array[3] == 'verygood') {
+            // 習慣チェックの中で「◎」がいくつあるかを確認
+            if ($array[3] == '◎') {
                 $resultCount[] = 1;
             }
 
@@ -64,7 +64,7 @@ class HabitController extends Controller
         $habitResult->year = $array[0];
         $habitResult->month = $array[1];
         $habitResult->date = $array[2];
-        // 「verygood」が一つ以上あれば目標達成率を計算し、一つもなければ「0」を格納する
+        // 「◎」が一つ以上あれば目標達成率を計算し、一つもなければ「0」を格納する
         if (count($resultCount) >= 1) {
             $result = floor((count($resultCount) / $itemCount) * 100);
             $habitResult->result = $result;
@@ -87,10 +87,7 @@ class HabitController extends Controller
     }
 
     public function habitGetDateResult(Request $request) {
-        $habitCheckResult = 'no';
-        if (HabitCheckResult::where('habit_post_id',$request['result'][0])->where('year',$request['result'][1])->where('month',$request['result'][2])->where('date',$request['result'][3])->exists()) {
-            $habitCheckResult = HabitCheckResult::where('habit_post_id',$request['result'][0])->where('year',$request['result'][1])->where('month',$request['result'][2])->where('date',$request['result'][3])->get(['result']);
-        }
+        $habitCheckResult = HabitCheckResult::where('year',$request->year)->where('month',$request->month)->get(['habit_post_id','date','result']);
         return response()->json($habitCheckResult);
     }
 }
