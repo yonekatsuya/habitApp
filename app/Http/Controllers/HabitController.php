@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\HabitPost;
 use App\HabitResult;
 use App\HabitCheckResult;
+use App\HabitAchiveRate;
 use Log;
 
 class HabitController extends Controller
@@ -17,6 +18,16 @@ class HabitController extends Controller
         $habitPost->month = $request->month;
         $habitPost->item = $request->habitText;
         $habitPost->save();
+
+        $habitPost = HabitPost::orderBy('id','desc')->first();
+        $id = $habitPost->id;
+
+        // 習慣項目の目標達成指標を登録する（habit_achive_ratesテーブル）
+        $habitAchiveRate = new HabitAchiveRate();
+        $habitAchiveRate->habit_post_id = $id;
+        $habitAchiveRate->achive_rate = 0;
+        $habitAchiveRate->save();
+
         // 登録後、該当年月の最新の習慣項目を取得する（habit_postsテーブル）
         $habitPosts = HabitPost::where('year',$request->year)->where('month',$request->month)->get();
         return response()->json($habitPosts);
@@ -112,5 +123,14 @@ class HabitController extends Controller
         }
         $response = ($num / $max) * 100;
         return response()->json($response);
+    }
+
+    public function getHabitAchiveRate(Request $request) {
+        $array = [];
+        for ($i = 0;$i < count($request['result']);$i++) {
+            $achive_rate = HabitAchiveRate::where('habit_post_id',$request['result'][$i])->first()->achive_rate;
+            $array[] = $achive_rate;
+        }
+        return response()->json($array);
     }
 }

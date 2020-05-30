@@ -107,8 +107,8 @@
                 <tr v-for="(item,index) in habitManageAchiveLists" ref="tr2">
                   <td>{{index + 1}}</td>
                   <td>{{item.item}}</td>
-                  <td><span ref="achiveNum">{{achiveNum}}</span>/{{getCountCurrentMonthDate(getCurrentMonth())}} <span class="editAchiveNumButton" @click="editAchiveNum(index)">編集</span></td>
-                  <td><span ref="achiveRate">{{achiveRate}}</span>%</td>
+                  <td><span ref="achiveNum">{{achiveRates[index]}}</span>/{{getCountCurrentMonthDate(getCurrentMonth())}} <span class="editAchiveNumButton" @click="editAchiveNum(index)">編集</span></td>
+                  <td><span ref="achiveRate">{{achiveRate(index)}}</span>%</td>
                 </tr>
               </tbody>
             </table>
@@ -134,16 +134,13 @@
         habitText: '',
         habitLists: null,
         habitManageAchiveLists: null,
-        achiveNum: 0,
+        achiveRates: [],
       }
     },
     computed: {
       countHabitLists: function() {
         return this.habitLists.length;
       },
-      achiveRate: function() {
-        return (this.achiveNum / this.getCountCurrentMonthDate(this.getCurrentMonth())) * 100;
-      }
     },
     watch: {
       /* 習慣履歴テーブルの一番最後（右下）のtdが生成されたタイミングで実行される */
@@ -182,6 +179,10 @@
         return returnStr;
       },
 
+      achiveRate: function(index) {
+        return Math.floor((this.achiveRates[index] / this.getCountCurrentMonthDate(this.getCurrentMonth())) * 100);
+      },
+
       editAchiveNum: function(index) {
         /* 押下した編集ボタンに対応する要素を取得する */
         var objElem = this.$refs.tr2[index].children[2].children[0];
@@ -193,6 +194,8 @@
         input.value = objElemText;
         /* inputタグを挿入する */
         objElem.appendChild(input);
+
+
       },
 
       habitGetDateResult: function() {
@@ -236,6 +239,7 @@
       },
 
       habitManageAchiveModalDisp: function() {
+        var vm = this;
         this.$refs.year3.textContent = this.getCookie('year');
         this.$refs.month3.textContent = this.getCookie('month');
         this.overlay3 = true;
@@ -244,7 +248,28 @@
         var year = this.getCookie('year');
         var month = this.getCookie('month');
         axios.get('http://localhost:100/habitGet?year=' + year + '&month=' + month)
-          .then(response => this.habitManageAchiveLists = response.data)
+          .then(function(response) {
+            vm.habitManageAchiveLists = response.data;
+
+            var param = response.data;
+            var array = [];
+            param.forEach(function(e) {
+              array.push(e.id);
+            });
+
+            const url = 'http://localhost:100/getHabitAchiveRate';
+            const params = {
+              result: array
+            }
+            axios.get(url, {params})
+                      .then(function (response) {
+                        console.log(response.data);
+                        vm.achiveRates = response.data;
+                      })
+                      .catch(function (error) {
+                        console.log(error);
+                      })
+          })
           .catch(response => console.log(response))
       },
 
