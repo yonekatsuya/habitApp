@@ -104,10 +104,10 @@
                 </tr>
               </thead>
               <tbody ref="tbody2">
-                <tr v-for="(item,index) in habitManageAchiveLists">
+                <tr v-for="(item,index) in habitManageAchiveLists" ref="tr2">
                   <td>{{index + 1}}</td>
                   <td>{{item.item}}</td>
-                  <td><span ref="achiveNum">{{achiveNum}}</span>/{{getCountCurrentMonthDate(getCurrentMonth())}} 編集</td>
+                  <td><span ref="achiveNum">{{achiveNum}}</span>/{{getCountCurrentMonthDate(getCurrentMonth())}} <span class="editAchiveNumButton" @click="editAchiveNum(index)">編集</span></td>
                   <td><span ref="achiveRate">{{achiveRate}}</span>%</td>
                 </tr>
               </tbody>
@@ -180,6 +180,19 @@
           }
         });
         return returnStr;
+      },
+
+      editAchiveNum: function(index) {
+        /* 押下した編集ボタンに対応する要素を取得する */
+        var objElem = this.$refs.tr2[index].children[2].children[0];
+        var objElemText = objElem.textContent;
+        objElem.textContent = null;
+        var input = document.createElement('input');
+        input.classList.add('achiveNumInput');
+        /* inputタグのvalue値に元々表示されていたテキストを突っ込む */
+        input.value = objElemText;
+        /* inputタグを挿入する */
+        objElem.appendChild(input);
       },
 
       habitGetDateResult: function() {

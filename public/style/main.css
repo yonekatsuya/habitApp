@@ -330,3 +330,16 @@
   font-size: 25px;
   padding: 10px;
 }
+
+/* 目標管理モーダルのスタイリング */
+.editAchiveNumButton {
+  cursor: pointer;
+}
+
+.editAchiveNumButton:hover {
+  opacity: 0.5;
+}
+
+.achiveNumInput {
+  width: 30px;
+}
