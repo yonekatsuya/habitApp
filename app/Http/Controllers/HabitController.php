@@ -133,4 +133,11 @@ class HabitController extends Controller
         }
         return response()->json($array);
     }
+
+    public function registerAchiveRate(Request $request) {
+        $habitAchiveRate = HabitAchiveRate::where('habit_post_id',$request->id)->first();
+        Log::debug($habitAchiveRate);
+        $habitAchiveRate->achive_rate = $request->value;
+        $habitAchiveRate->save();
+    }
 }
