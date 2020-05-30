@@ -136,7 +136,6 @@ class HabitController extends Controller
 
     public function registerAchiveRate(Request $request) {
         $habitAchiveRate = HabitAchiveRate::where('habit_post_id',$request->id)->first();
-        Log::debug($habitAchiveRate);
         $habitAchiveRate->achive_rate = $request->value;
         $habitAchiveRate->save();
     }

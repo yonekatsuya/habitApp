@@ -107,7 +107,7 @@
                 <tr v-for="(item,index) in habitManageAchiveLists" ref="tr2">
                   <td>{{index + 1}}</td>
                   <td>{{item.item}}</td>
-                  <td><span ref="achiveNum" @keyup.enter="registerAchiveRate($event,item.id)">{{achiveRates[index]}}</span>/{{getCountCurrentMonthDate(getCurrentMonth())}} <span class="editAchiveNumButton" @click="editAchiveNum(index)">編集</span></td>
+                  <td><span ref="achiveNum" @keyup.enter="registerAchiveRate($event,item.id,index)">{{achiveRates[index]}}</span>/{{getCountCurrentMonthDate(getCurrentMonth())}} <span class="editAchiveNumButton" @click="editAchiveNum(index)">編集</span></td>
                   <td><span ref="achiveRate">{{achiveRate(index)}}</span>%</td>
                 </tr>
               </tbody>
@@ -179,12 +179,13 @@
         return returnStr;
       },
 
-      registerAchiveRate: function(event,id) {
-        console.log(event.srcElement.value);
-        console.log(id);
+      registerAchiveRate: function(event,id,index) {
+          var vm = this;
           axios.get('http://localhost:100/registerAchiveRate?id=' + id + '&value=' + event.srcElement.value)
               .then(function(response) {
-                console.log(response);
+                var value = vm.$refs.achiveNum[index].children[0].value;
+                vm.$refs.achiveNum[index].textContent = null;
+                vm.$refs.achiveNum[index].textContent = value;
               })
               .catch(function(response) {
                 console.log(response);
