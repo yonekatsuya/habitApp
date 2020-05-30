@@ -223,7 +223,8 @@
           .then(response => this.habitLists = response.data)
           .catch(response => console.log(response))
         this.habitText = item;
-      }
+      },
+
     },
 
     mounted : function(){

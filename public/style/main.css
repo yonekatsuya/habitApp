@@ -12,10 +12,13 @@
   height: 12vh;
   position: relative;
   border-bottom: 1px solid black;
+}
+
+.side .side-tab:nth-child(n + 2) {
   cursor: pointer;
 }
 
-.side .side-tab:hover {
+.side .side-tab:nth-child(n + 2):hover {
   background-color: #e6e6fa;
 }
 
