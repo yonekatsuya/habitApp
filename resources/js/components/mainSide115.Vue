@@ -107,8 +107,8 @@
                 <tr v-for="(item,index) in habitManageAchiveLists">
                   <td>{{index + 1}}</td>
                   <td>{{item.item}}</td>
-                  <td>1</td>
-                  <td>2</td>
+                  <td><span ref="achiveNum">{{achiveNum}}</span>/{{getCountCurrentMonthDate(getCurrentMonth())}} 編集</td>
+                  <td><span ref="achiveRate">{{achiveRate}}</span>%</td>
                 </tr>
               </tbody>
             </table>
@@ -134,11 +134,15 @@
         habitText: '',
         habitLists: null,
         habitManageAchiveLists: null,
+        achiveNum: 0,
       }
     },
     computed: {
       countHabitLists: function() {
         return this.habitLists.length;
+      },
+      achiveRate: function() {
+        return (this.achiveNum / this.getCountCurrentMonthDate(this.getCurrentMonth())) * 100;
       }
     },
     watch: {
