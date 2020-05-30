@@ -11,4 +11,8 @@ class HabitPost extends Model
     public function habitCheckResults() {
         return $this->hasMany('App\HabitCheckResult');
     }
+
+    public function habitAchiveRate() {
+        return $this->hasOne('App\HabitAchiveRate');
+    }
 }

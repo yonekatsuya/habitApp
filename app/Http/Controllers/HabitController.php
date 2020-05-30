@@ -36,6 +36,7 @@ class HabitController extends Controller
     public function habitGet(Request $request) {
         // 該当年月の習慣項目を取得する（habit_postsテーブル）
         $habitPosts = HabitPost::where('year',$request->year)->where('month',$request->month)->get();
+        Log::debug($habitPosts[0]->habitAchiveRate->achive_rate);
         return response()->json($habitPosts);
     }
 

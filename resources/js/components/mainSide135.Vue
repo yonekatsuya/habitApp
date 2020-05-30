@@ -2,7 +2,7 @@
   <div class="side">
     <div class="side-tab">
       <p>
-        <span>今月の目標達成率</span>
+        <span><span class="achiveRateMonth" ref="achiveRateMonth"></span>月の目標達成率</span>
         <span class="achiveGraph">
           <span ref="monthAchiveRateGraph"></span>
         </span>
@@ -70,6 +70,7 @@
                 <tr>
                   <td></td>
                   <td></td>
+                  <td>達成指標</td>
                   <td v-for="n in getCountCurrentMonthDate(getCurrentMonth())">{{n}}</td>
                 </tr>
               </thead>
@@ -77,6 +78,7 @@
                 <tr v-for="(habitList, index) in habitLists" ref="tr">
                   <td>{{index + 1}}</td>
                   <td>{{habitList.item}}</td>
+                  <td>/{{getCountCurrentMonthDate(getCurrentMonth())}}</td>
                   <td v-for="n in getCountCurrentMonthDate(getCurrentMonth())" :data-id="habitList.id" :data-year="habitList.year" :data-month="habitList.month" :data-date="n" ref="td">{{((countHabitLists - 1) == index && n == getCountCurrentMonthDate(getCurrentMonth())) ? habitGetDateResult() : ''}}</td>
                 </tr>
               </tbody>
@@ -346,6 +348,7 @@
           vm.$refs.monthAchiveRateGraph.style.width = result + '%';
         })
         .catch(response => console.log(response))
+      this.$refs.achiveRateMonth.textContent = this.getCookie('month');
     }
   }
 </script>

@@ -39,6 +39,10 @@
   padding: 5px;
 }
 
+.side .side-tab p .achiveRateMonth {
+  display: inline-block;
+}
+
 .side .side-tab .achiveGraph {
   height: 20px;
   width: 100%;
