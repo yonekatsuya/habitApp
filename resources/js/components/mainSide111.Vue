@@ -9,7 +9,7 @@
         <span ref="monthAchiveRate"></span>
       </p>
     </div>
-    <div class="side-tab">
+    <div class="side-tab" @click="habitManageAchiveModalDisp">
       <p>目標管理</p>
     </div>
     <div class="side-tab" @click="habitRegisterModalDisp">
@@ -85,6 +85,38 @@
         </div>
       </div>
     </div>
+
+    <div class="overlay" v-show="overlay3">
+      <div id="content2" v-show="disp3">
+        <div class="overlay-content-title">
+          <p><span ref="year3"></span>年<span ref="month3"></span>月の目標管理</p>
+          <span @click="habitRegisterModalHidden3" class="modalClose">×</span>
+        </div>
+        <div class="overlay-content-wrapper" v-show="overlay3">
+          <div class="overlay-content-wrapper-list2">
+            <table id="olElement2">
+              <thead>
+                <tr>
+                  <td>No</td>
+                  <td>項目</td>
+                  <td>達成指標</td>
+                  <td>達成率</td>
+                </tr>
+              </thead>
+              <tbody ref="tbody2">
+                <tr v-for="(item,index) in habitManageAchiveLists">
+                  <td>{{index + 1}}</td>
+                  <td>{{item.item}}</td>
+                  <td>1</td>
+                  <td>2</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </template>
 
@@ -96,9 +128,12 @@
         disp: false,
         overlay2: false,
         disp2: false,
+        overlay3: false,
+        disp3: false,
         changeFlg: 0,
         habitText: '',
         habitLists: null,
+        habitManageAchiveLists: null,
       }
     },
     computed: {
@@ -183,6 +218,19 @@
           .catch(response => console.log(response))
       },
 
+      habitManageAchiveModalDisp: function() {
+        this.$refs.year3.textContent = this.getCookie('year');
+        this.$refs.month3.textContent = this.getCookie('month');
+        this.overlay3 = true;
+        this.disp3 = true;
+
+        var year = this.getCookie('year');
+        var month = this.getCookie('month');
+        axios.get('http://localhost:100/habitGet?year=' + year + '&month=' + month)
+          .then(response => this.habitManageAchiveLists = response.data)
+          .catch(response => console.log(response))
+      },
+
       habitRegisterModalHidden: function() {
         this.overlay = false;
         this.disp = false;
@@ -191,6 +239,11 @@
       habitRegisterModalHidden2: function() {
         this.overlay2 = false;
         this.disp2 = false;
+      },
+
+      habitRegisterModalHidden3: function() {
+        this.overlay3 = false;
+        this.disp3 = false;
       },
 
       addList: function() {
