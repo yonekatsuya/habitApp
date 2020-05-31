@@ -188,6 +188,9 @@
                 var value = vm.$refs.achiveNum[index].children[0].value;
                 vm.$refs.achiveNum[index].textContent = null;
                 vm.$refs.achiveNum[index].textContent = value;
+                var newRate = Math.floor((value / vm.getCountCurrentMonthDate(vm.getCurrentMonth())) * 100);
+                console.log(newRate);
+                vm.$refs.achiveRate[index].textContent = newRate;
               })
               .catch(function(response) {
                 console.log(response);
@@ -255,8 +258,10 @@
 
       habitManageAchiveModalDisp: function() {
         var vm = this;
+
         this.$refs.year3.textContent = this.getCookie('year');
         this.$refs.month3.textContent = this.getCookie('month');
+
         this.overlay3 = true;
         this.disp3 = true;
 
@@ -278,7 +283,6 @@
             }
             axios.get(url, {params})
                       .then(function (response) {
-                        console.log(response.data);
                         vm.achiveRates = response.data;
                       })
                       .catch(function (error) {
