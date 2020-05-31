@@ -22,3 +22,4 @@ Route::get('habitGetDateResult','HabitController@habitGetDateResult')->name('hab
 Route::get('habitGetMonthAchiveRate', 'HabitController@habitGetMonthAchiveRate')->name('habitGetMonthAchiveRate');
 Route::get('getHabitAchiveRate', 'HabitController@getHabitAchiveRate')->name('getHabitAchiveRate');
 Route::get('registerAchiveRate', 'HabitController@registerAchiveRate')->name('registerAchiveRate');
+Route::get('habitGetItemAndAchiveRate', 'HabitController@habitGetItemAndAchiveRate')->name('habitGetItemAndAchiveRate');

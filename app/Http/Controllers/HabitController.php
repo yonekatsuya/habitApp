@@ -40,6 +40,16 @@ class HabitController extends Controller
         return response()->json($habitPosts);
     }
 
+    public function habitGetItemAndAchiveRate(Request $request) {
+        // 該当年月の習慣項目を取得する（habit_postsテーブル）
+        $habitPosts = HabitPost::where('year',$request->year)->where('month',$request->month)->get();
+        $array = [];
+        for ($i = 0;$i < count($habitPosts);$i++) {
+            $array[] = $habitPosts[$i]->habitAchiveRate->achive_rate;
+        }
+        return response()->json([$habitPosts, $array]);
+    }
+
     // 習慣項目を削除する
     public function habitDelete(Request $request) {
         $id = $request->id;

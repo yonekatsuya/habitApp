@@ -78,7 +78,7 @@
                 <tr v-for="(habitList, index) in habitLists" ref="tr">
                   <td>{{index + 1}}</td>
                   <td>{{habitList.item}}</td>
-                  <td>/{{getCountCurrentMonthDate(getCurrentMonth())}}</td>
+                  <td>{{achiveRateNum[index]}}/{{getCountCurrentMonthDate(getCurrentMonth())}}</td>
                   <td v-for="n in getCountCurrentMonthDate(getCurrentMonth())" :data-id="habitList.id" :data-year="habitList.year" :data-month="habitList.month" :data-date="n" ref="td">{{((countHabitLists - 1) == index && n == getCountCurrentMonthDate(getCurrentMonth())) ? habitGetDateResult() : ''}}</td>
                 </tr>
               </tbody>
@@ -102,7 +102,7 @@
                   <td>No</td>
                   <td>項目</td>
                   <td>達成指標</td>
-                  <td>達成率</td>
+                  <td>目標達成率</td>
                 </tr>
               </thead>
               <tbody ref="tbody2">
@@ -137,6 +137,7 @@
         habitLists: null,
         habitManageAchiveLists: null,
         achiveRates: [],
+        achiveRateNum: [],
       }
     },
     computed: {
@@ -244,6 +245,7 @@
       },
 
       habitHistoryModalDisp: function() {
+        var vm = this;
         this.$refs.year2.textContent = this.getCookie('year');
         this.$refs.month2.textContent = this.getCookie('month');
         this.overlay2 = true;
@@ -251,8 +253,11 @@
 
         var year = this.getCookie('year');
         var month = this.getCookie('month');
-        axios.get('http://localhost:100/habitGet?year=' + year + '&month=' + month)
-          .then(response => this.habitLists = response.data)
+        axios.get('http://localhost:100/habitGetItemAndAchiveRate?year=' + year + '&month=' + month)
+          .then(function(response) {
+            vm.habitLists = response.data[0];
+            vm.achiveRateNum = response.data[1];
+          })
           .catch(response => console.log(response))
       },
 
