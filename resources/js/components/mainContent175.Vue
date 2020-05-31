@@ -134,13 +134,36 @@
         }
         axios.get(url, {params})
                   .then(function (response) {
-                    console.log(response);
                     var mf = vm.getCookie('monthFlag');
                     vm.dispCurrentMonth(mf);
                   })
                   .catch(function (error) {
                     console.log(error);
                   })
+        var resultArray = [];
+        param.forEach(function(e) {
+          var ary = e.split('/');
+          if (ary[3] == '◎') {
+            resultArray.push(1);
+          }
+        });
+
+        var result = Math.floor((resultArray.length / trCount) * 100);
+
+        if (result == 100) {
+          alert('最強！神！おめでとう！');
+        } else if (result >= 80) {
+          alert('惜しいね！でもすごい！明日頑張ろうぜ！');
+        } else if (result >= 50) {
+          alert('頑張った！もう少し！明日頑張ろう！');
+        } else if (result >= 30) {
+          alert('もう少し頑張りたい！でもお疲れ様！');
+        } else if (result >= 10) {
+          alert('今日はちょっとサボり気味かな？お疲れ様！明日頑張ろう！');
+        } else if (result == 0) {
+          alert('サボりすぎわろた');
+        }
+
         this.modalClose();
       },
 
