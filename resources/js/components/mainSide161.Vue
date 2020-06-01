@@ -100,34 +100,26 @@
 
               <div class="purpose-area">
                 <div class="manage-achive-area-title">目的</div>
-                <div class="manage-achive-area-text" ref="purposeText">
-                  <input type="text">
-                </div>
-                <div class="manage-achive-button" @click="purposeRegister">編集</div>
+                <div class="manage-achive-area-text" ref="purposeText"></div>
+                <div class="manage-achive-button" @click="purposeRegister" ref="purposeButton"></div>
               </div>
 
               <div class="achive-area">
                 <div class="manage-achive-area-title">目標</div>
-                <div class="manage-achive-area-text"  ref="achiveText">
-                  <input type="text">
-                </div>
-                <div class="manage-achive-area-button" @click="achiveRegister">編集</div>
+                <div class="manage-achive-area-text"  ref="achiveText"></div>
+                <div class="manage-achive-area-button" @click="achiveRegister" ref="achiveButton"></div>
               </div>
 
               <div class="goal-image-wrapper">
                 <div class="manage-achive-area-title">ゴールイメージ</div>
-                <div class="manage-achive-area-text" ref="goalImageText">
-                  <input type="text">
-                </div>
-                <div class="manage-achive-area-button" @click="goalImageRegister">編集</div>
+                <div class="manage-achive-area-text" ref="goalImageText"></div>
+                <div class="manage-achive-area-button" @click="goalImageRegister" ref="goalImageButton"></div>
               </div>
 
               <div class="passion-area">
                 <div class="manage-achive-area-title">意気込み</div>
-                <div class="manage-achive-area-text" ref="passionText">
-                  <input type="text">
-                </div>
-                <div class="manage-achive-area-button" @click="passionRegister">編集</div>
+                <div class="manage-achive-area-text" ref="passionText"></div>
+                <div class="manage-achive-area-button" @click="passionRegister" ref="passionButton"></div>
               </div>
 
             </div>
@@ -382,6 +374,57 @@
                       })
           })
           .catch(response => console.log(response))
+
+        /* 目的・目標・ゴールイメージ・意気込みのデータを取得する。 */
+        axios.get('http://localhost:100/confirmExistsAchiveData?year=' + year + '&month=' + month)
+          .then(function(response) {
+            console.log(response);
+
+            /* 目的エリアへのデータ挿入 */
+            if (response.data[0] == null) {
+              vm.$refs.purposeButton.textContent = '登録';
+              var input = document.createElement('input');
+              console.log(input);
+              vm.$refs.purposeText.appendChild(input);
+            } else {
+              var purposeText = response.data[0].purpose;
+              vm.$refs.purposeButton.textContent = '編集';
+              vm.$refs.purposeText.textContent = purposeText;
+            }
+
+            /* 目標エリアへのデータ挿入 */
+            if (response.data[1] == null) {
+              vm.$refs.achiveButton.textContent = '登録';
+              var input = document.createElement('input');
+              vm.$refs.achiveText.appendChild(input);
+            } else {
+              var achiveText = response.data[1].achive;
+              vm.$refs.achiveButton.textContent = '編集';
+              vm.$refs.achiveText.textContent = achiveText;
+            }
+
+            /* ゴールイメージエリアへのデータ挿入 */
+            if (response.data[2] == null) {
+              vm.$refs.goalImageButton.textContent = '登録';
+              var input = document.createElement('input');
+              vm.$refs.goalImageText.appendChild(input);
+            } else {
+              var goalImageText = response.data[2].goal_image;
+              vm.$refs.goalImageButton.textContent = '編集';
+              vm.$refs.goalImageText.textContent = goalImageText;
+            }
+
+            /* 意気込みエリアへのデータ挿入 */
+            if (response.data[3] == null) {
+              vm.$refs.passionButton.textContent = '登録';
+              var input = document.createElement('input');
+              vm.$refs.passionText.appendChild(input);
+            } else {
+              var passionText = response.data[3].passion;
+              vm.$refs.passionButton.textContent = '編集';
+              vm.$refs.passionText.textContent = passionText;
+            }
+          }).catch(error => console.log(error));
       },
 
       habitRegisterModalHidden: function() {

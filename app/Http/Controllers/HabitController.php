@@ -187,4 +187,18 @@ class HabitController extends Controller
         $monthPassionManage->passion = $request['passionText'];
         $monthPassionManage->save();
     }
+
+    public function confirmExistsAchiveData(Request $request) {
+        $year = $request['year'];
+        $month = $request['month'];
+        $monthPurposeManage = MonthPurposeManage::first();
+        $monthAchiveManage = MonthAchiveManage::first();
+        $monthGoalImageManage = MonthGoalImageManage::first();
+        $monthPassionManage = MonthPassionManage::first();
+
+        $response = [
+            $monthPurposeManage, $monthAchiveManage, $monthGoalImageManage, $monthPassionManage
+        ];
+        return response()->json($response);
+    }
 }
