@@ -102,6 +102,7 @@ class HabitController extends Controller
 
     // 習慣目標達成率を取得する（habit_resultsテーブル）
     public function habitResultGet(Request $request) {
+        Log::debug('test');
         $year = $request->year;
         $month = $request->month;
         $date = $request->date;
@@ -131,6 +132,8 @@ class HabitController extends Controller
         for ($i = 0;$i < count($array);$i++) {
             $num += $array[$i];
         }
+
+        // 目標達成率の計算
         $response = ($num / $max) * 100;
         return response()->json($response);
     }

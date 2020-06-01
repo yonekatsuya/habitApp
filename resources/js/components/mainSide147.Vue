@@ -348,8 +348,9 @@
 
     mounted : function(){
       var vm = this;
-      var year = this.getCookie('year');
-      var month = this.getCookie('month');
+      var now = new Date();
+      var year = now.getFullYear();
+      var month = (now.getMonth() + 1);
       axios.get('http://localhost:100/habitGetMonthAchiveRate?year=' + year + '&month=' + month)
         .then(function(response) {
           var result = parseInt(response.data);
@@ -357,7 +358,7 @@
           vm.$refs.monthAchiveRateGraph.style.width = result + '%';
         })
         .catch(response => console.log(response))
-      this.$refs.achiveRateMonth.textContent = this.getCookie('month');
+      this.$refs.achiveRateMonth.textContent = month;
     }
   }
 </script>
