@@ -23,3 +23,7 @@ Route::get('habitGetMonthAchiveRate', 'HabitController@habitGetMonthAchiveRate')
 Route::get('getHabitAchiveRate', 'HabitController@getHabitAchiveRate')->name('getHabitAchiveRate');
 Route::get('registerAchiveRate', 'HabitController@registerAchiveRate')->name('registerAchiveRate');
 Route::get('habitGetItemAndAchiveRate', 'HabitController@habitGetItemAndAchiveRate')->name('habitGetItemAndAchiveRate');
+Route::get('purposeRegister', 'HabitController@purposeRegister')->name('purposeRegister');
+Route::get('achiveRegister', 'HabitController@achiveRegister')->name('achiveRegister');
+Route::get('goalImageRegister', 'HabitController@goalImageRegister')->name('goalImageRegister');
+Route::get('passionRegister', 'HabitController@passionRegister')->name('passionRegister');

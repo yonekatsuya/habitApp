@@ -7,6 +7,10 @@ use App\HabitPost;
 use App\HabitResult;
 use App\HabitCheckResult;
 use App\HabitAchiveRate;
+use App\MonthPurposeManage;
+use App\MonthAchiveManage;
+use App\MonthGoalImageManage;
+use App\MonthPassionManage;
 use Log;
 
 class HabitController extends Controller
@@ -102,7 +106,6 @@ class HabitController extends Controller
 
     // 習慣目標達成率を取得する（habit_resultsテーブル）
     public function habitResultGet(Request $request) {
-        Log::debug('test');
         $year = $request->year;
         $month = $request->month;
         $date = $request->date;
@@ -151,5 +154,37 @@ class HabitController extends Controller
         $habitAchiveRate = HabitAchiveRate::where('habit_post_id',$request->id)->first();
         $habitAchiveRate->achive_rate = $request->value;
         $habitAchiveRate->save();
+    }
+
+    public function purposeRegister(Request $request) {
+        $monthPurposeManage = new MonthPurposeManage();
+        $monthPurposeManage->year = $request['year'];
+        $monthPurposeManage->month = $request['month'];
+        $monthPurposeManage->purpose = $request['purposeText'];
+        $monthPurposeManage->save();
+    }
+
+    public function achiveRegister(Request $request) {
+        $monthAchiveManage = new MonthAchiveManage();
+        $monthAchiveManage->year = $request['year'];
+        $monthAchiveManage->month = $request['month'];
+        $monthAchiveManage->achive = $request['achiveText'];
+        $monthAchiveManage->save();
+    }
+
+    public function goalImageRegister(Request $request) {
+        $monthGoalImageManage = new MonthGoalImageManage();
+        $monthGoalImageManage->year = $request['year'];
+        $monthGoalImageManage->month = $request['month'];
+        $monthGoalImageManage->goal_image = $request['goalImageText'];
+        $monthGoalImageManage->save();
+    }
+
+    public function passionRegister(Request $request) {
+        $monthPassionManage = new MonthPassionManage();
+        $monthPassionManage->year = $request['year'];
+        $monthPassionManage->month = $request['month'];
+        $monthPassionManage->passion = $request['passionText'];
+        $monthPassionManage->save();
     }
 }

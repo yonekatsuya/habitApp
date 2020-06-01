@@ -91,11 +91,46 @@
     <div class="overlay" v-show="overlay3">
       <div id="content2" v-show="disp3">
         <div class="overlay-content-title">
-          <p><span ref="year3"></span>年<span ref="month3"></span>月の目標管理</p>
+          <p><span ref="year3"></span>年<span ref="month3"></span>月度の目標管理</p>
           <span @click="habitRegisterModalHidden3" class="modalClose">×</span>
         </div>
         <div class="overlay-content-wrapper" v-show="overlay3">
           <div class="overlay-content-wrapper-list2">
+            <div class="manage-achive-wrapper">
+
+              <div class="purpose-area">
+                <div class="manage-achive-area-title">目的</div>
+                <div class="manage-achive-area-text" ref="purposeText">
+                  <input type="text">
+                </div>
+                <div class="manage-achive-button" @click="purposeRegister">編集</div>
+              </div>
+
+              <div class="achive-area">
+                <div class="manage-achive-area-title">目標</div>
+                <div class="manage-achive-area-text"  ref="achiveText">
+                  <input type="text">
+                </div>
+                <div class="manage-achive-area-button" @click="achiveRegister">編集</div>
+              </div>
+
+              <div class="goal-image-wrapper">
+                <div class="manage-achive-area-title">ゴールイメージ</div>
+                <div class="manage-achive-area-text" ref="goalImageText">
+                  <input type="text">
+                </div>
+                <div class="manage-achive-area-button" @click="goalImageRegister">編集</div>
+              </div>
+
+              <div class="passion-area">
+                <div class="manage-achive-area-title">意気込み</div>
+                <div class="manage-achive-area-text" ref="passionText">
+                  <input type="text">
+                </div>
+                <div class="manage-achive-area-button" @click="passionRegister">編集</div>
+              </div>
+
+            </div>
             <table id="olElement2">
               <thead>
                 <tr>
@@ -180,6 +215,58 @@
           }
         });
         return returnStr;
+      },
+
+      purposeRegister: function() {
+        var vm = this;
+        var year = this.getCookie('year');
+        var month = this.getCookie('month');
+        var purposeText = vm.$refs.purposeText.children[0].value;
+
+        axios.get('http://localhost:100/purposeRegister?year=' + year + '&month=' + month + '&purposeText=' + purposeText)
+          .then(function(response) {
+            console.log(response);
+          })
+          .catch(response => console.log(response))
+      },
+
+      achiveRegister: function() {
+        var vm = this;
+        var year = this.getCookie('year');
+        var month = this.getCookie('month');
+        var achiveText = vm.$refs.achiveText.children[0].value;
+
+        axios.get('http://localhost:100/achiveRegister?year=' + year + '&month=' + month + '&achiveText=' + achiveText)
+          .then(function(response) {
+            console.log(response);
+          })
+          .catch(response => console.log(response))
+      },
+
+      goalImageRegister: function() {
+        var vm = this;
+        var year = this.getCookie('year');
+        var month = this.getCookie('month');
+        var goalImageText = vm.$refs.goalImageText.children[0].value;
+
+        axios.get('http://localhost:100/goalImageRegister?year=' + year + '&month=' + month + '&goalImageText=' + goalImageText)
+          .then(function(response) {
+            console.log(response);
+          })
+          .catch(response => console.log(response))
+      },
+
+      passionRegister: function() {
+        var vm = this;
+        var year = this.getCookie('year');
+        var month = this.getCookie('month');
+        var passionText = vm.$refs.passionText.children[0].value;
+
+        axios.get('http://localhost:100/passionRegister?year=' + year + '&month=' + month + '&passionText=' + passionText)
+          .then(function(response) {
+            console.log(response);
+          })
+          .catch(response => console.log(response))
       },
 
       registerAchiveRate: function(event,id,index) {
