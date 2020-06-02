@@ -349,3 +349,37 @@
 }
 
 /* 目標管理モーダル達成指標テーブルの上部についてのスタイリング */
+.manage-achive-area-title {
+  font-size: 30px;
+  text-align: left;
+  margin-bottom: 20px;
+}
+
+.manage-achive-area-title > span {
+  border-bottom: 3px solid black;
+}
+
+.manage-achive-area-text {
+  text-align: left;
+  font-size: 25px;
+  margin-bottom: 10px;
+}
+
+.manage-achive-area-text > input {
+  font-size: 25px;
+  display: inline-block;
+  width: 99%;
+  height: 25px;
+}
+
+.manage-achive-area-button {
+  text-align: right;
+  margin-bottom: 10px;
+}
+
+.manage-achive-area-button > button {
+  font-size: 16px;
+  width: 50px;
+  border-radius: 5px;
+  background-color: #f0f8ff;
+}

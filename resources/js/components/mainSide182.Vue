@@ -99,27 +99,27 @@
             <div class="manage-achive-wrapper">
 
               <div class="purpose-area">
-                <div class="manage-achive-area-title">目的</div>
+                <div class="manage-achive-area-title"><span>目的</span></div>
                 <div class="manage-achive-area-text" ref="purposeText"></div>
-                <div class="manage-achive-button" @click="purposeRegister" ref="purposeButton"></div>
+                <div class="manage-achive-area-button" @click="purposeRegister"><button ref="purposeButton"></button></div>
               </div>
 
               <div class="achive-area">
-                <div class="manage-achive-area-title">目標</div>
+                <div class="manage-achive-area-title"><span>目標</span></div>
                 <div class="manage-achive-area-text"  ref="achiveText"></div>
-                <div class="manage-achive-area-button" @click="achiveRegister" ref="achiveButton"></div>
+                <div class="manage-achive-area-button" @click="achiveRegister"><button ref="achiveButton"></button></div>
               </div>
 
               <div class="goal-image-wrapper">
-                <div class="manage-achive-area-title">ゴールイメージ</div>
+                <div class="manage-achive-area-title"><span>ゴールイメージ</span></div>
                 <div class="manage-achive-area-text" ref="goalImageText"></div>
-                <div class="manage-achive-area-button" @click="goalImageRegister" ref="goalImageButton"></div>
+                <div class="manage-achive-area-button" @click="goalImageRegister"><button ref="goalImageButton"></button></div>
               </div>
 
               <div class="passion-area">
-                <div class="manage-achive-area-title">意気込み</div>
+                <div class="manage-achive-area-title"><span>意気込み</span></div>
                 <div class="manage-achive-area-text" ref="passionText"></div>
-                <div class="manage-achive-area-button" @click="passionRegister" ref="passionButton"></div>
+                <div class="manage-achive-area-button" @click="passionRegister"><button ref="passionButton"></button></div>
               </div>
 
             </div>
@@ -466,7 +466,7 @@
             if (response.data[0] == null) {
               vm.$refs.purposeButton.textContent = '登録';
               var input = document.createElement('input');
-              console.log(input);
+              vm.$refs.purposeText.textContent = null;
               vm.$refs.purposeText.appendChild(input);
             } else {
               var purposeText = response.data[0].purpose;
@@ -478,6 +478,7 @@
             if (response.data[1] == null) {
               vm.$refs.achiveButton.textContent = '登録';
               var input = document.createElement('input');
+              vm.$refs.achiveText.textContent = null;
               vm.$refs.achiveText.appendChild(input);
             } else {
               var achiveText = response.data[1].achive;
@@ -489,6 +490,7 @@
             if (response.data[2] == null) {
               vm.$refs.goalImageButton.textContent = '登録';
               var input = document.createElement('input');
+              vm.$refs.goalImageText.textContent = null;
               vm.$refs.goalImageText.appendChild(input);
             } else {
               var goalImageText = response.data[2].goal_image;
@@ -500,6 +502,7 @@
             if (response.data[3] == null) {
               vm.$refs.passionButton.textContent = '登録';
               var input = document.createElement('input');
+              vm.$refs.passionText.textContent = null;
               vm.$refs.passionText.appendChild(input);
             } else {
               var passionText = response.data[3].passion;
