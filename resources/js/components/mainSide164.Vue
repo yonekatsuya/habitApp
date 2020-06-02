@@ -213,11 +213,14 @@
         var vm = this;
         var year = this.getCookie('year');
         var month = this.getCookie('month');
+        /* inputタグに入力されているデータを取得する。 */
         var purposeText = vm.$refs.purposeText.children[0].value;
 
         axios.get('http://localhost:100/purposeRegister?year=' + year + '&month=' + month + '&purposeText=' + purposeText)
           .then(function(response) {
-            console.log(response);
+            var purposeText = vm.$refs.purposeText.children[0].value;
+            vm.$refs.purposeText.textContent = null;
+            vm.$refs.purposeText.textContent = purposeText;
           })
           .catch(response => console.log(response))
       },
