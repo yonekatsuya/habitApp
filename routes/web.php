@@ -28,3 +28,7 @@ Route::get('achiveRegister', 'HabitController@achiveRegister')->name('achiveRegi
 Route::get('goalImageRegister', 'HabitController@goalImageRegister')->name('goalImageRegister');
 Route::get('passionRegister', 'HabitController@passionRegister')->name('passionRegister');
 Route::get('confirmExistsAchiveData', 'HabitController@confirmExistsAchiveData')->name('confirmExistsAchiveData');
+Route::get('purposeEdit', 'HabitController@purposeEdit')->name('purposeEdit');
+Route::get('achiveEdit', 'HabitController@achiveEdit')->name('achiveEdit');
+Route::get('goalImageEdit', 'HabitController@goalImageEdit')->name('goalImageEdit');
+Route::get('passionEdit', 'HabitController@passionEdit')->name('passionEdit');

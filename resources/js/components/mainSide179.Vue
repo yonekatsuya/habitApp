@@ -226,11 +226,20 @@
             })
             .catch(response => console.log(response))
         } else if (vm.$refs.purposeButton.textContent == '編集') {
-          var purposeText = vm.$refs.purposeText.textContent;
-          vm.$refs.purposeText.textContent = null;
-          var input = document.createElement('input');
-          vm.$refs.purposeText.appendChild(input);
-          vm.$refs.purposeText.children[0].value = purposeText;
+          if (vm.$refs.purposeText.children[0] == undefined) {
+            var purposeText = vm.$refs.purposeText.textContent;
+            vm.$refs.purposeText.textContent = null;
+            var input = document.createElement('input');
+            vm.$refs.purposeText.appendChild(input);
+            vm.$refs.purposeText.children[0].value = purposeText;
+          } else {
+            var purposeText = vm.$refs.purposeText.children[0].value;
+            axios.get('http://localhost:100/purposeEdit?purposeText=' + purposeText + '&year=' + year + '&month=' + month)
+              .then(response => console.log(response))
+              .catch(error => console.log(error))
+            vm.$refs.purposeText.textContent = null;
+            vm.$refs.purposeText.textContent = purposeText;
+          }
         }
       },
 
@@ -250,11 +259,20 @@
             })
             .catch(response => console.log(response))
         } else if (vm.$refs.achiveButton.textContent == '編集') {
-          var achiveText = vm.$refs.achiveText.textContent;
-          vm.$refs.achiveText.textContent = null;
-          var input = document.createElement('input');
-          vm.$refs.achiveText.appendChild(input);
-          vm.$refs.achiveText.children[0].value = achiveText;
+          if (vm.$refs.achiveText.children[0] == undefined) {
+            var achiveText = vm.$refs.achiveText.textContent;
+            vm.$refs.achiveText.textContent = null;
+            var input = document.createElement('input');
+            vm.$refs.achiveText.appendChild(input);
+            vm.$refs.achiveText.children[0].value = achiveText;
+          } else {
+            var achiveText = vm.$refs.achiveText.children[0].value;
+            axios.get('http://localhost:100/achiveEdit?achiveText=' + achiveText + '&year=' + year + '&month=' + month)
+              .then(response => console.log(response))
+              .catch(error => console.log(error))
+            vm.$refs.achiveText.textContent = null;
+            vm.$refs.achiveText.textContent = achiveText;
+          }
         }
       },
 
@@ -274,11 +292,20 @@
           })
           .catch(response => console.log(response))
         } else if (vm.$refs.goalImageButton.textContent == '編集') {
-          var goalImageText = vm.$refs.goalImageText.textContent;
-          vm.$refs.goalImageText.textContent = null;
-          var input = document.createElement('input');
-          vm.$refs.goalImageText.appendChild(input);
-          vm.$refs.goalImageText.children[0].value = goalImageText;
+          if (vm.$refs.goalImageText.children[0] == undefined) {
+            var goalImageText = vm.$refs.goalImageText.textContent;
+            vm.$refs.goalImageText.textContent = null;
+            var input = document.createElement('input');
+            vm.$refs.goalImageText.appendChild(input);
+            vm.$refs.goalImageText.children[0].value = goalImageText;
+          } else {
+            var goalImageText = vm.$refs.goalImageText.children[0].value;
+            axios.get('http://localhost:100/goalImageEdit?goalImageText=' + goalImageText + '&year=' + year + '&month=' + month)
+              .then(response => console.log(response))
+              .catch(error => console.log(error))
+            vm.$refs.goalImageText.textContent = null;
+            vm.$refs.goalImageText.textContent = goalImageText;
+          }
         }
       },
 
@@ -298,11 +325,20 @@
             })
             .catch(response => console.log(response))
         } else if (vm.$refs.passionButton.textContent == '編集') {
-          var passionText = vm.$refs.passionText.textContent;
-          vm.$refs.passionText.textContent = null;
-          var input = document.createElement('input');
-          vm.$refs.passionText.appendChild(input);
-          vm.$refs.passionText.children[0].value = passionText;
+          if (vm.$refs.passionText.children[0] == undefined) {
+            var passionText = vm.$refs.passionText.textContent;
+            vm.$refs.passionText.textContent = null;
+            var input = document.createElement('input');
+            vm.$refs.passionText.appendChild(input);
+            vm.$refs.passionText.children[0].value = passionText;
+          } else {
+            var passionText = vm.$refs.passionText.children[0].value;
+            axios.get('http://localhost:100/passionEdit?passionText=' + passionText + '&year=' + year + '&month=' + month)
+              .then(response => console.log(response))
+              .catch(error => console.log(error))
+            vm.$refs.passionText.textContent = null;
+            vm.$refs.passionText.textContent = passionText;
+          }
         }
 
       },

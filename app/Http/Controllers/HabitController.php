@@ -201,4 +201,61 @@ class HabitController extends Controller
         ];
         return response()->json($response);
     }
+
+    public function purposeEdit(Request $request) {
+        $purposeText = $request['purposeText'];
+        $year = $request['year'];
+        $month = $request['month'];
+        if (MonthPurposeManage::where('year',$year)->where('month',$month)->exists()) {
+            MonthPurposeManage::where('year',$year)->where('month',$month)->delete();
+        }
+        $monthPurposeManage = new MonthPurposeManage();
+        $monthPurposeManage->year = $year;
+        $monthPurposeManage->month = $month;
+        $monthPurposeManage->purpose = $purposeText;
+        $monthPurposeManage->save();
+    }
+
+    public function achiveEdit(Request $request) {
+        $achiveText = $request['achiveText'];
+        $year = $request['year'];
+        $month = $request['month'];
+        if (MonthAchiveManage::where('year',$year)->where('month',$month)->exists()) {
+            MonthAchiveManage::where('year',$year)->where('month',$month)->delete();
+        }
+        $monthAchiveManage = new MonthAchiveManage();
+        $monthAchiveManage->year = $year;
+        $monthAchiveManage->month = $month;
+        $monthAchiveManage->achive = $achiveText;
+        $monthAchiveManage->save();
+    }
+
+    public function goalImageEdit(Request $request) {
+        $goalImageText = $request['goalImageText'];
+        $year = $request['year'];
+        $month = $request['month'];
+        if (MonthGoalImageManage::where('year',$year)->where('month',$month)->exists()) {
+            MonthGoalImageManage::where('year',$year)->where('month',$month)->delete();
+        }
+        $monthGoalImageManage = new MonthGoalImageManage();
+        $monthGoalImageManage->year = $year;
+        $monthGoalImageManage->month = $month;
+        $monthGoalImageManage->goal_image = $goalImageText;
+        $monthGoalImageManage->save();
+    }
+
+    public function passionEdit(Request $request) {
+        $passionText = $request['passionText'];
+        $year = $request['year'];
+        $month = $request['month'];
+        if (MonthPassionManage::where('year',$year)->where('month',$month)->exists()) {
+            MonthPassionManage::where('year',$year)->where('month',$month)->delete();
+        }
+        $monthPassionManage = new MonthPassionManage();
+        $monthPassionManage->year = $year;
+        $monthPassionManage->month = $month;
+        $monthPassionManage->passion = $passionText;
+        $monthPassionManage->save();
+    }
+
 }
