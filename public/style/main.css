@@ -143,7 +143,12 @@
   padding: 10px 15px;
   margin: 20px;
   font-size: 16px;
-  border-radius: 3px;
+  border-radius: 5px;
+  background-color: #e6e6fa;
+}
+
+.overlay-content-wrapper-register-right button:hover {
+  opacity: 0.5;
 }
 
 .overlay-content-wrapper-list {

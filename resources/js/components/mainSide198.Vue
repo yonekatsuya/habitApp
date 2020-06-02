@@ -140,7 +140,7 @@
                 <tr v-for="(item,index) in habitManageAchiveLists" ref="tr2">
                   <td class="achive-manage-no-td">{{index + 1}}</td>
                   <td>{{item.item}}</td>
-                  <td class="achive-manage-index-td"><span ref="achiveNum">{{achiveRates[index]}}</span>/{{getCountCurrentMonthDate(getCurrentMonth())}} <span class="editAchiveNumButton" @click="editAchiveNum($event,item.id,index)">編集</span></td>
+                  <td class="achive-manage-index-td"><span ref="achiveNum" @keyup.enter="registerAchiveRate($event,item.id,index)">{{achiveRates[index]}}</span>/{{getCountCurrentMonthDate(getCurrentMonth())}} <span class="editAchiveNumButton" @click="editAchiveNum($event,item.id,index)">編集</span></td>
                   <td class="achive-manage-rate-td"><span ref="achiveRate">{{achiveRate(index)}}</span>%</td>
                 </tr>
               </tbody>
@@ -345,6 +345,22 @@
           }
         }
 
+      },
+
+      registerAchiveRate: function(event,id,index) {
+          var vm = this;
+          axios.get('http://localhost:100/registerAchiveRate?id=' + id + '&value=' + event.srcElement.value)
+              .then(function(response) {
+                var value = vm.$refs.achiveNum[index].children[0].value;
+                vm.$refs.achiveNum[index].textContent = null;
+                vm.$refs.achiveNum[index].textContent = value;
+                var newRate = Math.floor((value / vm.getCountCurrentMonthDate(vm.getCurrentMonth())) * 100);
+                console.log(newRate);
+                vm.$refs.achiveRate[index].textContent = newRate;
+              })
+              .catch(function(response) {
+                console.log(response);
+              })
       },
 
       achiveRate: function(index) {
