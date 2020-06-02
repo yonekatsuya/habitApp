@@ -233,7 +233,9 @@
 
         axios.get('http://localhost:100/achiveRegister?year=' + year + '&month=' + month + '&achiveText=' + achiveText)
           .then(function(response) {
-            console.log(response);
+            var achiveText = vm.$refs.achiveText.children[0].value;
+            vm.$refs.achiveText.textContent = null;
+            vm.$refs.achiveText.textContent = achiveText;
           })
           .catch(response => console.log(response))
       },
@@ -246,7 +248,9 @@
 
         axios.get('http://localhost:100/goalImageRegister?year=' + year + '&month=' + month + '&goalImageText=' + goalImageText)
           .then(function(response) {
-            console.log(response);
+            var goalImageText = vm.$refs.goalImageText.children[0].value;
+            vm.$refs.goalImageText.textContent = null;
+            vm.$refs.goalImageText.textContent = goalImageText;
           })
           .catch(response => console.log(response))
       },
@@ -259,7 +263,9 @@
 
         axios.get('http://localhost:100/passionRegister?year=' + year + '&month=' + month + '&passionText=' + passionText)
           .then(function(response) {
-            console.log(response);
+            var passionText = vm.$refs.passionText.children[0].value;
+            vm.$refs.passionText.textContent = null;
+            vm.$refs.passionText.textContent = passionText;
           })
           .catch(response => console.log(response))
       },
