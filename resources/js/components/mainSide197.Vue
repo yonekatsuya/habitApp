@@ -101,43 +101,47 @@
               <div class="purpose-area">
                 <div class="manage-achive-area-title"><span>目的</span></div>
                 <div class="manage-achive-area-text" ref="purposeText"></div>
-                <div class="manage-achive-area-button" @click="purposeRegister"><button ref="purposeButton"></button></div>
+                <div class="manage-achive-area-button"><button ref="purposeButton" @click="purposeRegister"></button></div>
               </div>
 
               <div class="achive-area">
                 <div class="manage-achive-area-title"><span>目標</span></div>
                 <div class="manage-achive-area-text"  ref="achiveText"></div>
-                <div class="manage-achive-area-button" @click="achiveRegister"><button ref="achiveButton"></button></div>
+                <div class="manage-achive-area-button"><button ref="achiveButton" @click="achiveRegister"></button></div>
               </div>
 
               <div class="goal-image-wrapper">
                 <div class="manage-achive-area-title"><span>ゴールイメージ</span></div>
                 <div class="manage-achive-area-text" ref="goalImageText"></div>
-                <div class="manage-achive-area-button" @click="goalImageRegister"><button ref="goalImageButton"></button></div>
+                <div class="manage-achive-area-button"><button ref="goalImageButton" @click="goalImageRegister"></button></div>
               </div>
 
               <div class="passion-area">
                 <div class="manage-achive-area-title"><span>意気込み</span></div>
                 <div class="manage-achive-area-text" ref="passionText"></div>
-                <div class="manage-achive-area-button" @click="passionRegister"><button ref="passionButton"></button></div>
+                <div class="manage-achive-area-button"><button ref="passionButton" @click="passionRegister"></button></div>
               </div>
-
             </div>
+
+            <div class="achive-manage-index-title">
+              <div>達成指標</div>
+            </div>
+
             <table id="olElement2">
               <thead>
                 <tr>
-                  <td>No</td>
+                  <td class="achive-manage-no-td">No</td>
                   <td>項目</td>
-                  <td>達成指標</td>
-                  <td>目標達成率</td>
+                  <td class="achive-manage-index-td">達成指標</td>
+                  <td class="achive-manage-rate-td">目標達成率</td>
                 </tr>
               </thead>
               <tbody ref="tbody2">
                 <tr v-for="(item,index) in habitManageAchiveLists" ref="tr2">
-                  <td>{{index + 1}}</td>
+                  <td class="achive-manage-no-td">{{index + 1}}</td>
                   <td>{{item.item}}</td>
-                  <td><span ref="achiveNum" @keyup.enter="registerAchiveRate($event,item.id,index)">{{achiveRates[index]}}</span>/{{getCountCurrentMonthDate(getCurrentMonth())}} <span class="editAchiveNumButton" @click="editAchiveNum(index)">編集</span></td>
-                  <td><span ref="achiveRate">{{achiveRate(index)}}</span>%</td>
+                  <td class="achive-manage-index-td"><span ref="achiveNum">{{achiveRates[index]}}</span>/{{getCountCurrentMonthDate(getCurrentMonth())}} <span class="editAchiveNumButton" @click="editAchiveNum($event,item.id,index)">編集</span></td>
+                  <td class="achive-manage-rate-td"><span ref="achiveRate">{{achiveRate(index)}}</span>%</td>
                 </tr>
               </tbody>
             </table>
@@ -343,9 +347,26 @@
 
       },
 
-      registerAchiveRate: function(event,id,index) {
+      achiveRate: function(index) {
+        return Math.floor((this.achiveRates[index] / this.getCountCurrentMonthDate(this.getCurrentMonth())) * 100);
+      },
+
+      editAchiveNum: function(event,id,index) {
+        /* 押下した編集ボタンに対応する要素を取得する */
+        if (this.$refs.tr2[index].children[2].children[0].children[0] == null) {
+          var objElem = this.$refs.tr2[index].children[2].children[0];
+          var objElemText = objElem.textContent;
+          objElem.textContent = null;
+          var input = document.createElement('input');
+          input.classList.add('achiveNumInput');
+          /* inputタグのvalue値に元々表示されていたテキストを突っ込む */
+          input.value = objElemText;
+          /* inputタグを挿入する */
+          objElem.appendChild(input);
+        } else {
           var vm = this;
-          axios.get('http://localhost:100/registerAchiveRate?id=' + id + '&value=' + event.srcElement.value)
+          var inputText = vm.$refs.achiveNum[index].children[0].value;
+          axios.get('http://localhost:100/registerAchiveRate?id=' + id + '&value=' + inputText)
               .then(function(response) {
                 var value = vm.$refs.achiveNum[index].children[0].value;
                 vm.$refs.achiveNum[index].textContent = null;
@@ -357,25 +378,7 @@
               .catch(function(response) {
                 console.log(response);
               })
-      },
-
-      achiveRate: function(index) {
-        return Math.floor((this.achiveRates[index] / this.getCountCurrentMonthDate(this.getCurrentMonth())) * 100);
-      },
-
-      editAchiveNum: function(index) {
-        /* 押下した編集ボタンに対応する要素を取得する */
-        var objElem = this.$refs.tr2[index].children[2].children[0];
-        var objElemText = objElem.textContent;
-        objElem.textContent = null;
-        var input = document.createElement('input');
-        input.classList.add('achiveNumInput');
-        /* inputタグのvalue値に元々表示されていたテキストを突っ込む */
-        input.value = objElemText;
-        /* inputタグを挿入する */
-        objElem.appendChild(input);
-
-
+        }
       },
 
       habitGetDateResult: function() {

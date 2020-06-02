@@ -338,6 +338,11 @@
 /* 目標管理モーダルのスタイリング */
 .editAchiveNumButton {
   cursor: pointer;
+  font-size: 13px;
+  margin-left: 15px;
+  padding: 5px;
+  background-color: #e6e6fa;
+  border-radius: 5px;
 }
 
 .editAchiveNumButton:hover {
@@ -345,7 +350,54 @@
 }
 
 .achiveNumInput {
+  font-size: 20px;
   width: 30px;
+}
+
+#olElement2 {
+  width: 100%;
+}
+
+#olElement2 td {
+  vertical-align: middle;
+}
+
+#olElement2 thead td {
+  text-align: center;
+  font-weight: bold;
+}
+
+.achive-manage-no-td {
+  text-align: center;
+  width: 5%;
+}
+
+.achive-manage-index-td {
+  text-align: center;
+  width: 13%;
+}
+
+.achive-manage-rate-td {
+  text-align: center;
+  width: 13%;
+}
+
+.achive-manage-index-title {
+  height: 100px;
+  width: 100%;
+  margin-top: 50px;
+  position: relative;
+  border-top: 3px double black;
+}
+
+.achive-manage-index-title > div {
+  font-weight: bold;
+  font-size: 30px;
+  border-bottom: 3px solid black;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
 }
 
 /* 目標管理モーダル達成指標テーブルの上部についてのスタイリング */
@@ -382,4 +434,8 @@
   width: 50px;
   border-radius: 5px;
   background-color: #f0f8ff;
+}
+
+.manage-achive-area-button > button:hover {
+  opacity: 0.5;
 }
