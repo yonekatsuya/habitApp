@@ -214,60 +214,97 @@
         var year = this.getCookie('year');
         var month = this.getCookie('month');
         /* inputタグに入力されているデータを取得する。 */
-        var purposeText = vm.$refs.purposeText.children[0].value;
+        if (vm.$refs.purposeButton.textContent == '登録')  {
+          var purposeText = vm.$refs.purposeText.children[0].value;
 
-        axios.get('http://localhost:100/purposeRegister?year=' + year + '&month=' + month + '&purposeText=' + purposeText)
-          .then(function(response) {
-            var purposeText = vm.$refs.purposeText.children[0].value;
-            vm.$refs.purposeText.textContent = null;
-            vm.$refs.purposeText.textContent = purposeText;
-          })
-          .catch(response => console.log(response))
+          axios.get('http://localhost:100/purposeRegister?year=' + year + '&month=' + month + '&purposeText=' + purposeText)
+            .then(function(response) {
+              var purposeText = vm.$refs.purposeText.children[0].value;
+              vm.$refs.purposeText.textContent = null;
+              vm.$refs.purposeText.textContent = purposeText;
+              vm.$refs.purposeButton.textContent = '編集';
+            })
+            .catch(response => console.log(response))
+        } else if (vm.$refs.purposeButton.textContent == '編集') {
+          var purposeText = vm.$refs.purposeText.textContent;
+          vm.$refs.purposeText.textContent = null;
+          var input = document.createElement('input');
+          vm.$refs.purposeText.appendChild(input);
+          vm.$refs.purposeText.children[0].value = purposeText;
+        }
       },
 
       achiveRegister: function() {
         var vm = this;
         var year = this.getCookie('year');
         var month = this.getCookie('month');
-        var achiveText = vm.$refs.achiveText.children[0].value;
 
-        axios.get('http://localhost:100/achiveRegister?year=' + year + '&month=' + month + '&achiveText=' + achiveText)
-          .then(function(response) {
-            var achiveText = vm.$refs.achiveText.children[0].value;
-            vm.$refs.achiveText.textContent = null;
-            vm.$refs.achiveText.textContent = achiveText;
-          })
-          .catch(response => console.log(response))
+        if (vm.$refs.achiveButton.textContent == '登録')  {
+          var achiveText = vm.$refs.achiveText.children[0].value;
+          axios.get('http://localhost:100/achiveRegister?year=' + year + '&month=' + month + '&achiveText=' + achiveText)
+            .then(function(response) {
+              var achiveText = vm.$refs.achiveText.children[0].value;
+              vm.$refs.achiveText.textContent = null;
+              vm.$refs.achiveText.textContent = achiveText;
+              vm.$refs.achiveButton.textContent = '編集';
+            })
+            .catch(response => console.log(response))
+        } else if (vm.$refs.achiveButton.textContent == '編集') {
+          var achiveText = vm.$refs.achiveText.textContent;
+          vm.$refs.achiveText.textContent = null;
+          var input = document.createElement('input');
+          vm.$refs.achiveText.appendChild(input);
+          vm.$refs.achiveText.children[0].value = achiveText;
+        }
       },
 
       goalImageRegister: function() {
         var vm = this;
         var year = this.getCookie('year');
         var month = this.getCookie('month');
-        var goalImageText = vm.$refs.goalImageText.children[0].value;
 
-        axios.get('http://localhost:100/goalImageRegister?year=' + year + '&month=' + month + '&goalImageText=' + goalImageText)
+        if (vm.$refs.goalImageButton.textContent == '登録') {
+          var goalImageText = vm.$refs.goalImageText.children[0].value;
+          axios.get('http://localhost:100/goalImageRegister?year=' + year + '&month=' + month + '&goalImageText=' + goalImageText)
           .then(function(response) {
             var goalImageText = vm.$refs.goalImageText.children[0].value;
             vm.$refs.goalImageText.textContent = null;
             vm.$refs.goalImageText.textContent = goalImageText;
+            vm.$refs.goalImageButton.textContent = '編集';
           })
           .catch(response => console.log(response))
+        } else if (vm.$refs.goalImageButton.textContent == '編集') {
+          var goalImageText = vm.$refs.goalImageText.textContent;
+          vm.$refs.goalImageText.textContent = null;
+          var input = document.createElement('input');
+          vm.$refs.goalImageText.appendChild(input);
+          vm.$refs.goalImageText.children[0].value = goalImageText;
+        }
       },
 
       passionRegister: function() {
         var vm = this;
         var year = this.getCookie('year');
         var month = this.getCookie('month');
-        var passionText = vm.$refs.passionText.children[0].value;
 
-        axios.get('http://localhost:100/passionRegister?year=' + year + '&month=' + month + '&passionText=' + passionText)
-          .then(function(response) {
-            var passionText = vm.$refs.passionText.children[0].value;
-            vm.$refs.passionText.textContent = null;
-            vm.$refs.passionText.textContent = passionText;
-          })
-          .catch(response => console.log(response))
+        if (vm.$refs.passionButton.textContent == '登録') {
+          var passionText = vm.$refs.passionText.children[0].value;
+          axios.get('http://localhost:100/passionRegister?year=' + year + '&month=' + month + '&passionText=' + passionText)
+            .then(function(response) {
+              var passionText = vm.$refs.passionText.children[0].value;
+              vm.$refs.passionText.textContent = null;
+              vm.$refs.passionText.textContent = passionText;
+              vm.$refs.passionButton.textContent = '編集';
+            })
+            .catch(response => console.log(response))
+        } else if (vm.$refs.passionButton.textContent == '編集') {
+          var passionText = vm.$refs.passionText.textContent;
+          vm.$refs.passionText.textContent = null;
+          var input = document.createElement('input');
+          vm.$refs.passionText.appendChild(input);
+          vm.$refs.passionText.children[0].value = passionText;
+        }
+
       },
 
       registerAchiveRate: function(event,id,index) {
