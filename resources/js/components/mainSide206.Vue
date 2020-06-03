@@ -2,7 +2,7 @@
   <div class="side">
     <div class="side-tab">
       <p>
-        <span><span class="achiveRateMonth" ref="achiveRateMonth"></span>月の目標達成率</span>
+        <span>今月の目標達成率</span>
         <span class="achiveGraph">
           <span ref="monthAchiveRateGraph"></span>
         </span>
@@ -592,7 +592,6 @@
           vm.$refs.monthAchiveRateGraph.style.width = result + '%';
         })
         .catch(response => console.log(response))
-      this.$refs.achiveRateMonth.textContent = month;
     }
   }
 </script>
