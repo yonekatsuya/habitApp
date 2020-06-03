@@ -298,6 +298,7 @@
 
 .nextMonthDateColor, .beforeMonthDataColor {
   background-color: #DEDEDE;
+  cursor: none;
 }
 
 .hidden {
@@ -439,6 +440,7 @@
   width: 50px;
   border-radius: 5px;
   background-color: #f0f8ff;
+  cursor: pointer;
 }
 
 .manage-achive-area-button > button:hover {
