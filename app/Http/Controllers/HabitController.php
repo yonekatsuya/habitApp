@@ -191,10 +191,10 @@ class HabitController extends Controller
     public function confirmExistsAchiveData(Request $request) {
         $year = $request['year'];
         $month = $request['month'];
-        $monthPurposeManage = MonthPurposeManage::first();
-        $monthAchiveManage = MonthAchiveManage::first();
-        $monthGoalImageManage = MonthGoalImageManage::first();
-        $monthPassionManage = MonthPassionManage::first();
+        $monthPurposeManage = MonthPurposeManage::where('year',$year)->where('month',$month)->first();
+        $monthAchiveManage = MonthAchiveManage::where('year',$year)->where('month',$month)->first();
+        $monthGoalImageManage = MonthGoalImageManage::where('year',$year)->where('month',$month)->first();
+        $monthPassionManage = MonthPassionManage::where('year',$year)->where('month',$month)->first();
 
         $response = [
             $monthPurposeManage, $monthAchiveManage, $monthGoalImageManage, $monthPassionManage
