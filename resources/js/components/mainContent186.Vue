@@ -40,12 +40,12 @@
             <table id="tableElement">
               <thead>
                 <tr>
-                  <th>No</th>
-                  <th>習慣項目</th>
-                  <th>◎</th>
-                  <th>◯</th>
-                  <th>△</th>
-                  <th>×</th>
+                  <th class="habit-check-modal-no-th">No</th>
+                  <th class="habit-check-modal-item-th">習慣項目</th>
+                  <th class="habit-check-modal-radio-th">◎</th>
+                  <th class="habit-check-modal-radio-th">◯</th>
+                  <th class="habit-check-modal-radio-th">△</th>
+                  <th class="habit-check-modal-radio-th">×</th>
                 </tr>
               </thead>
               <tbody ref="modalTbody">
@@ -306,22 +306,28 @@
                           switch (i) {
                             case 0:
                               lastTd.textContent = index + 1;
+                              lastTd.classList.add('habit-check-modal-no-td');
                               break;
                             case 1:
                               lastTd.textContent = value.item;
+                              lastTd.classList.add('habit-check-modal-item-td');
                               break;
                             case 2:
                               /* ラジオボタンについては、後のテーブル格納に必要となる情報をvalue値として持たせておく */
                               lastTd.innerHTML = '<input type="radio" name="' + (index + 1) + '" value="' + value.year + '/' + value.month + '/' + modalDate.textContent + '/' + '◎/' + value.id + '">';
+                              lastTd.classList.add('habit-check-modal-radio-td');
                               break;
                             case 3:
                               lastTd.innerHTML = '<input type="radio" name="' + (index + 1) + '" value="' + value.year + '/' + value.month + '/' + modalDate.textContent + '/' + '◯/' + value.id + '">';
+                              lastTd.classList.add('habit-check-modal-radio-td');
                               break;
                             case 4:
                               lastTd.innerHTML = '<input type="radio" name="' + (index + 1) + '" value="' + value.year + '/' + value.month + '/' + modalDate.textContent + '/' + '△/' + value.id + '">';
+                              lastTd.classList.add('habit-check-modal-radio-td');
                               break;
                             case 5:
                               lastTd.innerHTML = '<input type="radio" name="' + (index + 1) + '" value="' + value.year + '/' + value.month + '/' + modalDate.textContent + '/' + '×/' + value.id + '">';
+                              lastTd.classList.add('habit-check-modal-radio-td');
                               break;
                           }
                         }
@@ -544,22 +550,28 @@
                         switch (i) {
                           case 0:
                             lastTd.textContent = index + 1;
+                            lastTd.classList.add('habit-check-modal-no-td');
                             break;
                           case 1:
                             lastTd.textContent = value.item;
+                            lastTd.classList.add('habit-check-modal-item-td');
                             break;
                           case 2:
                             /* ラジオボタンについては、後のテーブル格納に必要となる情報をvalue値として持たせておく */
                             lastTd.innerHTML = '<input type="radio" name="' + (index + 1) + '" value="' + value.year + '/' + value.month + '/' + modalDate.textContent + '/' + '◎/' + value.id + '">';
+                            lastTd.classList.add('habit-check-modal-radio-td');
                             break;
                           case 3:
                             lastTd.innerHTML = '<input type="radio" name="' + (index + 1) + '" value="' + value.year + '/' + value.month + '/' + modalDate.textContent + '/' + '◯/' + value.id + '">';
+                            lastTd.classList.add('habit-check-modal-radio-td');
                             break;
                           case 4:
                             lastTd.innerHTML = '<input type="radio" name="' + (index + 1) + '" value="' + value.year + '/' + value.month + '/' + modalDate.textContent + '/' + '△/' + value.id + '">';
+                            lastTd.classList.add('habit-check-modal-radio-td');
                             break;
                           case 5:
                             lastTd.innerHTML = '<input type="radio" name="' + (index + 1) + '" value="' + value.year + '/' + value.month + '/' + modalDate.textContent + '/' + '×/' + value.id + '">';
+                            lastTd.classList.add('habit-check-modal-radio-td');
                             break;
                         }
                       }
@@ -783,22 +795,28 @@
                         switch (i) {
                           case 0:
                             lastTd.textContent = index + 1;
+                            lastTd.classList.add('habit-check-modal-no-td');
                             break;
                           case 1:
                             lastTd.textContent = value.item;
+                            lastTd.classList.add('habit-check-modal-item-td');
                             break;
                           case 2:
                             /* ラジオボタンについては、後のテーブル格納に必要となる情報をvalue値として持たせておく */
                             lastTd.innerHTML = '<input type="radio" name="' + (index + 1) + '" value="' + value.year + '/' + value.month + '/' + modalDate.textContent + '/' + '◎/' + value.id + '">';
+                            lastTd.classList.add('habit-check-modal-radio-td');
                             break;
                           case 3:
                             lastTd.innerHTML = '<input type="radio" name="' + (index + 1) + '" value="' + value.year + '/' + value.month + '/' + modalDate.textContent + '/' + '◯/' + value.id + '">';
+                            lastTd.classList.add('habit-check-modal-radio-td');
                             break;
                           case 4:
                             lastTd.innerHTML = '<input type="radio" name="' + (index + 1) + '" value="' + value.year + '/' + value.month + '/' + modalDate.textContent + '/' + '△/' + value.id + '">';
+                            lastTd.classList.add('habit-check-modal-radio-td');
                             break;
                           case 5:
                             lastTd.innerHTML = '<input type="radio" name="' + (index + 1) + '" value="' + value.year + '/' + value.month + '/' + modalDate.textContent + '/' + '×/' + value.id + '">';
+                            lastTd.classList.add('habit-check-modal-radio-td');
                             break;
                         }
                       }
@@ -1013,22 +1031,28 @@
                         switch (i) {
                           case 0:
                             lastTd.textContent = index + 1;
+                            lastTd.classList.add('habit-check-modal-no-td');
                             break;
                           case 1:
                             lastTd.textContent = value.item;
+                            lastTd.classList.add('habit-check-modal-item-td');
                             break;
                           case 2:
                             /* ラジオボタンについては、後のテーブル格納に必要となる情報をvalue値として持たせておく */
                             lastTd.innerHTML = '<input type="radio" name="' + (index + 1) + '" value="' + value.year + '/' + value.month + '/' + modalDate.textContent + '/' + '◎/' + value.id + '">';
+                            lastTd.classList.add('habit-check-modal-radio-td');
                             break;
                           case 3:
                             lastTd.innerHTML = '<input type="radio" name="' + (index + 1) + '" value="' + value.year + '/' + value.month + '/' + modalDate.textContent + '/' + '◯/' + value.id + '">';
+                            lastTd.classList.add('habit-check-modal-radio-td');
                             break;
                           case 4:
                             lastTd.innerHTML = '<input type="radio" name="' + (index + 1) + '" value="' + value.year + '/' + value.month + '/' + modalDate.textContent + '/' + '△/' + value.id + '">';
+                            lastTd.classList.add('habit-check-modal-radio-td');
                             break;
                           case 5:
                             lastTd.innerHTML = '<input type="radio" name="' + (index + 1) + '" value="' + value.year + '/' + value.month + '/' + modalDate.textContent + '/' + '×/' + value.id + '">';
+                            lastTd.classList.add('habit-check-modal-radio-td');
                             break;
                         }
                       }
@@ -1075,11 +1099,11 @@
             }
 
             /* 今日の日付であれば背景色をつける */
-            if (tdElemLast.innerText == date && (now.getMonth() + 1) == currentMonth && currentYear == year) {
-              tdElemLast.classList.remove('SundayColor');
-              tdElemLast.classList.remove('SaturDayColor');
-              tdElemLast.classList.add('currentDateColor');
-            }
+              if (tdElemLast.innerText == date && (now.getMonth() + 1) == currentMonth && currentYear == year) {
+                tdElemLast.classList.remove('SundayColor');
+                tdElemLast.classList.remove('SaturDayColor');
+                tdElemLast.classList.add('currentDateColor');
+              }
 
             /* 祝日であれば背景色を付ける */
             var dummyYear = now.getFullYear();

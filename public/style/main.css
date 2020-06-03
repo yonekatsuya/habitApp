@@ -357,7 +357,6 @@
 
 .currentDateColor {
   background-color: rgb(255, 255, 107);
-  color: red;
 }
 
 .SundayColor {
@@ -386,19 +385,17 @@
 }
 
 .overlay-content-wrapper-table {
-  height: 93%;
   overflow-y: scroll;
 }
 
-.overlay-content-wrapper-check {
-  height: 7%;
-}
+/* 習慣チェックモーダルのスタイリング  */
 
 #tableElement {
   width: 90%;
   font-size: 30px;
   margin: 0 auto;
   margin-top: 10px;
+  table-layout: fixed;
 }
 
 #tableElement td,#tableElement th {
@@ -406,11 +403,47 @@
   border-collapse: collapse;
   padding-top: 15px;
   padding-bottom: 15px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+#tableElement .habit-check-modal-no-th {
+  width: 7%;
+}
+
+#tableElement .habit-check-modal-item-td {
+  text-align: left;
+  padding-left: 10px;
+  padding-right: 10px;
+  word-break: break-all;
+}
+
+#tableElement .habit-check-modal-radio-th {
+  width: 5%;
+}
+
+#tableElement thead {
+  background-color: #f5f5f5;
 }
 
 .overlay-content-wrapper-check {
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
+  padding: 5%;
+}
+
+.overlay-content-wrapper-check button {
+  display: inline-block;
+  height: 50px;
+  width: 150px;
+  background-color: #e6e6fa;
+  border-radius: 10px;
+  font-size: 30px;
+  cursor: pointer;
+}
+
+.overlay-content-wrapper-check button:hover {
+  opacity: 0.5;
 }
 
 /* 習慣チェックモーダルで登録ボタン押下時のエラーメッセージのスタイル */
