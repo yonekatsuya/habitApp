@@ -182,7 +182,13 @@
   margin: 0 auto;
 }
 
-#olElement2 {
+.olElement2 {
+  width: 100%;
+  font-size: 20px;
+  margin: 0 auto;
+}
+
+.olElement3 {
   width: 100%;
   font-size: 20px;
   margin: 0 auto;
@@ -214,13 +220,24 @@
   width: 7%;
 }
 
-#olElement2 td {
+.olElement2 td {
+  border: 1px solid black;
+  border-collapse: collapse;
+  padding: 10px 30px;
+  word-break: break-all;
+}
+
+.olElement3 td {
   border: 1px solid black;
   border-collapse: collapse;
   padding: 10px 30px;
 }
 
-#olElement2 thead {
+.olElement2 thead {
+  background-color: #f5f5f5;
+}
+
+.olElement3 thead {
   background-color: #f5f5f5;
 }
 
@@ -257,15 +274,47 @@
   margin-left: 50px;
 }
 
+.calendar-head-left > button {
+  height: 50px;
+  width: 100px;
+  border-radius: 50%;
+  background-color: #afeeee;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.calendar-head-left > button:hover {
+  opacity: 0.5;
+}
+
 .calendar-head-center {
   margin-top: 40px;
   font-size: 25px;
   font-weight: bold;
 }
 
+.calendar-title {
+  border-bottom: 3px double black;
+}
+
 .calendar-head-right {
   margin-top: 60px;
   margin-right: 50px;
+}
+
+.calendar-head-right > button {
+  height: 50px;
+  width: 100px;
+  border-radius: 50%;
+  background-color: #afeeee;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.calendar-head-right > button:hover {
+  opacity: 0.5;
 }
 
 .calendar-content {
@@ -328,6 +377,10 @@
   cursor: none;
 }
 
+.calendar-text-color {
+  color: red;
+}
+
 .hidden {
   display: none;
 }
@@ -387,22 +440,35 @@
   width: 30px;
 }
 
-#olElement2 {
+.olElement2 {
   width: 100%;
 }
 
-#olElement2 td {
+.olElement3 {
+  width: 100%;
+}
+
+.olElement2 td {
   vertical-align: middle;
 }
 
-#olElement2 thead td {
+.olElement3 td {
+  vertical-align: middle;
+}
+
+.olElement2 thead td {
+  text-align: center;
+  font-weight: bold;
+}
+
+.olElement3 thead td {
   text-align: center;
   font-weight: bold;
 }
 
 .achive-manage-no-td {
   text-align: center;
-  width: 5%;
+  width: 7%;
 }
 
 .achive-manage-index-td {
@@ -432,6 +498,31 @@
   left: 50%;
   transform: translate(-50%,-50%);
 }
+
+/* 習慣履歴テーブルのスタイリング */
+.olElement3 {
+  table-layout: fixed;
+}
+
+.olElement3 .habit-history-table-no-td {
+  width: 30px;
+  text-align: center;
+}
+
+.olElement3 .habit-history-table-item-td {
+  width: 600px;
+  word-break: break-all;
+}
+
+.olElement3 .habit-history-table-index-td {
+  width: 80px;
+  text-align: center;
+}
+
+.olElement3 .habit-history-table-date-td {
+  width: 50px;
+  text-align: center;
+} 
 
 /* 目標管理モーダル達成指標テーブルの上部についてのスタイリング */
 .manage-achive-area-title {

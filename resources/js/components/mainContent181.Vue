@@ -3,7 +3,7 @@
   <div class="main">
     <div class="calendar-head">
       <div class="calendar-head-left"><button @click="toBeforeMonth">前月へ</button></div>
-      <div class="calendar-head-center"><span ref="year"></span>年<span ref="month"></span>月</div>
+      <div class="calendar-head-center"><span class="calendar-title"><span ref="year"></span>年<span ref="month"></span>月</span></div>
       <div class="calendar-head-right"><button @click="toNextMonth">次月へ</button></div>
     </div>
 
@@ -345,6 +345,9 @@
                           var span = document.createElement('span');
                           resultTd.appendChild(span);
                           var span = resultTd.lastElementChild;
+                          if (response.data[0].result == 100) {
+                            span.classList.add('calendar-text-color');
+                          }
                           span.textContent = '目標達成率：' + response.data[0].result + '%';
                         }
                         })
@@ -580,6 +583,9 @@
                           var span = document.createElement('span');
                           resultTd.appendChild(span);
                           var span = resultTd.lastElementChild;
+                          if (response.data[0].result == 100) {
+                            span.classList.add('calendar-text-color');
+                          }
                           span.textContent = '目標達成率：' + response.data[0].result + '%';
                         }
                         })
@@ -816,6 +822,9 @@
                           var span = document.createElement('span');
                           resultTd.appendChild(span);
                           var span = resultTd.lastElementChild;
+                          if (response.data[0].result == 100) {
+                            span.classList.add('calendar-text-color');
+                          }
                           span.textContent = '目標達成率：' + response.data[0].result + '%';
                         }
                         })
@@ -1043,6 +1052,9 @@
                         var span = document.createElement('span');
                         resultTd.appendChild(span);
                         var span = resultTd.lastElementChild;
+                        if (response.data[0].result == 100) {
+                            span.classList.add('calendar-text-color');
+                          }
                         span.textContent = '目標達成率：' + response.data[0].result + '%';
                       }
                       })

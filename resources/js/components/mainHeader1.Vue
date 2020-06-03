@@ -1,7 +1,7 @@
 <template>
   <header>
     <div id="header">
-      習慣管理ページ
+      目標・習慣管理
     </div>
   </header>
 </template>

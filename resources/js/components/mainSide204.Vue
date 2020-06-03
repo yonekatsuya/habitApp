@@ -65,24 +65,24 @@
         </div>
         <div class="overlay-content-wrapper" v-show="overlay2">
           <div class="overlay-content-wrapper-list2">
-            <table id="olElement2">
-              <thead>
-                <tr>
-                  <td></td>
-                  <td></td>
-                  <td>達成指標</td>
-                  <td v-for="n in getCountCurrentMonthDate(getCurrentMonth())">{{n}}</td>
-                </tr>
-              </thead>
-              <tbody ref="tbody">
-                <tr v-for="(habitList, index) in habitLists" ref="tr">
-                  <td>{{index + 1}}</td>
-                  <td>{{habitList.item}}</td>
-                  <td>{{achiveRateNum[index]}}/{{getCountCurrentMonthDate(getCurrentMonth())}}</td>
-                  <td v-for="n in getCountCurrentMonthDate(getCurrentMonth())" :data-id="habitList.id" :data-year="habitList.year" :data-month="habitList.month" :data-date="n" ref="td">{{((countHabitLists - 1) == index && n == getCountCurrentMonthDate(getCurrentMonth())) ? habitGetDateResult() : ''}}</td>
-                </tr>
-              </tbody>
-            </table>
+              <table class="olElement3">
+                <thead>
+                  <tr>
+                    <td class="habit-history-table-no-td">No</td>
+                    <td class="habit-history-table-item-td">習慣項目</td>
+                    <td class="habit-history-table-index-td">達成指標</td>
+                    <td class="habit-history-table-date-td" v-for="n in getCountCurrentMonthDate(getCurrentMonth())">{{n}}</td>
+                  </tr>
+                </thead>
+                <tbody ref="tbody">
+                  <tr v-for="(habitList, index) in habitLists" ref="tr">
+                    <td class="habit-history-table-no-td">{{index + 1}}</td>
+                    <td class="habit-history-table-item-td">{{habitList.item}}</td>
+                    <td class="habit-history-table-index-td">{{achiveRateNum[index]}}/{{getCountCurrentMonthDate(getCurrentMonth())}}</td>
+                    <td class="habit-history-table-date-td" v-for="n in getCountCurrentMonthDate(getCurrentMonth())" :data-id="habitList.id" :data-year="habitList.year" :data-month="habitList.month" :data-date="n" ref="td">{{((countHabitLists - 1) == index && n == getCountCurrentMonthDate(getCurrentMonth())) ? habitGetDateResult() : ''}}</td>
+                  </tr>
+                </tbody>
+              </table>
           </div>
         </div>
       </div>
@@ -127,21 +127,21 @@
               <div>達成指標</div>
             </div>
 
-            <table id="olElement2">
+            <table class="olElement2">
               <thead>
                 <tr>
                   <td class="achive-manage-no-td">No</td>
-                  <td>項目</td>
+                  <td class="">項目</td>
                   <td class="achive-manage-index-td">達成指標</td>
                   <td class="achive-manage-rate-td">目標達成率</td>
                 </tr>
               </thead>
               <tbody ref="tbody2">
                 <tr v-for="(item,index) in habitManageAchiveLists" ref="tr2">
-                  <td class="achive-manage-no-td">{{index + 1}}</td>
-                  <td>{{item.item}}</td>
-                  <td class="achive-manage-index-td"><span ref="achiveNum" @keyup.enter="registerAchiveRate($event,item.id,index)">{{achiveRates[index]}}</span>/{{getCountCurrentMonthDate(getCurrentMonth())}} <span class="editAchiveNumButton" @click="editAchiveNum($event,item.id,index)">編集</span></td>
-                  <td class="achive-manage-rate-td"><span ref="achiveRate">{{achiveRate(index)}}</span>%</td>
+                  <td class="achive-manage-no-td olElement2-base-td">{{index + 1}}</td>
+                  <td class="olElement2-base-td">{{item.item}}</td>
+                  <td class="achive-manage-index-td olElement2-base-td"><span ref="achiveNum" @keyup.enter="registerAchiveRate($event,item.id,index)">{{achiveRates[index]}}</span>/{{getCountCurrentMonthDate(getCurrentMonth())}} <span class="editAchiveNumButton" @click="editAchiveNum($event,item.id,index)">編集</span></td>
+                  <td class="achive-manage-rate-td olElement2-base-td"><span ref="achiveRate">{{achiveRate(index)}}</span>%</td>
                 </tr>
               </tbody>
             </table>
