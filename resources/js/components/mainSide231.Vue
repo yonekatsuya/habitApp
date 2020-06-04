@@ -394,6 +394,7 @@
               })
           } else {
             alert('正しい数値を入力してください。');
+            event.srcElement.value = null;
           }
       },
 
@@ -433,6 +434,7 @@
               })
           } else {
             alert('正しい数値を入力してください。');
+            vm.$refs.achiveNum[index].children[0].value = null;
           }
         }
       },
