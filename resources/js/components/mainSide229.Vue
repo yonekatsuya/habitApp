@@ -154,6 +154,22 @@
 </template>
 
 <script>
+  function escape_html (string) {
+    if(typeof string !== 'string') {
+      return string;
+    }
+    return string.replace(/[&'`"<>]/g, function(match) {
+      return {
+        '&': '&amp;',
+        "'": '&#x27;',
+        '`': '&#x60;',
+        '"': '&quot;',
+        '<': '&lt;',
+        '>': '&gt;',
+      }[match]
+    });
+  }
+
   export default {
     data() {
       return {
@@ -220,7 +236,7 @@
         /* inputタグに入力されているデータを取得する。 */
         if (vm.$refs.purposeButton.textContent == '登録')  {
           var purposeText = vm.$refs.purposeText.children[0].value;
-
+          escape_html(purposeText);
           axios.get('http://localhost:100/purposeRegister?year=' + year + '&month=' + month + '&purposeText=' + purposeText)
             .then(function(response) {
               var purposeText = vm.$refs.purposeText.children[0].value;
@@ -232,12 +248,14 @@
         } else if (vm.$refs.purposeButton.textContent == '編集') {
           if (vm.$refs.purposeText.children[0] == undefined) {
             var purposeText = vm.$refs.purposeText.textContent;
+            escape_html(purposeText);
             vm.$refs.purposeText.textContent = null;
             var input = document.createElement('input');
             vm.$refs.purposeText.appendChild(input);
             vm.$refs.purposeText.children[0].value = purposeText;
           } else {
             var purposeText = vm.$refs.purposeText.children[0].value;
+            escape_html(purposeText);
             axios.get('http://localhost:100/purposeEdit?purposeText=' + purposeText + '&year=' + year + '&month=' + month)
               .then(response => console.log(response))
               .catch(error => console.log(error))
@@ -254,6 +272,7 @@
 
         if (vm.$refs.achiveButton.textContent == '登録')  {
           var achiveText = vm.$refs.achiveText.children[0].value;
+          escape_html(achiveText);
           axios.get('http://localhost:100/achiveRegister?year=' + year + '&month=' + month + '&achiveText=' + achiveText)
             .then(function(response) {
               var achiveText = vm.$refs.achiveText.children[0].value;
@@ -265,12 +284,14 @@
         } else if (vm.$refs.achiveButton.textContent == '編集') {
           if (vm.$refs.achiveText.children[0] == undefined) {
             var achiveText = vm.$refs.achiveText.textContent;
+            escape_html(achiveText);
             vm.$refs.achiveText.textContent = null;
             var input = document.createElement('input');
             vm.$refs.achiveText.appendChild(input);
             vm.$refs.achiveText.children[0].value = achiveText;
           } else {
             var achiveText = vm.$refs.achiveText.children[0].value;
+            escape_html(achiveText);
             axios.get('http://localhost:100/achiveEdit?achiveText=' + achiveText + '&year=' + year + '&month=' + month)
               .then(response => console.log(response))
               .catch(error => console.log(error))
@@ -287,6 +308,7 @@
 
         if (vm.$refs.goalImageButton.textContent == '登録') {
           var goalImageText = vm.$refs.goalImageText.children[0].value;
+          escape_html(goalImageText);
           axios.get('http://localhost:100/goalImageRegister?year=' + year + '&month=' + month + '&goalImageText=' + goalImageText)
           .then(function(response) {
             var goalImageText = vm.$refs.goalImageText.children[0].value;
@@ -298,12 +320,14 @@
         } else if (vm.$refs.goalImageButton.textContent == '編集') {
           if (vm.$refs.goalImageText.children[0] == undefined) {
             var goalImageText = vm.$refs.goalImageText.textContent;
+            escape_html(goalImageText);
             vm.$refs.goalImageText.textContent = null;
             var input = document.createElement('input');
             vm.$refs.goalImageText.appendChild(input);
             vm.$refs.goalImageText.children[0].value = goalImageText;
           } else {
             var goalImageText = vm.$refs.goalImageText.children[0].value;
+            escape_html(goalImageText);
             axios.get('http://localhost:100/goalImageEdit?goalImageText=' + goalImageText + '&year=' + year + '&month=' + month)
               .then(response => console.log(response))
               .catch(error => console.log(error))
@@ -320,6 +344,7 @@
 
         if (vm.$refs.passionButton.textContent == '登録') {
           var passionText = vm.$refs.passionText.children[0].value;
+          escape_html(passionText);
           axios.get('http://localhost:100/passionRegister?year=' + year + '&month=' + month + '&passionText=' + passionText)
             .then(function(response) {
               var passionText = vm.$refs.passionText.children[0].value;
@@ -331,12 +356,14 @@
         } else if (vm.$refs.passionButton.textContent == '編集') {
           if (vm.$refs.passionText.children[0] == undefined) {
             var passionText = vm.$refs.passionText.textContent;
+            escape_html(passionText);
             vm.$refs.passionText.textContent = null;
             var input = document.createElement('input');
             vm.$refs.passionText.appendChild(input);
             vm.$refs.passionText.children[0].value = passionText;
           } else {
             var passionText = vm.$refs.passionText.children[0].value;
+            escape_html(passionText);
             axios.get('http://localhost:100/passionEdit?passionText=' + passionText + '&year=' + year + '&month=' + month)
               .then(response => console.log(response))
               .catch(error => console.log(error))
@@ -349,7 +376,11 @@
 
       registerAchiveRate: function(event,id,index) {
           var vm = this;
-          axios.get('http://localhost:100/registerAchiveRate?id=' + id + '&value=' + event.srcElement.value)
+          var registerValue = event.srcElement.value;
+          escape_html(registerValue);
+          var pattern = /^[-]?([1-9]\d*|0)(\.\d+)?$/;
+          if (pattern.test(registerValue) && (vm.getCountCurrentMonthDate(vm.getCurrentMonth()) >= registerValue) && registerValue >= 0) {
+            axios.get('http://localhost:100/registerAchiveRate?id=' + id + '&value=' + registerValue)
               .then(function(response) {
                 var value = vm.$refs.achiveNum[index].children[0].value;
                 vm.$refs.achiveNum[index].textContent = null;
@@ -361,6 +392,9 @@
               .catch(function(response) {
                 console.log(response);
               })
+          } else {
+            alert('正しい数値を入力してください。');
+          }
       },
 
       achiveRate: function(index) {
@@ -382,7 +416,10 @@
         } else {
           var vm = this;
           var inputText = vm.$refs.achiveNum[index].children[0].value;
-          axios.get('http://localhost:100/registerAchiveRate?id=' + id + '&value=' + inputText)
+          escape_html(inputText);
+          var pattern = /^[-]?([1-9]\d*|0)(\.\d+)?$/;
+          if (pattern.test(inputText) && (vm.getCountCurrentMonthDate(vm.getCurrentMonth()) >= inputText) && inputText >= 0) {
+            axios.get('http://localhost:100/registerAchiveRate?id=' + id + '&value=' + inputText)
               .then(function(response) {
                 var value = vm.$refs.achiveNum[index].children[0].value;
                 vm.$refs.achiveNum[index].textContent = null;
@@ -394,6 +431,9 @@
               .catch(function(response) {
                 console.log(response);
               })
+          } else {
+            alert('正しい数値を入力してください。');
+          }
         }
       },
 
@@ -548,6 +588,7 @@
 
       addList: function() {
         var inputText = this.habitText;
+        escape_html(inputText);
         this.habitText = '';
         var now = new Date();
         var year = this.getCookie('year');

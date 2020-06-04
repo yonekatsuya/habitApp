@@ -7,6 +7,7 @@ use App\HabitPost;
 
 class MainController extends Controller
 {
+    // トップページへのアクセス
     public function index() {
         $habitPosts = HabitPost::get();
         $param = [
