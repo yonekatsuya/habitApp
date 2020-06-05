@@ -154,22 +154,7 @@
 </template>
 
 <script>
-  function escape_html (string) {
-    if(typeof string !== 'string') {
-      return string;
-    }
-    return string.replace(/[&'`"<>]/g, function(match) {
-      return {
-        '&': '&amp;',
-        "'": '&#x27;',
-        '`': '&#x60;',
-        '"': '&quot;',
-        '<': '&lt;',
-        '>': '&gt;',
-      }[match]
-    });
-  }
-
+  import CF from "./../commonFunctions";
   export default {
     data() {
       return {
@@ -197,8 +182,8 @@
       changeFlg: function() {
         var vm = this;
         var tbody = this.$refs.tbody;
-        var year = this.getCookie('year');
-        var month = this.getCookie('month');
+        var year = CF.getCookie('year');
+        var month = CF.getCookie('month');
         const url = 'http://localhost:100/habitGetDateResult?year=' + year + '&month=' + month;
           axios.get(url)
               .then(function(response) {
@@ -214,29 +199,14 @@
       }
     },
     methods: {
-      /* クッキーから特定の値を取得する */
-      getCookie: function(name) {
-        var cookies = document.cookie;
-        cookies = cookies.replace(/\s+/g, "");
-        var cookiesArray = cookies.split(';');
-        var returnStr = '';
-        cookiesArray.forEach(function(c) {
-          var cArray = c.split('=');
-          if( cArray[0] == name){
-              returnStr = cArray[1];
-          }
-        });
-        return returnStr;
-      },
-
       purposeRegister: function() {
         var vm = this;
-        var year = this.getCookie('year');
-        var month = this.getCookie('month');
+        var year = CF.getCookie('year');
+        var month = CF.getCookie('month');
         /* inputタグに入力されているデータを取得する。 */
         if (vm.$refs.purposeButton.textContent == '登録')  {
           var purposeText = vm.$refs.purposeText.children[0].value;
-          escape_html(purposeText);
+          CF.escape_html(purposeText);
           axios.get('http://localhost:100/purposeRegister?year=' + year + '&month=' + month + '&purposeText=' + purposeText)
             .then(function(response) {
               var purposeText = vm.$refs.purposeText.children[0].value;
@@ -248,14 +218,14 @@
         } else if (vm.$refs.purposeButton.textContent == '編集') {
           if (vm.$refs.purposeText.children[0] == undefined) {
             var purposeText = vm.$refs.purposeText.textContent;
-            escape_html(purposeText);
+            CF.escape_html(purposeText);
             vm.$refs.purposeText.textContent = null;
             var input = document.createElement('input');
             vm.$refs.purposeText.appendChild(input);
             vm.$refs.purposeText.children[0].value = purposeText;
           } else {
             var purposeText = vm.$refs.purposeText.children[0].value;
-            escape_html(purposeText);
+            CF.escape_html(purposeText);
             axios.get('http://localhost:100/purposeEdit?purposeText=' + purposeText + '&year=' + year + '&month=' + month)
               .then(response => console.log(response))
               .catch(error => console.log(error))
@@ -267,12 +237,12 @@
 
       achiveRegister: function() {
         var vm = this;
-        var year = this.getCookie('year');
-        var month = this.getCookie('month');
+        var year = CF.getCookie('year');
+        var month = CF.getCookie('month');
 
         if (vm.$refs.achiveButton.textContent == '登録')  {
           var achiveText = vm.$refs.achiveText.children[0].value;
-          escape_html(achiveText);
+          CF.escape_html(achiveText);
           axios.get('http://localhost:100/achiveRegister?year=' + year + '&month=' + month + '&achiveText=' + achiveText)
             .then(function(response) {
               var achiveText = vm.$refs.achiveText.children[0].value;
@@ -284,14 +254,14 @@
         } else if (vm.$refs.achiveButton.textContent == '編集') {
           if (vm.$refs.achiveText.children[0] == undefined) {
             var achiveText = vm.$refs.achiveText.textContent;
-            escape_html(achiveText);
+            CF.escape_html(achiveText);
             vm.$refs.achiveText.textContent = null;
             var input = document.createElement('input');
             vm.$refs.achiveText.appendChild(input);
             vm.$refs.achiveText.children[0].value = achiveText;
           } else {
             var achiveText = vm.$refs.achiveText.children[0].value;
-            escape_html(achiveText);
+            CF.escape_html(achiveText);
             axios.get('http://localhost:100/achiveEdit?achiveText=' + achiveText + '&year=' + year + '&month=' + month)
               .then(response => console.log(response))
               .catch(error => console.log(error))
@@ -303,12 +273,12 @@
 
       goalImageRegister: function() {
         var vm = this;
-        var year = this.getCookie('year');
-        var month = this.getCookie('month');
+        var year = CF.getCookie('year');
+        var month = CF.getCookie('month');
 
         if (vm.$refs.goalImageButton.textContent == '登録') {
           var goalImageText = vm.$refs.goalImageText.children[0].value;
-          escape_html(goalImageText);
+          CF.escape_html(goalImageText);
           axios.get('http://localhost:100/goalImageRegister?year=' + year + '&month=' + month + '&goalImageText=' + goalImageText)
           .then(function(response) {
             var goalImageText = vm.$refs.goalImageText.children[0].value;
@@ -320,14 +290,14 @@
         } else if (vm.$refs.goalImageButton.textContent == '編集') {
           if (vm.$refs.goalImageText.children[0] == undefined) {
             var goalImageText = vm.$refs.goalImageText.textContent;
-            escape_html(goalImageText);
+            CF.escape_html(goalImageText);
             vm.$refs.goalImageText.textContent = null;
             var input = document.createElement('input');
             vm.$refs.goalImageText.appendChild(input);
             vm.$refs.goalImageText.children[0].value = goalImageText;
           } else {
             var goalImageText = vm.$refs.goalImageText.children[0].value;
-            escape_html(goalImageText);
+            CF.escape_html(goalImageText);
             axios.get('http://localhost:100/goalImageEdit?goalImageText=' + goalImageText + '&year=' + year + '&month=' + month)
               .then(response => console.log(response))
               .catch(error => console.log(error))
@@ -339,12 +309,12 @@
 
       passionRegister: function() {
         var vm = this;
-        var year = this.getCookie('year');
-        var month = this.getCookie('month');
+        var year = CF.getCookie('year');
+        var month = CF.getCookie('month');
 
         if (vm.$refs.passionButton.textContent == '登録') {
           var passionText = vm.$refs.passionText.children[0].value;
-          escape_html(passionText);
+          CF.escape_html(passionText);
           axios.get('http://localhost:100/passionRegister?year=' + year + '&month=' + month + '&passionText=' + passionText)
             .then(function(response) {
               var passionText = vm.$refs.passionText.children[0].value;
@@ -356,14 +326,14 @@
         } else if (vm.$refs.passionButton.textContent == '編集') {
           if (vm.$refs.passionText.children[0] == undefined) {
             var passionText = vm.$refs.passionText.textContent;
-            escape_html(passionText);
+            CF.escape_html(passionText);
             vm.$refs.passionText.textContent = null;
             var input = document.createElement('input');
             vm.$refs.passionText.appendChild(input);
             vm.$refs.passionText.children[0].value = passionText;
           } else {
             var passionText = vm.$refs.passionText.children[0].value;
-            escape_html(passionText);
+            CF.escape_html(passionText);
             axios.get('http://localhost:100/passionEdit?passionText=' + passionText + '&year=' + year + '&month=' + month)
               .then(response => console.log(response))
               .catch(error => console.log(error))
@@ -377,7 +347,7 @@
       registerAchiveRate: function(event,id,index) {
           var vm = this;
           var registerValue = event.srcElement.value;
-          escape_html(registerValue);
+          CF.escape_html(registerValue);
           var pattern = /^[-]?([1-9]\d*|0)(\.\d+)?$/;
           if (pattern.test(registerValue) && (vm.getCountCurrentMonthDate(vm.getCurrentMonth()) >= registerValue) && registerValue >= 0) {
             axios.get('http://localhost:100/registerAchiveRate?id=' + id + '&value=' + registerValue)
@@ -417,7 +387,7 @@
         } else {
           var vm = this;
           var inputText = vm.$refs.achiveNum[index].children[0].value;
-          escape_html(inputText);
+          CF.escape_html(inputText);
           var pattern = /^[-]?([1-9]\d*|0)(\.\d+)?$/;
           if (pattern.test(inputText) && (vm.getCountCurrentMonthDate(vm.getCurrentMonth()) >= inputText) && inputText >= 0) {
             axios.get('http://localhost:100/registerAchiveRate?id=' + id + '&value=' + inputText)
@@ -450,17 +420,17 @@
       },
 
       getCurrentMonth: function() {
-        return this.getCookie('month');
+        return CF.getCookie('month');
       },
 
       habitRegisterModalDisp: function() {
-        this.$refs.year.textContent = this.getCookie('year');
-        this.$refs.month.textContent = this.getCookie('month');
+        this.$refs.year.textContent = CF.getCookie('year');
+        this.$refs.month.textContent = CF.getCookie('month');
         this.overlay = true;
         this.disp = true;
 
-        var year = this.getCookie('year');
-        var month = this.getCookie('month');
+        var year = CF.getCookie('year');
+        var month = CF.getCookie('month');
         axios.get('http://localhost:100/habitGet?year=' + year + '&month=' + month)
           .then(response => this.habitLists = response.data)
           .catch(response => console.log(response))
@@ -468,13 +438,13 @@
 
       habitHistoryModalDisp: function() {
         var vm = this;
-        this.$refs.year2.textContent = this.getCookie('year');
-        this.$refs.month2.textContent = this.getCookie('month');
+        this.$refs.year2.textContent = CF.getCookie('year');
+        this.$refs.month2.textContent = CF.getCookie('month');
         this.overlay2 = true;
         this.disp2 = true;
 
-        var year = this.getCookie('year');
-        var month = this.getCookie('month');
+        var year = CF.getCookie('year');
+        var month = CF.getCookie('month');
         axios.get('http://localhost:100/habitGetItemAndAchiveRate?year=' + year + '&month=' + month)
           .then(function(response) {
             vm.habitLists = response.data[0];
@@ -486,14 +456,14 @@
       habitManageAchiveModalDisp: function() {
         var vm = this;
 
-        this.$refs.year3.textContent = this.getCookie('year');
-        this.$refs.month3.textContent = this.getCookie('month');
+        this.$refs.year3.textContent = CF.getCookie('year');
+        this.$refs.month3.textContent = CF.getCookie('month');
 
         this.overlay3 = true;
         this.disp3 = true;
 
-        var year = this.getCookie('year');
-        var month = this.getCookie('month');
+        var year = CF.getCookie('year');
+        var month = CF.getCookie('month');
         axios.get('http://localhost:100/habitGet?year=' + year + '&month=' + month)
           .then(function(response) {
             vm.habitManageAchiveLists = response.data;
@@ -590,11 +560,11 @@
 
       addList: function() {
         var inputText = this.habitText;
-        escape_html(inputText);
+        CF.escape_html(inputText);
         this.habitText = '';
         var now = new Date();
-        var year = this.getCookie('year');
-        var month = this.getCookie('month');
+        var year = CF.getCookie('year');
+        var month = CF.getCookie('month');
         if (inputText !== '') {
           axios.get('http://localhost:100/habitPost?habitText=' + inputText + '&year=' + year + '&month=' + month)
           .then(response => this.habitLists = response.data)
@@ -604,8 +574,8 @@
 
       deleteList: function(id) {
         if (window.confirm('選択した項目を削除しますか？')) {
-          var year = this.getCookie('year');
-          var month = this.getCookie('month');
+          var year = CF.getCookie('year');
+          var month = CF.getCookie('month');
           axios.get('http://localhost:100/habitDelete?id=' + id + '&year=' + year + '&month=' + month)
           .then(response => this.habitLists = response.data)
           .catch(response => console.log(response))
@@ -613,8 +583,8 @@
       },
 
       editList: function(id,item) {
-        var year = this.getCookie('year');
-        var month = this.getCookie('month');
+        var year = CF.getCookie('year');
+        var month = CF.getCookie('month');
         axios.get('http://localhost:100/habitDelete?id=' + id + '&year=' + year + '&month=' + month)
           .then(response => this.habitLists = response.data)
           .catch(response => console.log(response))

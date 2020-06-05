@@ -65,6 +65,7 @@
 </template>
 
 <script>
+  import CF from "./../commonFunctions";
   var monthFlag = 0;
   export default {
     props: {
@@ -76,21 +77,6 @@
       }
     },
     methods: {
-      /* クッキーから特定の値を取得する */
-      getCookie: function(name) {
-        var cookies = document.cookie;
-        cookies = cookies.replace(/\s+/g, "");
-        var cookiesArray = cookies.split(';');
-        var returnStr = '';
-        cookiesArray.forEach(function(c) {
-          var cArray = c.split('=');
-          if( cArray[0] == name){
-              returnStr = cArray[1];
-          }
-        });
-        return returnStr;
-      },
-
       /* 習慣チェックモーダルで登録ボタンを押下した時に実行 */
       register: function() {
         var vm = this;
@@ -134,7 +120,7 @@
         }
         axios.get(url, {params})
                   .then(function (response) {
-                    var mf = vm.getCookie('monthFlag');
+                    var mf = CF.getCookie('monthFlag');
                     vm.dispCurrentMonth(mf);
                   })
                   .catch(function (error) {
@@ -221,23 +207,6 @@
         now.setDate(1);
         var firstDate = now.getDate();
 
-        /* 2018年~2022年までの祝日一覧を用意 */
-        const holidayList = {
-          2017: {0: [1,2,9],1: [11],2: [20],3: [29],4: [3,4,5],5: [],6: [17],7: [11],8: [18,23],9: [9],10: [3,23],11:[]},
-          2018: {0: [1, 8],1: [11, 12],2: [21],3: [29, 30],4: [3, 4, 5],5: [],6: [16],7: [11],8:     [17, 23, 24],9: [8],10: [3, 23],11: [24]},
-          2019: {0: [1, 14],1: [11],2: [21],3: [29],4: [1,2,3, 4, 5, 6],5: [],6: [15],7: [11, 12],8: [16, 23],9: [14],10: [3, 4, 23],11: []},
-          2020: {0: [1, 13],1: [11,23,24],2: [20],3: [29],4: [3, 4, 5,6],5: [],6: [23,24],7: [10],8: [21, 22],9: [],10: [3, 23],11: []},
-          2021: {0: [1, 11],1: [11,23],2: [20],3: [29],4: [3, 4, 5],5: [],6: [19],7: [11],8: [20, 23],9: [11],10: [3, 23],11: []},
-          2022: {0: [1, 10],1: [11,23],2: [21],3: [29],4: [3, 4, 5],5: [],6: [18],7: [11],8: [19, 23],9: [10],10: [3, 23],11: []},
-          2023: {0: [1, 2,9],1: [11,23],2: [21],3: [29],4: [3, 4, 5],5: [],6: [17],7: [11],8: [18, 23],9: [9],10: [3, 23],11: []},
-          2024: {0: [1,8],1: [11,12,23],2: [20],3: [29],4: [3, 4, 5,6],5: [],6: [15],7: [11,12],8: [16, 22,23],9: [14],10: [3, 4,23],11: []},
-          2025: {0: [1,13],1: [11,23,24],2: [20],3: [29],4: [3, 4, 5,6],5: [],6: [21],7: [11],8: [15,23],9: [13],10: [3,23,24],11: []}
-        };
-
-        function isHoliday (year,month,day) {
-          return holidayList[year][month].indexOf(day) !== -1;
-        }
-
         var tbody = this.$refs.tbody;
         tbody.textContent = null;
 
@@ -286,8 +255,8 @@
                 modalDate.textContent = this.getAttribute('data-date');
                 
                 /* habit_resultsテーブルから習慣項目一覧を取得し、ラジオボタンと同じ行となるようテーブルを作成する */
-                var getYear = root.getCookie('year');
-                var getMonth = root.getCookie('month');
+                var getYear = CF.getCookie('year');
+                var getMonth = CF.getCookie('month');
                 axios.get('http://localhost:100/habitGet?year=' + getYear + '&month=' + getMonth)
                     .then(function (response) {
                       habitLists = response.data;
@@ -384,7 +353,7 @@
               var dummyYear = now.getFullYear();
               var dummyMonth = now.getMonth();
               var dummyDay = now.getDate();
-              if (isHoliday(dummyYear,dummyMonth,dummyDay)) {
+              if (CF.isHoliday(dummyYear,dummyMonth,dummyDay)) {
                 tdElemLast.classList.remove('SundayColor');
                 tdElemLast.classList.remove('SaturDayColor');
                 tdElemLast.classList.remove('currentDateColor');
@@ -465,23 +434,6 @@
         now.setDate(1);
         var firstDate = now.getDate();
 
-        /* 2018年~2022年までの祝日一覧を用意 */
-        const holidayList = {
-          2017: {0: [1,2,9],1: [11],2: [20],3: [29],4: [3,4,5],5: [],6: [17],7: [11],8: [18,23],9: [9],10: [3,23],11:[]},
-          2018: {0: [1, 8],1: [11, 12],2: [21],3: [29, 30],4: [3, 4, 5],5: [],6: [16],7: [11],8:     [17, 23, 24],9: [8],10: [3, 23],11: [24]},
-          2019: {0: [1, 14],1: [11],2: [21],3: [29],4: [1,2,3, 4, 5, 6],5: [],6: [15],7: [11, 12],8: [16, 23],9: [14],10: [3, 4, 23],11: []},
-          2020: {0: [1, 13],1: [11,23,24],2: [20],3: [29],4: [3, 4, 5,6],5: [],6: [23,24],7: [10],8: [21, 22],9: [],10: [3, 23],11: []},
-          2021: {0: [1, 11],1: [11,23],2: [20],3: [29],4: [3, 4, 5],5: [],6: [19],7: [11],8: [20, 23],9: [11],10: [3, 23],11: []},
-          2022: {0: [1, 10],1: [11,23],2: [21],3: [29],4: [3, 4, 5],5: [],6: [18],7: [11],8: [19, 23],9: [10],10: [3, 23],11: []},
-          2023: {0: [1, 2,9],1: [11,23],2: [21],3: [29],4: [3, 4, 5],5: [],6: [17],7: [11],8: [18, 23],9: [9],10: [3, 23],11: []},
-          2024: {0: [1,8],1: [11,12,23],2: [20],3: [29],4: [3, 4, 5,6],5: [],6: [15],7: [11,12],8: [16, 22,23],9: [14],10: [3, 4,23],11: []},
-          2025: {0: [1,13],1: [11,23,24],2: [20],3: [29],4: [3, 4, 5,6],5: [],6: [21],7: [11],8: [15,23],9: [13],10: [3,23,24],11: []}
-        };
-
-        function isHoliday (year,month,day) {
-          return holidayList[year][month].indexOf(day) !== -1;
-        }
-
         var tbody = this.$refs.tbody;
         tbody.textContent = null;
 
@@ -530,8 +482,8 @@
               modalDate.textContent = this.getAttribute('data-date');
               
               /* habit_resultsテーブルから習慣項目一覧を取得し、ラジオボタンと同じ行となるようテーブルを作成する */
-                var getYear = root.getCookie('year');
-                var getMonth = root.getCookie('month');
+                var getYear = CF.getCookie('year');
+                var getMonth = CF.getCookie('month');
                 axios.get('http://localhost:100/habitGet?year=' + getYear + '&month=' + getMonth)
                   .then(function (response) {
                     habitLists = response.data;
@@ -629,7 +581,7 @@
               var dummyYear = now.getFullYear();
               var dummyMonth = now.getMonth();
               var dummyDay = now.getDate();
-              if (isHoliday(dummyYear,dummyMonth,dummyDay)) {
+              if (CF.isHoliday(dummyYear,dummyMonth,dummyDay)) {
                 tdElemLast.classList.remove('SundayColor');
                 tdElemLast.classList.remove('SaturDayColor');
                 tdElemLast.classList.remove('currentDateColor');
@@ -710,23 +662,6 @@
         now.setDate(1);
         var firstDate = now.getDate();
 
-        /* 2018年~2022年までの祝日一覧を用意 */
-        const holidayList = {
-          2017: {0: [1,2,9],1: [11],2: [20],3: [29],4: [3,4,5],5: [],6: [17],7: [11],8: [18,23],9: [9],10: [3,23],11:[]},
-          2018: {0: [1, 8],1: [11, 12],2: [21],3: [29, 30],4: [3, 4, 5],5: [],6: [16],7: [11],8:     [17, 23, 24],9: [8],10: [3, 23],11: [24]},
-          2019: {0: [1, 14],1: [11],2: [21],3: [29],4: [1,2,3, 4, 5, 6],5: [],6: [15],7: [11, 12],8: [16, 23],9: [14],10: [3, 4, 23],11: []},
-          2020: {0: [1, 13],1: [11,23,24],2: [20],3: [29],4: [3, 4, 5,6],5: [],6: [23,24],7: [10],8: [21, 22],9: [],10: [3, 23],11: []},
-          2021: {0: [1, 11],1: [11,23],2: [20],3: [29],4: [3, 4, 5],5: [],6: [19],7: [11],8: [20, 23],9: [11],10: [3, 23],11: []},
-          2022: {0: [1, 10],1: [11,23],2: [21],3: [29],4: [3, 4, 5],5: [],6: [18],7: [11],8: [19, 23],9: [10],10: [3, 23],11: []},
-          2023: {0: [1, 2,9],1: [11,23],2: [21],3: [29],4: [3, 4, 5],5: [],6: [17],7: [11],8: [18, 23],9: [9],10: [3, 23],11: []},
-          2024: {0: [1,8],1: [11,12,23],2: [20],3: [29],4: [3, 4, 5,6],5: [],6: [15],7: [11,12],8: [16, 22,23],9: [14],10: [3, 4,23],11: []},
-          2025: {0: [1,13],1: [11,23,24],2: [20],3: [29],4: [3, 4, 5,6],5: [],6: [21],7: [11],8: [15,23],9: [13],10: [3,23,24],11: []}
-        };
-
-        function isHoliday (year,month,day) {
-          return holidayList[year][month].indexOf(day) !== -1;
-        }
-
         var tbody = this.$refs.tbody;
         tbody.textContent = null;
 
@@ -775,8 +710,8 @@
               modalDate.textContent = this.getAttribute('data-date');
               
               /* habit_resultsテーブルから習慣項目一覧を取得し、ラジオボタンと同じ行となるようテーブルを作成する */
-                var getYear = root.getCookie('year');
-                var getMonth = root.getCookie('month');
+                var getYear = CF.getCookie('year');
+                var getMonth = CF.getCookie('month');
                 axios.get('http://localhost:100/habitGet?year=' + getYear + '&month=' + getMonth)
                   .then(function (response) {
                     habitLists = response.data;
@@ -873,7 +808,7 @@
               var dummyYear = now.getFullYear();
               var dummyMonth = now.getMonth();
               var dummyDay = now.getDate();
-              if (isHoliday(dummyYear,dummyMonth,dummyDay)) {
+              if (CF.isHoliday(dummyYear,dummyMonth,dummyDay)) {
                 tdElemLast.classList.remove('SundayColor');
                 tdElemLast.classList.remove('SaturDayColor');
                 tdElemLast.classList.remove('currentDateColor');
@@ -947,23 +882,6 @@
       now.setDate(1);
       var firstDate = now.getDate();
 
-      /* 2018年~2022年までの祝日一覧を用意 */
-      const holidayList = {
-        2017: {0: [1,2,9],1: [11],2: [20],3: [29],4: [3,4,5],5: [],6: [17],7: [11],8: [18,23],9: [9],10: [3,23],11:[]},
-        2018: {0: [1, 8],1: [11, 12],2: [21],3: [29, 30],4: [3, 4, 5],5: [],6: [16],7: [11],8:     [17, 23, 24],9: [8],10: [3, 23],11: [24]},
-        2019: {0: [1, 14],1: [11],2: [21],3: [29],4: [1,2,3, 4, 5, 6],5: [],6: [15],7: [11, 12],8: [16, 23],9: [14],10: [3, 4, 23],11: []},
-        2020: {0: [1, 13],1: [11,23,24],2: [20],3: [29],4: [3, 4, 5,6],5: [],6: [23,24],7: [10],8: [21, 22],9: [],10: [3, 23],11: []},
-        2021: {0: [1, 11],1: [11,23],2: [20],3: [29],4: [3, 4, 5],5: [],6: [19],7: [11],8: [20, 23],9: [11],10: [3, 23],11: []},
-        2022: {0: [1, 10],1: [11,23],2: [21],3: [29],4: [3, 4, 5],5: [],6: [18],7: [11],8: [19, 23],9: [10],10: [3, 23],11: []},
-        2023: {0: [1, 2,9],1: [11,23],2: [21],3: [29],4: [3, 4, 5],5: [],6: [17],7: [11],8: [18, 23],9: [9],10: [3, 23],11: []},
-        2024: {0: [1,8],1: [11,12,23],2: [20],3: [29],4: [3, 4, 5,6],5: [],6: [15],7: [11,12],8: [16, 22,23],9: [14],10: [3, 4,23],11: []},
-        2025: {0: [1,13],1: [11,23,24],2: [20],3: [29],4: [3, 4, 5,6],5: [],6: [21],7: [11],8: [15,23],9: [13],10: [3,23,24],11: []}
-      };
-
-      function isHoliday (year,month,day) {
-        return holidayList[year][month].indexOf(day) !== -1;
-      }
-
       var tbody = this.$refs.tbody;
 
       /* 曜日の値をループ回数に足して末日まで表示されるようにする */
@@ -1011,8 +929,8 @@
               modalDate.textContent = this.getAttribute('data-date');
               
               /* habit_postsテーブルから習慣項目一覧を取得し、ラジオボタンと同じ行となるようテーブルを作成する */
-              var getYear = root.getCookie('year');
-              var getMonth = root.getCookie('month');
+              var getYear = CF.getCookie('year');
+              var getMonth = CF.getCookie('month');
               axios.get('http://localhost:100/habitGet?year=' + getYear + '&month=' + getMonth)
                   .then(function (response) {
                     habitLists = response.data;
@@ -1109,7 +1027,7 @@
             var dummyYear = now.getFullYear();
             var dummyMonth = now.getMonth();
             var dummyDay = now.getDate();
-            if (isHoliday(dummyYear,dummyMonth,dummyDay)) {
+            if (CF.isHoliday(dummyYear,dummyMonth,dummyDay)) {
               tdElemLast.classList.remove('SundayColor');
               tdElemLast.classList.remove('SaturDayColor');
               tdElemLast.classList.remove('currentDateColor');
