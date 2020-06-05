@@ -140,7 +140,7 @@
                 <tr v-for="(item,index) in habitManageAchiveLists" ref="tr2">
                   <td class="achive-manage-no-td olElement2-base-td">{{index + 1}}</td>
                   <td class="olElement2-base-td">{{item.item}}</td>
-                  <td class="achive-manage-index-td olElement2-base-td"><span ref="achiveNum" @keyup.enter="registerAchiveRate($event,item.id,index)">{{achiveRates[index]}}</span>/{{getCountCurrentMonthDate(getCurrentMonth())}} <span class="editAchiveNumButton" @click="editAchiveNum($event,item.id,index)">編集</span></td>
+                  <td class="achive-manage-index-td olElement2-base-td"><span ref="achiveNum" @keyup.enter="editAchiveNum($event,item.id,index)">{{achiveRates[index]}}</span>/{{getCountCurrentMonthDate(getCurrentMonth())}} <span class="editAchiveNumButton" @click="editAchiveNum($event,item.id,index)">編集</span></td>
                   <td class="achive-manage-rate-td olElement2-base-td"><span ref="achiveRate">{{achiveRate(index)}}</span>%</td>
                 </tr>
               </tbody>
@@ -199,11 +199,13 @@
       }
     },
     methods: {
+      /* 目的・目標・ゴールイメージ・意気込みの登録・編集 */
       purposeAchiveRegister: function(place) {
         var vm = this;
         var year = CF.getCookie('year');
         var month = CF.getCookie('month');
 
+        /* 引数に応じて操作対象を変える */
         if (place == 'purpose') {
           var text = vm.$refs.purposeText;
           var button = vm.$refs.purposeButton;
@@ -230,59 +232,37 @@
           var paramText = 'passionText';
         }
 
+        /* 「登録」ボタン押下時の処理 */
         if (button.textContent == '登録')  {
-          var purposeText = text.children[0].value;
-          CF.escape_html(purposeText);
-          axios.get('http://localhost:100/' + register + '?year=' + year + '&month=' + month + '&' + paramText + '=' + purposeText)
+          var registerText = text.children[0].value;
+          CF.escape_html(registerText);
+          axios.get('http://localhost:100/' + register + '?year=' + year + '&month=' + month + '&' + paramText + '=' + registerText)
             .then(function(response) {
-              var purposeText = text.children[0].value;
+              var dispText = text.children[0].value;
               text.textContent = null;
-              text.textContent = purposeText;
+              text.textContent = dispText;
               button.textContent = '編集';
             })
             .catch(response => console.log(response))
+          /* 「編集」ボタン押下時の処理 */
         } else if (button.textContent == '編集') {
           if (text.children[0] == undefined) {
-            var purposeText = text.textContent;
-            CF.escape_html(purposeText);
+            var editText = text.textContent;
+            CF.escape_html(editText);
             text.textContent = null;
             var input = document.createElement('input');
             text.appendChild(input);
-            text.children[0].value = purposeText;
+            text.children[0].value = editText;
           } else {
-            var purposeText = text.children[0].value;
-            CF.escape_html(purposeText);
-            axios.get('http://localhost:100/' + edit + '?' + paramText + '=' + purposeText + '&year=' + year + '&month=' + month)
+            var editText = text.children[0].value;
+            CF.escape_html(editText);
+            axios.get('http://localhost:100/' + edit + '?' + paramText + '=' + editText + '&year=' + year + '&month=' + month)
               .then(response => console.log(response))
               .catch(error => console.log(error))
             text.textContent = null;
-            text.textContent = purposeText;
+            text.textContent = editText;
           }
         }
-      },
-
-      registerAchiveRate: function(event,id,index) {
-          var vm = this;
-          var registerValue = event.srcElement.value;
-          CF.escape_html(registerValue);
-          var pattern = /^[-]?([1-9]\d*|0)(\.\d+)?$/;
-          if (pattern.test(registerValue) && (vm.getCountCurrentMonthDate(vm.getCurrentMonth()) >= registerValue) && registerValue >= 0) {
-            axios.get('http://localhost:100/registerAchiveRate?id=' + id + '&value=' + registerValue)
-              .then(function(response) {
-                var value = vm.$refs.achiveNum[index].children[0].value;
-                vm.$refs.achiveNum[index].textContent = null;
-                vm.$refs.achiveNum[index].textContent = value;
-                var newRate = Math.floor((value / vm.getCountCurrentMonthDate(vm.getCurrentMonth())) * 100);
-                console.log(newRate);
-                vm.$refs.achiveRate[index].textContent = newRate;
-              })
-              .catch(function(response) {
-                console.log(response);
-              })
-          } else {
-            alert('正しい数値を入力してください。');
-            event.srcElement.value = null;
-          }
       },
 
       achiveRate: function(index) {
