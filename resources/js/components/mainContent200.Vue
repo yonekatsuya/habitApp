@@ -121,7 +121,7 @@
         axios.get(url, {params})
                   .then(function (response) {
                     var mf = CF.getCookie('monthFlag');
-                    vm.dispCurrentMonth(mf);
+                    vm.dispCurrentMonth(mf,'');
                   })
                   .catch(function (error) {
                     console.log(error);
@@ -161,7 +161,10 @@
       },
 
       /* 今月のカレンダーデータを取得する */
-      dispCurrentMonth: function(mf) {
+      dispCurrentMonth: function(mf,place) {
+        if (place == 'mounted') {
+          document.cookie = 'monthFlag=' + monthFlag;
+        }
         var root = this;
         var modal = this.$refs.modal;
         var modalContent = this.$refs.modalContent;
@@ -176,8 +179,12 @@
         var now   = new Date();
         var currentYear = now.getFullYear();
         var currentMonth = now.getMonth() + 1;
-        if (mf != 0) {
-          now.setMonth(now.getMonth() + parseInt(mf));
+        if (place == '') {
+          if (mf != 0) {
+            now.setMonth(now.getMonth() + parseInt(mf));
+          } else {
+            now.setMonth(now.getMonth());
+          }
         } else {
           now.setMonth(now.getMonth());
         }
@@ -192,6 +199,11 @@
         var year  = now.getFullYear();
         var month = now.getMonth() + 1;
         var week = now.getDay();
+
+        if (place == 'mounted') {
+          document.cookie = 'year=' + year;
+          document.cookie = 'month=' + month;
+        }
 
         /* 今年の値と今月の値をカレンダーのタイトルに設定 */
         this.$refs.year.textContent = year;
@@ -208,7 +220,9 @@
         var firstDate = now.getDate();
 
         var tbody = this.$refs.tbody;
-        tbody.textContent = null;
+        if (place == '') {
+          tbody.textContent = null;
+        }
 
         /* 曜日の値をループ回数に足して末日まで表示されるようにする */
         for (var i = 0;i <= (lastDate + week);i++) {
@@ -620,221 +634,7 @@
     },
 
     mounted: function() {
-      document.cookie = 'monthFlag=' + monthFlag;
-      /* 今月のカレンダーデータをマウント時に取得する */
-      var root = this;
-      var modal = this.$refs.modal;
-      var modalContent = this.$refs.modalContent;
-      var item = this.$refs.item;
-
-      var modalYear = this.$refs.modalYear;
-      var modalMonth = this.$refs.modalMonth;
-      var modalDate = this.$refs.modalDate;
-      var habitLists = this.habitLists;
-      var modalTbody = this.$refs.modalTbody;
-
-      var now   = new Date();
-      var currentYear = now.getFullYear();
-      var currentMonth = now.getMonth() + 1;
-      now.setMonth(now.getMonth());
-
-      /* 今日の日付を取得設定 */
-      var date = now.getDate();
-
-      /* 今日の日付を月初に設定 */
-      now.setDate(1);
-
-      /* 今年・今月・今日の曜日の値を取得 */
-      var year  = now.getFullYear();
-      document.cookie = 'year=' + year;
-      var month = now.getMonth() + 1;
-      document.cookie = 'month=' + month;
-      var week = now.getDay();
-
-      /* 今年の値と今月の値をカレンダーのタイトルに設定 */
-      this.$refs.year.textContent = year;
-      this.$refs.month.textContent = month;
-
-      /* 今月の値を次月に設定し、今月の末日の値を取得 */
-      now.setMonth(now.getMonth() + 1);
-      now.setDate(0);
-      var lastDate = now.getDate();
-
-      /* 今月の値を今月に戻し、月初の値を取得 */
-      now.setMonth(now.getMonth());
-      now.setDate(1);
-      var firstDate = now.getDate();
-
-      var tbody = this.$refs.tbody;
-
-      /* 曜日の値をループ回数に足して末日まで表示されるようにする */
-      for (var i = 0;i <= (lastDate + week);i++) {
-        
-        /* 今月の場合にだけ行やセルを付け足す処理をする */
-        if (month === (now.getMonth() + 1)) {
-
-          /* 0もしくは7の倍数でtrタグを挿入 */
-          if (i === 0 || i % 7 === 0) {
-            var trElem = document.createElement('tr');
-            tbody.appendChild(trElem);
-          }
-          
-          /* 挿入したtrタグにtdタグを挿入する */
-          var trElemLast = tbody.lastElementChild;
-          var tdElem = document.createElement('td');
-          trElemLast.appendChild(tdElem);
-          var tdElemLast = trElemLast.lastElementChild;
-
-          /* 月初を対応する曜日列から始める */
-          if (i >= week) {
-            /* tdタグに年月日のメタ情報を属性値として持たせる */
-            tdElemLast.setAttribute('data-year',now.getFullYear());
-            tdElemLast.setAttribute('data-month',now.getMonth() + 1);
-            tdElemLast.setAttribute('data-date',now.getDate());
-            tdElemLast.setAttribute('data-week',now.getDay());
-
-            /* axiosの非同期で年月日の目標達成率データを取得するのに使用 */
-            var nowYear = tdElemLast.getAttribute('data-year');
-            var nowMonth = tdElemLast.getAttribute('data-month');
-            var nowDate = tdElemLast.getAttribute('data-date');
-
-            /* 日付欄押下時の処理 */
-            tdElemLast.onclick = function() {
-              modalTbody.textContent = null;
-
-              /* 習慣チェックモーダルを表示する */
-              modal.classList.remove('hidden');
-              modalContent.classList.remove('hidden');
-
-              /* タイトル行に年月日を表示する */
-              modalYear.textContent = this.getAttribute('data-year');
-              modalMonth.textContent = this.getAttribute('data-month');
-              modalDate.textContent = this.getAttribute('data-date');
-              
-              /* habit_postsテーブルから習慣項目一覧を取得し、ラジオボタンと同じ行となるようテーブルを作成する */
-              var getYear = CF.getCookie('year');
-              var getMonth = CF.getCookie('month');
-              axios.get('http://localhost:100/habitGet?year=' + getYear + '&month=' + getMonth)
-                  .then(function (response) {
-                    habitLists = response.data;
-
-                    /* 習慣項目の数だけループを回す */
-                    habitLists.forEach(function(value,index) {
-                      var newTrElement = document.createElement('tr');
-                      modalTbody.appendChild(newTrElement);
-                      var lastTr = modalTbody.lastElementChild;
-                      for (var i = 0;i < 6;i++) {
-                        var newTdElement = document.createElement('td');
-                        lastTr.appendChild(newTdElement);
-                        var lastTd = lastTr.lastElementChild;
-
-                        /* 各td内に番号・項目名・ラジオボタンを挿入する */
-                        switch (i) {
-                          case 0:
-                            lastTd.textContent = index + 1;
-                            lastTd.classList.add('habit-check-modal-no-td');
-                            break;
-                          case 1:
-                            lastTd.textContent = value.item;
-                            lastTd.classList.add('habit-check-modal-item-td');
-                            break;
-                          case 2:
-                            /* ラジオボタンについては、後のテーブル格納に必要となる情報をvalue値として持たせておく */
-                            lastTd.innerHTML = '<input type="radio" name="' + (index + 1) + '" value="' + value.year + '/' + value.month + '/' + modalDate.textContent + '/' + '◎/' + value.id + '">';
-                            lastTd.classList.add('habit-check-modal-radio-td');
-                            break;
-                          case 3:
-                            lastTd.innerHTML = '<input type="radio" name="' + (index + 1) + '" value="' + value.year + '/' + value.month + '/' + modalDate.textContent + '/' + '◯/' + value.id + '">';
-                            lastTd.classList.add('habit-check-modal-radio-td');
-                            break;
-                          case 4:
-                            lastTd.innerHTML = '<input type="radio" name="' + (index + 1) + '" value="' + value.year + '/' + value.month + '/' + modalDate.textContent + '/' + '△/' + value.id + '">';
-                            lastTd.classList.add('habit-check-modal-radio-td');
-                            break;
-                          case 5:
-                            lastTd.innerHTML = '<input type="radio" name="' + (index + 1) + '" value="' + value.year + '/' + value.month + '/' + modalDate.textContent + '/' + '×/' + value.id + '">';
-                            lastTd.classList.add('habit-check-modal-radio-td');
-                            break;
-                        }
-                      }
-                    });
-                  })
-                  .catch(function (error) {
-                    console.log(error);
-                  })
-            }
-
-            /* 今日の日付テキストを挿入する */
-            tdElemLast.innerText = now.getDate();
-
-            /* 目標達成率データを取得し、該当のtdの日付欄に表示する */
-            function getResult(resultTd) {
-              axios.get('http://localhost:100/habitResultGet?year=' + nowYear + '&month=' + nowMonth + '&date=' + nowDate)
-                    .then(function (response) {
-                      if (response.data instanceof Array) {
-                        var br = document.createElement('br');
-                        resultTd.appendChild(br);
-                        var span = document.createElement('span');
-                        resultTd.appendChild(span);
-                        var span = resultTd.lastElementChild;
-                        if (response.data[0].result == 100) {
-                            span.classList.add('calendar-text-color');
-                          }
-                        span.textContent = '目標達成率：' + response.data[0].result + '%';
-                      }
-                      })
-                    .catch(function (error) {
-                      console.log(error);
-                    })
-            }
-
-            getResult(tdElemLast);
-
-            /* 土日であれば背景色をつける */
-            if (now.getDay() == 0) {
-              tdElemLast.classList.add('SundayColor');
-            }
-
-            if (now.getDay() == 6) {
-              tdElemLast.classList.add('SaturDayColor');
-            }
-
-            /* 今日の日付であれば背景色をつける */
-              if (tdElemLast.innerText == date && (now.getMonth() + 1) == currentMonth && currentYear == year) {
-                tdElemLast.classList.remove('SundayColor');
-                tdElemLast.classList.remove('SaturDayColor');
-                tdElemLast.classList.add('currentDateColor');
-              }
-
-            /* 祝日であれば背景色を付ける */
-            var dummyYear = now.getFullYear();
-            var dummyMonth = now.getMonth();
-            var dummyDay = now.getDate();
-            if (CF.isHoliday(dummyYear,dummyMonth,dummyDay)) {
-              tdElemLast.classList.remove('SundayColor');
-              tdElemLast.classList.remove('SaturDayColor');
-              tdElemLast.classList.remove('currentDateColor');
-              tdElemLast.classList.add('publicHoliday');
-            }
-
-            /* 日付をインクリメントする */
-            now.setDate(now.getDate() + 1);
-          } else {
-            tdElemLast.classList.add('beforeMonthDataColor');
-          }
-        }
-      }
-
-      /* カレンダー最終行のtdの数が7未満であれば、7になるまでtdを追加する */
-      var tdElemCount = tbody.lastElementChild.childElementCount;
-      var tdAddCount = 7 - tdElemCount;
-      if (tdElemCount < 7) {
-        for (var i = 0;i < tdAddCount;i++) {
-          var tdElem = document.createElement('td');
-          tdElem.classList.add('nextMonthDateColor');
-          tbody.lastElementChild.appendChild(tdElem);
-        }
-      }
+      this.dispCurrentMonth('','mounted');
     }
   }
 </script>
