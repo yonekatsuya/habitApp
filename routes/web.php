@@ -14,10 +14,14 @@
 // トップページへのアクセス
 Route::get('/','MainController@index');
 
-// 目標管理モーダル以外からのリクエスト
+// 習慣項目登録処理
 Route::get('habitPost','HabitController@habitPost')->name('habitPost');
+// 習慣項目取得処理
 Route::get('habitGet','HabitController@habitGet')->name('habitGet');
+// 習慣項目削除処理
 Route::get('habitDelete','HabitController@habitDelete')->name('habitDelete');
+
+
 Route::get('habitResult','HabitController@habitResult')->name('habitResult');
 Route::get('habitResultGet','HabitController@habitResultGet')->name('habitResultGet');
 Route::get('habitGetDateResult','HabitController@habitGetDateResult')->name('habitGetDateResult');

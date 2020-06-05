@@ -154,16 +154,19 @@
 </template>
 
 <script>
+  /* 共通関数ファイルのインポート */
   import CF from "./../commonFunctions";
   export default {
     data() {
       return {
+        /* モーダルの表示・非表示切り替えフラグ */
         overlay: false,
         disp: false,
         overlay2: false,
         disp2: false,
         overlay3: false,
         disp3: false,
+
         changeFlg: 0,
         habitText: '',
         habitLists: null,
@@ -173,6 +176,7 @@
       }
     },
     computed: {
+      /* 指定月の習慣項目数を取得 */
       countHabitLists: function() {
         return this.habitLists.length;
       },
@@ -187,6 +191,7 @@
         const url = 'http://localhost:100/habitGetDateResult?year=' + year + '&month=' + month;
           axios.get(url)
               .then(function(response) {
+                /* テーブルのセル数分処理を回し、習慣項目と年月日のセットに対応する場合、該当する習慣評価をセル内に挿入する */
                 for (var i = 0;i < vm.$refs.td.length;i++) {
                   for (var j = 0;j < response.data.length;j++) {
                     if (response.data[j].habit_post_id == vm.$refs.td[i].getAttribute('data-id') && response.data[j].date == vm.$refs.td[i].getAttribute('data-date')) {
@@ -232,45 +237,56 @@
           var paramText = 'passionText';
         }
 
-        /* 「登録」ボタン押下時の処理 */
+        /* 「登録」ボタン押下時（該当データがまだ保存されていない場合）の処理 */
         if (button.textContent == '登録')  {
+          /* 入力値の取得 */
           var registerText = text.children[0].value;
           CF.escape_html(registerText);
+          /* 入力値の登録 */
           axios.get('http://localhost:100/' + register + '?year=' + year + '&month=' + month + '&' + paramText + '=' + registerText)
             .then(function(response) {
+              /* 最新の入力値を表示し、ボタンの名称を「編集」に切り替える */
               var dispText = text.children[0].value;
               text.textContent = null;
               text.textContent = dispText;
               button.textContent = '編集';
             })
             .catch(response => console.log(response))
-          /* 「編集」ボタン押下時の処理 */
+          /* 「編集」ボタン押下時（該当データが既に保存されている場合）の処理 */
         } else if (button.textContent == '編集') {
+          /* まずテキストエリアに切り替える処理 */
           if (text.children[0] == undefined) {
+            /* 入力値の取得 */
             var editText = text.textContent;
             CF.escape_html(editText);
             text.textContent = null;
             var input = document.createElement('input');
             text.appendChild(input);
+            /* 切り替えたテキストエリア内に元々表示されていた値を挿入 */
             text.children[0].value = editText;
           } else {
+            /* 入力値の取得 */
             var editText = text.children[0].value;
             CF.escape_html(editText);
+            /* 入力値の登録 */
             axios.get('http://localhost:100/' + edit + '?' + paramText + '=' + editText + '&year=' + year + '&month=' + month)
               .then(response => console.log(response))
               .catch(error => console.log(error))
+            /* inputタグから入力した最新のテキストに表示を切り替える */
             text.textContent = null;
             text.textContent = editText;
           }
         }
       },
 
+      /* 目標管理モーダルに表示する目標達成率の計算・取得 */
       achiveRate: function(index) {
         return Math.floor((this.achiveRates[index] / this.getCountCurrentMonthDate(this.getCurrentMonth())) * 100);
       },
 
+      /* 目標管理モーダルの目標達成指標編集時の処理 */
       editAchiveNum: function(event,id,index) {
-        /* 押下した編集ボタンに対応する要素を取得する */
+        /* 目標達成指標の編集モードでない場合の処理 */
         if (this.$refs.tr2[index].children[2].children[0].children[0] == null) {
           var objElem = this.$refs.tr2[index].children[2].children[0];
           var objElemText = objElem.textContent;
@@ -282,18 +298,22 @@
           /* inputタグを挿入する */
           objElem.appendChild(input);
         } else {
+          /* 目標達成指標の編集モードの場合の処理 */
           var vm = this;
+          /* 入力値の取得 */
           var inputText = vm.$refs.achiveNum[index].children[0].value;
           CF.escape_html(inputText);
           var pattern = /^[-]?([1-9]\d*|0)(\.\d+)?$/;
+          /* 入力値が半角数字かつ月の日数を超えてなく正の数である場合のみ処理を実行 */
           if (pattern.test(inputText) && (vm.getCountCurrentMonthDate(vm.getCurrentMonth()) >= inputText) && inputText >= 0) {
             axios.get('http://localhost:100/registerAchiveRate?id=' + id + '&value=' + inputText)
               .then(function(response) {
                 var value = vm.$refs.achiveNum[index].children[0].value;
                 vm.$refs.achiveNum[index].textContent = null;
+                /* 目標達成指標の表示を最新の入力値に切り替える */
                 vm.$refs.achiveNum[index].textContent = value;
                 var newRate = Math.floor((value / vm.getCountCurrentMonthDate(vm.getCurrentMonth())) * 100);
-                console.log(newRate);
+                /* 計算した目標達成率を表示する */
                 vm.$refs.achiveRate[index].textContent = newRate;
               })
               .catch(function(response) {
@@ -301,42 +321,53 @@
               })
           } else {
             alert('正しい数値を入力してください。');
+            /* 入力値をリセットする */
             vm.$refs.achiveNum[index].children[0].value = null;
           }
         }
       },
 
+      /* 習慣履歴テーブルの右下tdが生成されたタイミングでフラグを立てる（ウォッチャ実行） */
       habitGetDateResult: function() {
         this.changeFlg = 1;
       },
 
+      /* 指定月の日数を取得 */
       getCountCurrentMonthDate: function(num) {
         num = parseInt(num);
         var countMonthDate = {1:31,2:29,3:31,4:30,5:31,6:30,7:31,8:31,9:30,10:31,11:30,12:31};
         return countMonthDate[num];
       },
 
+      /* 指定月を取得 */
       getCurrentMonth: function() {
         return CF.getCookie('month');
       },
 
+      /* 習慣項目登録モーダル表示時の処理 */
       habitRegisterModalDisp: function() {
+        /* モーダルタイトルに年月の表示 */
         this.$refs.year.textContent = CF.getCookie('year');
         this.$refs.month.textContent = CF.getCookie('month');
+        /* 習慣項目登録モーダルの表示処理 */
         this.overlay = true;
         this.disp = true;
 
         var year = CF.getCookie('year');
         var month = CF.getCookie('month');
+        /* 指定月に対応する習慣項目の取得 */
         axios.get('http://localhost:100/habitGet?year=' + year + '&month=' + month)
           .then(response => this.habitLists = response.data)
           .catch(response => console.log(response))
       },
 
+      /* 習慣履歴モーダル表示時の処理 */
       habitHistoryModalDisp: function() {
         var vm = this;
+        /* モーダルタイトルに年月の表示 */
         this.$refs.year2.textContent = CF.getCookie('year');
         this.$refs.month2.textContent = CF.getCookie('month');
+        /* 習慣履歴モーダルの表示処理 */
         this.overlay2 = true;
         this.disp2 = true;
 
@@ -344,27 +375,30 @@
         var month = CF.getCookie('month');
         axios.get('http://localhost:100/habitGetItemAndAchiveRate?year=' + year + '&month=' + month)
           .then(function(response) {
+            /* 習慣項目一覧の取得 */
             vm.habitLists = response.data[0];
+            /* 習慣項目に対応する目標達成指標の取得 */
             vm.achiveRateNum = response.data[1];
           })
           .catch(response => console.log(response))
       },
 
+      /* 目標管理モーダル表示時の処理 */
       habitManageAchiveModalDisp: function() {
         var vm = this;
-
+        /* モーダルタイトルに年月の表示 */
         this.$refs.year3.textContent = CF.getCookie('year');
         this.$refs.month3.textContent = CF.getCookie('month');
-
+        /* 目標管理モーダルの表示処理 */
         this.overlay3 = true;
         this.disp3 = true;
-
         var year = CF.getCookie('year');
         var month = CF.getCookie('month');
         axios.get('http://localhost:100/habitGet?year=' + year + '&month=' + month)
           .then(function(response) {
             vm.habitManageAchiveLists = response.data;
 
+            /* 指定月の習慣項目に対応する目標達成指標を取得して、それぞれ表示する */
             var param = response.data;
             var array = [];
             param.forEach(function(e) {
@@ -388,17 +422,20 @@
         /* 目的・目標・ゴールイメージ・意気込みのデータを取得する。 */
         axios.get('http://localhost:100/confirmExistsAchiveData?year=' + year + '&month=' + month)
           .then(function(response) {
-            console.log(response);
 
             /* 目的エリアへのデータ挿入 */
             if (response.data[0] == null) {
+              /* 指定月の目的が登録されていない場合の処理 */
               vm.$refs.purposeButton.textContent = '登録';
               var input = document.createElement('input');
               vm.$refs.purposeText.textContent = null;
+              /* 登録されていない場合、空のテキストエリアを表示 */
               vm.$refs.purposeText.appendChild(input);
             } else {
+              /* 指定月の目的が登録されている場合の処理 */
               var purposeText = response.data[0].purpose;
               vm.$refs.purposeButton.textContent = '編集';
+              /* テキストをそのまま表示 */
               vm.$refs.purposeText.textContent = purposeText;
             }
 
@@ -440,49 +477,61 @@
           }).catch(error => console.log(error));
       },
 
+      /* 習慣項目登録モーダルを閉じる処理 */
       habitRegisterModalHidden: function() {
         this.overlay = false;
         this.disp = false;
       },
 
+      /* 習慣履歴モーダルを閉じる処理 */
       habitRegisterModalHidden2: function() {
         this.overlay2 = false;
         this.disp2 = false;
       },
 
+      /* 目標管理モーダルを閉じる処理 */
       habitRegisterModalHidden3: function() {
         this.overlay3 = false;
         this.disp3 = false;
       },
 
+      /* 習慣項目登録処理 */
       addList: function() {
+        /* 入力テキストの取得 */
         var inputText = this.habitText;
         CF.escape_html(inputText);
+        /* テキストエリア内のリセット */
         this.habitText = '';
         var now = new Date();
         var year = CF.getCookie('year');
         var month = CF.getCookie('month');
+        /* テキストエリアに文字が入力されている場合のみ実行 */
         if (inputText !== '') {
           axios.get('http://localhost:100/habitPost?habitText=' + inputText + '&year=' + year + '&month=' + month)
+          /* 習慣項目登録後のリスト作成 */
           .then(response => this.habitLists = response.data)
           .catch(response => console.log(response))
         }
       },
 
+      /* 習慣項目削除処理 */
       deleteList: function(id) {
         if (window.confirm('選択した項目を削除しますか？')) {
           var year = CF.getCookie('year');
           var month = CF.getCookie('month');
           axios.get('http://localhost:100/habitDelete?id=' + id + '&year=' + year + '&month=' + month)
+          /* 習慣項目削除後のリスト作成 */
           .then(response => this.habitLists = response.data)
           .catch(response => console.log(response))
         }
       },
 
+      /* 習慣項目編集処理 */
       editList: function(id,item) {
         var year = CF.getCookie('year');
         var month = CF.getCookie('month');
         axios.get('http://localhost:100/habitDelete?id=' + id + '&year=' + year + '&month=' + month)
+          /* 習慣項目削除後のリスト作成 */
           .then(response => this.habitLists = response.data)
           .catch(response => console.log(response))
         this.habitText = item;
@@ -495,10 +544,13 @@
       var now = new Date();
       var year = now.getFullYear();
       var month = (now.getMonth() + 1);
+      /* 現在月の目標達成率を取得 */
       axios.get('http://localhost:100/habitGetMonthAchiveRate?year=' + year + '&month=' + month)
         .then(function(response) {
           var result = parseInt(response.data);
+          /* テキストの表示 */
           vm.$refs.monthAchiveRate.textContent = result + '%';
+          /* 横棒グラフの表示 */
           vm.$refs.monthAchiveRateGraph.style.width = result + '%';
         })
         .catch(response => console.log(response))

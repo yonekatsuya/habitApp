@@ -162,14 +162,16 @@
 
       /* 指定月のカレンダーを取得する */
       getMonth: function(mf,place) {
+        /* マウント時の処理であれば、クッキーに月移動時のための値を設定する */
         if (place == 'mounted') {
           document.cookie = 'monthFlag=' + monthFlag;
         }
+
+        /* DOM取得時の処理 */
         var root = this;
         var modal = this.$refs.modal;
         var modalContent = this.$refs.modalContent;
         var item = this.$refs.item;
-
         var modalYear = this.$refs.modalYear;
         var modalMonth = this.$refs.modalMonth;
         var modalDate = this.$refs.modalDate;
@@ -179,27 +181,34 @@
         var now   = new Date();
         var currentYear = now.getFullYear();
         var currentMonth = now.getMonth() + 1;
+
+        /* 習慣チェック登録後に表示するカレンダーの設定 */
         if (place == '') {
           if (mf != 0) {
             now.setMonth(now.getMonth() + parseInt(mf));
           } else {
             now.setMonth(now.getMonth());
           }
+        /* マウント時には現在月を設定 */
         } else if (place == 'mounted') {
           now.setMonth(now.getMonth());
+        /* 次月移動時の表示月設定 */
         } else if (place == 'next') {
           monthFlag++;
           document.cookie = 'monthFlag=' + monthFlag;
           now.setMonth(now.getMonth() + monthFlag);
+          /* 2027年には移動できないようにする */
           if (now.getFullYear() >= 2026) {
             monthFlag--;
             now.setMonth(now.getMonth() + monthFlag);
             return;
           }
+          /* 前月移動時の表示月設定 */
         } else if (place == 'before') {
           monthFlag--;
           document.cookie = 'monthFlag=' + monthFlag;
           now.setMonth(now.getMonth() + monthFlag);
+          /* 2015年には移動できないようにする */
           if (now.getFullYear() <= 2016) {
             monthFlag++;
             now.setMonth(now.getMonth() + monthFlag);
@@ -219,6 +228,7 @@
         var month = now.getMonth() + 1;
         var week = now.getDay();
 
+        /* マウント時、次月・前月移動時にクッキーに年月の値を設定する */
         if (place != '') {
           document.cookie = 'year=' + year;
           document.cookie = 'month=' + month;
@@ -239,6 +249,7 @@
         var firstDate = now.getDate();
 
         var tbody = this.$refs.tbody;
+        /* 次月・前月移動時、習慣チェック登録時に一旦カレンダーを消去する */
         if (place != 'mounted') {
           tbody.textContent = null;
         }
@@ -364,13 +375,15 @@
                       })
               }
 
+              /* 上記関数の実行 */
               getResult(tdElemLast);
 
-              /* 土日であれば背景色をつける */
+              /* 土曜日であれば背景色をつける */
               if (now.getDay() == 0) {
                 tdElemLast.classList.add('SundayColor');
               }
 
+              /* 日曜日であれば背景色をつける */
               if (now.getDay() == 6) {
                 tdElemLast.classList.add('SaturDayColor');
               }
