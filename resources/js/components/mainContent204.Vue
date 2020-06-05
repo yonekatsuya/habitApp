@@ -160,7 +160,7 @@
         this.$refs.modalError.textContent = null;
       },
 
-      /* 今月のカレンダーデータを取得する */
+      /* 指定月のカレンダーを取得する */
       getMonth: function(mf,place) {
         if (place == 'mounted') {
           document.cookie = 'monthFlag=' + monthFlag;
@@ -416,6 +416,7 @@
     },
 
     mounted: function() {
+      /* 現在月のカレンダーを表示 */
       this.getMonth('','mounted');
     }
   }

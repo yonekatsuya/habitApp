@@ -101,25 +101,25 @@
               <div class="purpose-area">
                 <div class="manage-achive-area-title"><span>目的</span></div>
                 <div class="manage-achive-area-text" ref="purposeText"></div>
-                <div class="manage-achive-area-button"><button ref="purposeButton" @click="purposeRegister"></button></div>
+                <div class="manage-achive-area-button"><button ref="purposeButton" @click="purposeAchiveRegister('purpose')"></button></div>
               </div>
 
               <div class="achive-area">
                 <div class="manage-achive-area-title"><span>目標</span></div>
                 <div class="manage-achive-area-text"  ref="achiveText"></div>
-                <div class="manage-achive-area-button"><button ref="achiveButton" @click="achiveRegister"></button></div>
+                <div class="manage-achive-area-button"><button ref="achiveButton" @click="purposeAchiveRegister('achive')"></button></div>
               </div>
 
               <div class="goal-image-wrapper">
                 <div class="manage-achive-area-title"><span>ゴールイメージ</span></div>
                 <div class="manage-achive-area-text" ref="goalImageText"></div>
-                <div class="manage-achive-area-button"><button ref="goalImageButton" @click="goalImageRegister"></button></div>
+                <div class="manage-achive-area-button"><button ref="goalImageButton" @click="purposeAchiveRegister('goalImage')"></button></div>
               </div>
 
               <div class="passion-area">
                 <div class="manage-achive-area-title"><span>意気込み</span></div>
                 <div class="manage-achive-area-text" ref="passionText"></div>
-                <div class="manage-achive-area-button"><button ref="passionButton" @click="passionRegister"></button></div>
+                <div class="manage-achive-area-button"><button ref="passionButton" @click="purposeAchiveRegister('passion')"></button></div>
               </div>
             </div>
 
@@ -199,149 +199,66 @@
       }
     },
     methods: {
-      purposeRegister: function() {
+      purposeAchiveRegister: function(place) {
         var vm = this;
         var year = CF.getCookie('year');
         var month = CF.getCookie('month');
-        /* inputタグに入力されているデータを取得する。 */
-        if (vm.$refs.purposeButton.textContent == '登録')  {
-          var purposeText = vm.$refs.purposeText.children[0].value;
+
+        if (place == 'purpose') {
+          var text = vm.$refs.purposeText;
+          var button = vm.$refs.purposeButton;
+          var register = 'purposeRegister';
+          var edit = 'purposeEdit';
+          var paramText = 'purposeText';
+        } else if (place == 'achive') {
+          var text = vm.$refs.achiveText;
+          var button = vm.$refs.achiveButton;
+          var register = 'achiveRegister';
+          var edit = 'achiveEdit';
+          var paramText = 'achiveText';
+        } else if (place == 'goalImage') {
+          var text = vm.$refs.goalImageText;
+          var button = vm.$refs.goalImageButton;
+          var register = 'goalImageRegister';
+          var edit = 'goalImageEdit';
+          var paramText = 'goalImageText';
+        } else if (place == 'passion') {
+          var text = vm.$refs.passionText;
+          var button = vm.$refs.passionButton;
+          var register = 'passionRegister';
+          var edit = 'passionEdit';
+          var paramText = 'passionText';
+        }
+
+        if (button.textContent == '登録')  {
+          var purposeText = text.children[0].value;
           CF.escape_html(purposeText);
-          axios.get('http://localhost:100/purposeRegister?year=' + year + '&month=' + month + '&purposeText=' + purposeText)
+          axios.get('http://localhost:100/' + register + '?year=' + year + '&month=' + month + '&' + paramText + '=' + purposeText)
             .then(function(response) {
-              var purposeText = vm.$refs.purposeText.children[0].value;
-              vm.$refs.purposeText.textContent = null;
-              vm.$refs.purposeText.textContent = purposeText;
-              vm.$refs.purposeButton.textContent = '編集';
+              var purposeText = text.children[0].value;
+              text.textContent = null;
+              text.textContent = purposeText;
+              button.textContent = '編集';
             })
             .catch(response => console.log(response))
-        } else if (vm.$refs.purposeButton.textContent == '編集') {
-          if (vm.$refs.purposeText.children[0] == undefined) {
-            var purposeText = vm.$refs.purposeText.textContent;
+        } else if (button.textContent == '編集') {
+          if (text.children[0] == undefined) {
+            var purposeText = text.textContent;
             CF.escape_html(purposeText);
-            vm.$refs.purposeText.textContent = null;
+            text.textContent = null;
             var input = document.createElement('input');
-            vm.$refs.purposeText.appendChild(input);
-            vm.$refs.purposeText.children[0].value = purposeText;
+            text.appendChild(input);
+            text.children[0].value = purposeText;
           } else {
-            var purposeText = vm.$refs.purposeText.children[0].value;
+            var purposeText = text.children[0].value;
             CF.escape_html(purposeText);
-            axios.get('http://localhost:100/purposeEdit?purposeText=' + purposeText + '&year=' + year + '&month=' + month)
+            axios.get('http://localhost:100/' + edit + '?' + paramText + '=' + purposeText + '&year=' + year + '&month=' + month)
               .then(response => console.log(response))
               .catch(error => console.log(error))
-            vm.$refs.purposeText.textContent = null;
-            vm.$refs.purposeText.textContent = purposeText;
+            text.textContent = null;
+            text.textContent = purposeText;
           }
         }
-      },
-
-      achiveRegister: function() {
-        var vm = this;
-        var year = CF.getCookie('year');
-        var month = CF.getCookie('month');
-
-        if (vm.$refs.achiveButton.textContent == '登録')  {
-          var achiveText = vm.$refs.achiveText.children[0].value;
-          CF.escape_html(achiveText);
-          axios.get('http://localhost:100/achiveRegister?year=' + year + '&month=' + month + '&achiveText=' + achiveText)
-            .then(function(response) {
-              var achiveText = vm.$refs.achiveText.children[0].value;
-              vm.$refs.achiveText.textContent = null;
-              vm.$refs.achiveText.textContent = achiveText;
-              vm.$refs.achiveButton.textContent = '編集';
-            })
-            .catch(response => console.log(response))
-        } else if (vm.$refs.achiveButton.textContent == '編集') {
-          if (vm.$refs.achiveText.children[0] == undefined) {
-            var achiveText = vm.$refs.achiveText.textContent;
-            CF.escape_html(achiveText);
-            vm.$refs.achiveText.textContent = null;
-            var input = document.createElement('input');
-            vm.$refs.achiveText.appendChild(input);
-            vm.$refs.achiveText.children[0].value = achiveText;
-          } else {
-            var achiveText = vm.$refs.achiveText.children[0].value;
-            CF.escape_html(achiveText);
-            axios.get('http://localhost:100/achiveEdit?achiveText=' + achiveText + '&year=' + year + '&month=' + month)
-              .then(response => console.log(response))
-              .catch(error => console.log(error))
-            vm.$refs.achiveText.textContent = null;
-            vm.$refs.achiveText.textContent = achiveText;
-          }
-        }
-      },
-
-      goalImageRegister: function() {
-        var vm = this;
-        var year = CF.getCookie('year');
-        var month = CF.getCookie('month');
-
-        if (vm.$refs.goalImageButton.textContent == '登録') {
-          var goalImageText = vm.$refs.goalImageText.children[0].value;
-          CF.escape_html(goalImageText);
-          axios.get('http://localhost:100/goalImageRegister?year=' + year + '&month=' + month + '&goalImageText=' + goalImageText)
-          .then(function(response) {
-            var goalImageText = vm.$refs.goalImageText.children[0].value;
-            vm.$refs.goalImageText.textContent = null;
-            vm.$refs.goalImageText.textContent = goalImageText;
-            vm.$refs.goalImageButton.textContent = '編集';
-          })
-          .catch(response => console.log(response))
-        } else if (vm.$refs.goalImageButton.textContent == '編集') {
-          if (vm.$refs.goalImageText.children[0] == undefined) {
-            var goalImageText = vm.$refs.goalImageText.textContent;
-            CF.escape_html(goalImageText);
-            vm.$refs.goalImageText.textContent = null;
-            var input = document.createElement('input');
-            vm.$refs.goalImageText.appendChild(input);
-            vm.$refs.goalImageText.children[0].value = goalImageText;
-          } else {
-            var goalImageText = vm.$refs.goalImageText.children[0].value;
-            CF.escape_html(goalImageText);
-            axios.get('http://localhost:100/goalImageEdit?goalImageText=' + goalImageText + '&year=' + year + '&month=' + month)
-              .then(response => console.log(response))
-              .catch(error => console.log(error))
-            vm.$refs.goalImageText.textContent = null;
-            vm.$refs.goalImageText.textContent = goalImageText;
-          }
-        }
-      },
-
-      passionRegister: function() {
-        var vm = this;
-        var year = CF.getCookie('year');
-        var month = CF.getCookie('month');
-
-        if (vm.$refs.passionButton.textContent == '登録') {
-          var passionText = vm.$refs.passionText.children[0].value;
-          CF.escape_html(passionText);
-          axios.get('http://localhost:100/passionRegister?year=' + year + '&month=' + month + '&passionText=' + passionText)
-            .then(function(response) {
-              var passionText = vm.$refs.passionText.children[0].value;
-              vm.$refs.passionText.textContent = null;
-              vm.$refs.passionText.textContent = passionText;
-              vm.$refs.passionButton.textContent = '編集';
-            })
-            .catch(response => console.log(response))
-        } else if (vm.$refs.passionButton.textContent == '編集') {
-          if (vm.$refs.passionText.children[0] == undefined) {
-            var passionText = vm.$refs.passionText.textContent;
-            CF.escape_html(passionText);
-            vm.$refs.passionText.textContent = null;
-            var input = document.createElement('input');
-            vm.$refs.passionText.appendChild(input);
-            vm.$refs.passionText.children[0].value = passionText;
-          } else {
-            var passionText = vm.$refs.passionText.children[0].value;
-            CF.escape_html(passionText);
-            axios.get('http://localhost:100/passionEdit?passionText=' + passionText + '&year=' + year + '&month=' + month)
-              .then(response => console.log(response))
-              .catch(error => console.log(error))
-            vm.$refs.passionText.textContent = null;
-            vm.$refs.passionText.textContent = passionText;
-          }
-        }
-
       },
 
       registerAchiveRate: function(event,id,index) {
