@@ -12,3 +12,92 @@ header {
   font-size: 20px;
   font-weight: bold;
 }
+
+#header-link {
+  position: absolute;
+  top: 50%;
+  right: 0%;
+  transform: translateY(-50%);
+  margin-right: 10px;
+}
+
+#header-link .header-link-button {
+  display: inline-block;
+  height: 5vh;
+  padding-left: 20px;
+  padding-right: 20px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+#header-link .header-link-button:hover {
+  opacity: 0.5;
+}
+
+.user-register-modal, .user-login-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  background-color:rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+.user-register-form, .user-login-form {
+  width: 20%;
+  height: 50%;
+  background-color: white;
+  z-index: 2;
+  position: relative;
+}
+
+.user-register-form-title, .user-login-form-title {
+  height: 10%;
+  text-align: center;
+  vertical-align: middle;
+  padding-top: 20px;
+  font-size: 18px;
+  position: relative;
+}
+
+.user-register-modal-close, .user-login-modal-close {
+  position: absolute;
+  top: -45%;
+  right: -6%;
+  font-size: 50px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.user-register-modal-close:hover, .user-login-modal-close:hover {
+  opacity: 0.5;
+}
+
+.user-register-form-body, .user-login-form-body {
+  width: 80%;
+  margin: 0 auto;
+}
+
+.user-register-input > input, .user-register-button > button, .user-login-input > input, .user-login-button > button {
+  display: block;
+  width: 100%;
+  height: 40px;
+  margin-bottom: 10px;
+}
+
+.user-register-button > button, .user-login-button > button {
+  padding: 1px;
+  background-color: #8be0e6;
+  cursor: pointer;
+  color: white;
+  font-size: 15px;
+}
+
+.user-register-button > button:hover, .user-login-button > button:hover {
+  opacity: 0.5;
+}

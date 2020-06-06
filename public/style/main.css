@@ -338,7 +338,7 @@
   background-color: #f0f8ff;
 }
 
-.calendar-content-wrapper table td {
+.calendar-content-wrapper table .calendar-date-td {
   height: 100px;
   width: 5%;
   padding: 10px;
@@ -372,9 +372,9 @@
   background-color: #ffe4b5;
 }
 
-.nextMonthDateColor, .beforeMonthDataColor {
+.calendar-content-wrapper table .nextMonthDateColor, .calendar-content-wrapper table .beforeMonthDateColor {
   background-color: #DEDEDE;
-  cursor: none;
+  cursor: default;
 }
 
 .calendar-text-color {

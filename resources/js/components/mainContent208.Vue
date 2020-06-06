@@ -269,6 +269,7 @@
             /* 挿入したtrタグにtdタグを挿入する */
             var trElemLast = tbody.lastElementChild;
             var tdElem = document.createElement('td');
+            tdElem.classList.add('calendar-date-td');
             trElemLast.appendChild(tdElem);
             var tdElemLast = trElemLast.lastElementChild;
 
@@ -409,7 +410,8 @@
               /* 日付をインクリメントする */
               now.setDate(now.getDate() + 1);
             } else {
-              tdElemLast.classList.add('beforeMonthDataColor');
+              tdElemLast.classList.add('beforeMonthDateColor');
+              tdElemLast.classList.add('calendar-date-td');
             }
           }
         }
@@ -421,6 +423,7 @@
           for (var i = 0;i < tdAddCount;i++) {
             var tdElem = document.createElement('td');
             tdElem.classList.add('nextMonthDateColor');
+            tdElem.classList.add('calendar-date-td');
             tbody.lastElementChild.appendChild(tdElem);
           }
         }

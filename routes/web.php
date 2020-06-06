@@ -50,3 +50,7 @@ Route::get('achiveEdit', 'AchiveManageModalController@achiveEdit')->name('achive
 Route::get('goalImageEdit', 'AchiveManageModalController@goalImageEdit')->name('goalImageEdit');
 
 Route::get('passionEdit', 'AchiveManageModalController@passionEdit')->name('passionEdit');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
