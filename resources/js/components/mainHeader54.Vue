@@ -4,11 +4,7 @@
       目標・習慣管理
     </div>
     <div id="header-link">
-        <template v-if="!loginFlag">
-          <button class="header-link-button" @click="userRegisterModalDisp">新規登録</button>
-          <button class="header-link-button" @click="userLoginModalDisp">ログイン</button>
-        </template>
-        <template v-else>
+        <template v-if="loginFlag">
           <button class="header-link-button" @click="userLogout">ログアウト</button>
         </template>
     </div>
@@ -17,13 +13,13 @@
       <div class="user-register-form">
         <div class="user-register-form-title">
           アカウントを作成
-          <span class="user-register-modal-close" @click="userRegisterModalClose">×</span>
         </div>
         <div class="user-register-form-body">
           <div class="user-register-input"><input type="text" placeholder="ユーザー名" ref="userRegisterName"></div>
           <div class="user-register-input"><input type="text" placeholder="メールアドレス" ref="userRegisterMail"></div>
           <div class="user-register-input"><input type="text" placeholder="パスワード" ref="userRegisterPassword"></div>
           <div class="user-register-button"><button @click="userRegister">新規登録</button></div>
+          <div class="user-register-move-login">すでにアカウントをお持ちですか？ <span @click="closeRegisterModalAndOpenLoginModal">ログイン</span></div>
         </div>
       </div>
     </div>
@@ -32,12 +28,12 @@
       <div class="user-login-form">
         <div class="user-login-form-title">
           ログイン
-          <span class="user-login-modal-close" @click="userLoginModalClose">×</span>
         </div>
         <div class="user-login-form-body">
           <div class="user-login-input"><input type="text" placeholder="メールアドレス" ref="userLoginMail"></div>
           <div class="user-login-input"><input type="text" placeholder="パスワード" ref="userLoginPassword"></div>
           <div class="user-login-button" @click="userLogin"><button>ログイン</button></div>
+          <div class="user-login-move-register">アカウントをお持ちでないですか？ <span @click="closeLoginModalAndOpenRegisterModal">新規登録</span></div>
         </div>
       </div>
     </div>
@@ -56,6 +52,14 @@ export default {
     }
   },
   methods: {
+    closeLoginModalAndOpenRegisterModal: function() {
+      this.userLoginModalDispFlag = false;
+      this.userRegisterModalDispFlag = true;
+    },
+    closeRegisterModalAndOpenLoginModal: function() {
+      this.userRegisterModalDispFlag = false;
+      this.userLoginModalDispFlag = true;
+    },
     userRegisterModalDisp: function() {
       this.userRegisterModalDispFlag = true;
     },
@@ -122,6 +126,7 @@ export default {
           document.cookie = 'loginFlag=' + 0;
           document.cookie = 'loginId=' + null;
           vm.loginFlag = false;
+          vm.userLoginModalDispFlag = true;
         }).catch(function(error) {
           console.log(error);
         })
@@ -130,8 +135,10 @@ export default {
   mounted: function() {
     if (CF.getCookie('loginFlag') == 1) {
       this.loginFlag = true;
+      this.userLoginModalDispFlag = false;
     } else {
       this.loginFlag = false;
+      this.userLoginModalDispFlag = true;
     }
   }
 }

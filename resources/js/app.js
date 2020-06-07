@@ -4,14 +4,14 @@ window.Vue = require('vue');
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 
 import Vue from 'vue'
-import mainHeader45 from './components/mainHeader45'
+import mainHeader54 from './components/mainHeader54'
 import mainSide262 from './components/mainSide262'
 import mainContent211 from './components/mainContent211'
 
 const app = new Vue({
   el: '#app',
   components: {
-    mainHeader45,
+    mainHeader54,
     mainSide262,
     mainContent211,
   }

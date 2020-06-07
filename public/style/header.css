@@ -101,3 +101,19 @@ header {
 .user-register-button > button:hover, .user-login-button > button:hover {
   opacity: 0.5;
 }
+
+.user-login-move-register, .user-register-move-login {
+  font-size: 12px;
+  color: #8491a5;
+  text-align: center;
+}
+
+.user-login-move-register > span, .user-register-move-login > span {
+  cursor: pointer;
+  color: rgb(0,112,210);
+  border-bottom: 1px solid rgb(0,112,210);
+}
+
+.user-login-move-register > span:hover, .user-register-move-login > span:hover {
+  opacity: 0.5;
+}
