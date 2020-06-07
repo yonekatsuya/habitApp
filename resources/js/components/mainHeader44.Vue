@@ -97,7 +97,7 @@ export default {
       };
       axios.post('http://localhost:100/login?email=' + mail + '&password=' + password)
         .then(function(response) {
-          console.log(response);
+          document.cookie = 'loginName=' + response.data.name;
           document.cookie = 'loginFlag=' + 1;
           vm.loginFlag = true;
         }).catch(function(error) {
