@@ -84,6 +84,7 @@ class HabitController extends Controller
 
             // 各習慣項目評価の結果をhabit_check_resultsテーブルに格納する
             $habitCheckResult = new HabitCheckResult();
+            $habitCheckResult->user_id = $request['loginId'];
             $habitCheckResult->year = $array[0];
             $habitCheckResult->month = $array[1];
             $habitCheckResult->date = $array[2];
@@ -95,9 +96,10 @@ class HabitController extends Controller
         // とりあえず一番最初の習慣項目チェックデータを配列にして、年月日を登録できるよう準備
         $array = explode("/",$request['result'][0]);
         // もう既に同じ年月日のデータがhabit_resultsテーブルに存在すれば、削除する
-        if (HabitResult::where('year',$array[0])->where('month',$array[1])->where('date',$array[2])->exists()) {
-            HabitResult::where('year',$array[0])->where('month',$array[1])->where('date',$array[2])->delete();
+        if (HabitResult::where('user_id',$request['loginId'])->where('year',$array[0])->where('month',$array[1])->where('date',$array[2])->exists()) {
+            HabitResult::where('user_id',$request['loginId'])->where('year',$array[0])->where('month',$array[1])->where('date',$array[2])->delete();
         }
+        $habitResult->user_id = $request['loginId'];
         $habitResult->year = $array[0];
         $habitResult->month = $array[1];
         $habitResult->date = $array[2];
@@ -113,12 +115,13 @@ class HabitController extends Controller
 
     // 習慣目標達成率を取得する（habit_resultsテーブル）
     public function habitResultGet(Request $request) {
+        $loginId = $request->loginId;
         $year = $request->year;
         $month = $request->month;
         $date = $request->date;
         // 該当年月日のデータが存在する場合のみ、目標達成率を取得する
-        if (HabitResult::where('year',$year)->where('month',$month)->where('date',$date)->exists()) {
-            $result = HabitResult::where('year',$year)->where('month',$month)->where('date',$date)->get(['result']);
+        if (HabitResult::where('user_id',$loginId)->where('year',$year)->where('month',$month)->where('date',$date)->exists()) {
+            $result = HabitResult::where('user_id',$loginId)->where('year',$year)->where('month',$month)->where('date',$date)->get(['result']);
         } else {
             $result = null;
         }

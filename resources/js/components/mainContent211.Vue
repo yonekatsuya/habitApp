@@ -114,7 +114,8 @@
           return;
         }
 
-        const url = 'http://localhost:100/habitResult';
+        var loginId = CF.getCookie('loginId');
+        const url = 'http://localhost:100/habitResult?loginId=' + loginId;
         const params = {
           result: param
         }
@@ -302,7 +303,8 @@
                 /* habit_resultsテーブルから習慣項目一覧を取得し、ラジオボタンと同じ行となるようテーブルを作成する */
                 var getYear = CF.getCookie('year');
                 var getMonth = CF.getCookie('month');
-                axios.get('http://localhost:100/habitGet?year=' + getYear + '&month=' + getMonth)
+                var loginId = CF.getCookie('loginId');
+                axios.get('http://localhost:100/habitGet?year=' + getYear + '&month=' + getMonth + '&loginId=' + loginId)
                     .then(function (response) {
                       habitLists = response.data;
 
@@ -357,7 +359,8 @@
 
               /* 目標達成率データを取得し、該当のtdの日付欄に表示する */
               function getResult(resultTd) {
-                axios.get('http://localhost:100/habitResultGet?year=' + nowYear + '&month=' + nowMonth + '&date=' + nowDate)
+                var loginId = CF.getCookie('loginId');
+                axios.get('http://localhost:100/habitResultGet?year=' + nowYear + '&month=' + nowMonth + '&date=' + nowDate + '&loginId=' + loginId)
                       .then(function (response) {
                         if (response.data instanceof Array) {
                           var br = document.createElement('br');
