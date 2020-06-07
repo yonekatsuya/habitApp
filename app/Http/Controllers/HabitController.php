@@ -50,7 +50,7 @@ class HabitController extends Controller
     // 該当年月の習慣項目と、それに紐付く目標達成指標を取得する
     public function habitGetItemAndAchiveRate(Request $request) {
         // 該当年月の習慣項目を取得する（habit_postsテーブル）
-        $habitPosts = HabitPost::where('year',$request->year)->where('month',$request->month)->get();
+        $habitPosts = HabitPost::where('user_id',$request->loginId)->where('year',$request->year)->where('month',$request->month)->get();
         // 各習慣項目に対応する目標達成指標を取得する（リレーション）
         $array = [];
         for ($i = 0;$i < count($habitPosts);$i++) {
@@ -127,13 +127,17 @@ class HabitController extends Controller
 
     // 該当年月の習慣チェック評価結果を取得する（habit_check_resultsテーブル）
     public function habitGetDateResult(Request $request) {
-        $habitCheckResult = HabitCheckResult::where('year',$request->year)->where('month',$request->month)->get(['habit_post_id','date','result']);
+        $habitCheckResult = HabitCheckResult::where('user_id',$request->loginId)->where('year',$request->year)->where('month',$request->month)->get(['habit_post_id','date','result']);
         return response()->json($habitCheckResult);
     }
 
     // サイドバー上部に表示する今月の目標達成率を取得する
     public function habitGetMonthAchiveRate(Request $request) {
-        $habitResults = HabitResult::where('year',$request->year)->where('month',$request->month)->get(['result']);
+        $habitResults = HabitResult::where('user_id',$request->loginId)->where('year',$request->year)->where('month',$request->month)->get(['result']);
+        // 指定月でまだ1日も習慣チェックを行っていない場合、目標達成率は「0」とする
+        if (count($habitResults) == 0) {
+            return 0;
+        }
         $array = [];
         for ($i = 0;$i < count($habitResults);$i++) {
             $array[] = $habitResults[$i]['result'];

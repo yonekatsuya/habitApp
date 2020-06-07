@@ -188,7 +188,8 @@
         var tbody = this.$refs.tbody;
         var year = CF.getCookie('year');
         var month = CF.getCookie('month');
-        const url = 'http://localhost:100/habitGetDateResult?year=' + year + '&month=' + month;
+        var loginId = CF.getCookie('loginId');
+        const url = 'http://localhost:100/habitGetDateResult?year=' + year + '&month=' + month + '&loginId=' + loginId;
           axios.get(url)
               .then(function(response) {
                 /* テーブルのセル数分処理を回し、習慣項目と年月日のセットに対応する場合、該当する習慣評価をセル内に挿入する */
@@ -376,7 +377,8 @@
 
         var year = CF.getCookie('year');
         var month = CF.getCookie('month');
-        axios.get('http://localhost:100/habitGetItemAndAchiveRate?year=' + year + '&month=' + month)
+        var loginId = CF.getCookie('loginId');
+        axios.get('http://localhost:100/habitGetItemAndAchiveRate?year=' + year + '&month=' + month + '&loginId=' + loginId)
           .then(function(response) {
             /* 習慣項目一覧の取得 */
             vm.habitLists = response.data[0];
@@ -551,8 +553,9 @@
       var now = new Date();
       var year = now.getFullYear();
       var month = (now.getMonth() + 1);
+      var loginId = CF.getCookie('loginId');
       /* 現在月の目標達成率を取得 */
-      axios.get('http://localhost:100/habitGetMonthAchiveRate?year=' + year + '&month=' + month)
+      axios.get('http://localhost:100/habitGetMonthAchiveRate?year=' + year + '&month=' + month + '&loginId=' + loginId)
         .then(function(response) {
           var result = parseInt(response.data);
           /* テキストの表示 */
