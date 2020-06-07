@@ -81,6 +81,7 @@ export default {
         .then(function(response) {
           document.cookie = 'loginName=' + response.data.name;
           document.cookie = 'loginFlag=' + 1;
+          document.cookie = 'loginId=' + response.data.id;
           vm.loginFlag = true;
         }).catch(function(error) {
           console.log(error);
@@ -99,6 +100,7 @@ export default {
         .then(function(response) {
           document.cookie = 'loginName=' + response.data.name;
           document.cookie = 'loginFlag=' + 1;
+          document.cookie = 'loginId=' + response.data.id;
           vm.loginFlag = true;
         }).catch(function(error) {
           console.log(error);
@@ -118,6 +120,7 @@ export default {
         .then(function(response) {
           document.cookie = 'loginName=' + null;
           document.cookie = 'loginFlag=' + 0;
+          document.cookie = 'loginId=' + null;
           vm.loginFlag = false;
         }).catch(function(error) {
           console.log(error);

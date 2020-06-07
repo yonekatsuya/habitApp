@@ -209,6 +209,7 @@
         var vm = this;
         var year = CF.getCookie('year');
         var month = CF.getCookie('month');
+        var loginId = CF.getCookie('loginId');
 
         /* 引数に応じて操作対象を変える */
         if (place == 'purpose') {
@@ -243,7 +244,7 @@
           var registerText = text.children[0].value;
           CF.escape_html(registerText);
           /* 入力値の登録 */
-          axios.get('http://localhost:100/' + register + '?year=' + year + '&month=' + month + '&' + paramText + '=' + registerText)
+          axios.get('http://localhost:100/' + register + '?year=' + year + '&month=' + month + '&' + paramText + '=' + registerText + '&loginId=' + loginId)
             .then(function(response) {
               /* 最新の入力値を表示し、ボタンの名称を「編集」に切り替える */
               var dispText = text.children[0].value;
@@ -269,7 +270,7 @@
             var editText = text.children[0].value;
             CF.escape_html(editText);
             /* 入力値の登録 */
-            axios.get('http://localhost:100/' + edit + '?' + paramText + '=' + editText + '&year=' + year + '&month=' + month)
+            axios.get('http://localhost:100/' + edit + '?' + paramText + '=' + editText + '&year=' + year + '&month=' + month + '&loginId=' + loginId)
               .then(response => console.log(response))
               .catch(error => console.log(error))
             /* inputタグから入力した最新のテキストに表示を切り替える */
@@ -312,6 +313,7 @@
                 vm.$refs.achiveNum[index].textContent = null;
                 /* 目標達成指標の表示を最新の入力値に切り替える */
                 vm.$refs.achiveNum[index].textContent = value;
+                /* 目標達成率の計算 */
                 var newRate = Math.floor((value / vm.getCountCurrentMonthDate(vm.getCurrentMonth())) * 100);
                 /* 計算した目標達成率を表示する */
                 vm.$refs.achiveRate[index].textContent = newRate;
@@ -355,8 +357,9 @@
 
         var year = CF.getCookie('year');
         var month = CF.getCookie('month');
+        var loginId = CF.getCookie('loginId');
         /* 指定月に対応する習慣項目の取得 */
-        axios.get('http://localhost:100/habitGet?year=' + year + '&month=' + month)
+        axios.get('http://localhost:100/habitGet?year=' + year + '&month=' + month + '&loginId=' + loginId)
           .then(response => this.habitLists = response.data)
           .catch(response => console.log(response))
       },
@@ -394,7 +397,8 @@
         this.disp3 = true;
         var year = CF.getCookie('year');
         var month = CF.getCookie('month');
-        axios.get('http://localhost:100/habitGet?year=' + year + '&month=' + month)
+        var loginId = CF.getCookie('loginId');
+        axios.get('http://localhost:100/habitGet?year=' + year + '&month=' + month + '&loginId=' + loginId)
           .then(function(response) {
             vm.habitManageAchiveLists = response.data;
 
@@ -420,7 +424,7 @@
           .catch(response => console.log(response))
 
         /* 目的・目標・ゴールイメージ・意気込みのデータを取得する。 */
-        axios.get('http://localhost:100/confirmExistsAchiveData?year=' + year + '&month=' + month)
+        axios.get('http://localhost:100/confirmExistsAchiveData?year=' + year + '&month=' + month + '&loginId=' + loginId)
           .then(function(response) {
 
             /* 目的エリアへのデータ挿入 */
@@ -505,9 +509,10 @@
         var now = new Date();
         var year = CF.getCookie('year');
         var month = CF.getCookie('month');
+        var id = CF.getCookie('loginId');
         /* テキストエリアに文字が入力されている場合のみ実行 */
         if (inputText !== '') {
-          axios.get('http://localhost:100/habitPost?habitText=' + inputText + '&year=' + year + '&month=' + month)
+          axios.get('http://localhost:100/habitPost?habitText=' + inputText + '&year=' + year + '&month=' + month + '&id=' + id)
           /* 習慣項目登録後のリスト作成 */
           .then(response => this.habitLists = response.data)
           .catch(response => console.log(response))
@@ -519,7 +524,8 @@
         if (window.confirm('選択した項目を削除しますか？')) {
           var year = CF.getCookie('year');
           var month = CF.getCookie('month');
-          axios.get('http://localhost:100/habitDelete?id=' + id + '&year=' + year + '&month=' + month)
+          var loginId = CF.getCookie('loginId');
+          axios.get('http://localhost:100/habitDelete?id=' + id + '&year=' + year + '&month=' + month + '&loginId=' + loginId)
           /* 習慣項目削除後のリスト作成 */
           .then(response => this.habitLists = response.data)
           .catch(response => console.log(response))
@@ -530,7 +536,8 @@
       editList: function(id,item) {
         var year = CF.getCookie('year');
         var month = CF.getCookie('month');
-        axios.get('http://localhost:100/habitDelete?id=' + id + '&year=' + year + '&month=' + month)
+        var loginId = CF.getCookie('loginId');
+        axios.get('http://localhost:100/habitDelete?id=' + id + '&year=' + year + '&month=' + month + '&loginId=' + loginId)
           /* 習慣項目削除後のリスト作成 */
           .then(response => this.habitLists = response.data)
           .catch(response => console.log(response))

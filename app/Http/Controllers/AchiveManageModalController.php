@@ -31,6 +31,7 @@ class AchiveManageModalController extends Controller
     // 目標管理モーダルから「目的」を登録する
     public function purposeRegister(Request $request) {
         $monthPurposeManage = new MonthPurposeManage();
+        $monthPurposeManage->user_id = $request['loginId'];
         $monthPurposeManage->year = $request['year'];
         $monthPurposeManage->month = $request['month'];
         $monthPurposeManage->purpose = $request['purposeText'];
@@ -40,6 +41,7 @@ class AchiveManageModalController extends Controller
     // 目標管理モーダルから「目標」を登録する
     public function achiveRegister(Request $request) {
         $monthAchiveManage = new MonthAchiveManage();
+        $monthAchiveManage->user_id = $request['loginId'];
         $monthAchiveManage->year = $request['year'];
         $monthAchiveManage->month = $request['month'];
         $monthAchiveManage->achive = $request['achiveText'];
@@ -49,6 +51,7 @@ class AchiveManageModalController extends Controller
     // 目標管理モーダルから「ゴールイメージ」を登録する
     public function goalImageRegister(Request $request) {
         $monthGoalImageManage = new MonthGoalImageManage();
+        $monthGoalImageManage->user_id = $request['loginId'];
         $monthGoalImageManage->year = $request['year'];
         $monthGoalImageManage->month = $request['month'];
         $monthGoalImageManage->goal_image = $request['goalImageText'];
@@ -58,6 +61,7 @@ class AchiveManageModalController extends Controller
     // 目標管理モーダルから「意気込み」を登録する
     public function passionRegister(Request $request) {
         $monthPassionManage = new MonthPassionManage();
+        $monthPassionManage->user_id = $request['loginId'];
         $monthPassionManage->year = $request['year'];
         $monthPassionManage->month = $request['month'];
         $monthPassionManage->passion = $request['passionText'];
@@ -68,10 +72,10 @@ class AchiveManageModalController extends Controller
     public function confirmExistsAchiveData(Request $request) {
         $year = $request['year'];
         $month = $request['month'];
-        $monthPurposeManage = MonthPurposeManage::where('year',$year)->where('month',$month)->first();
-        $monthAchiveManage = MonthAchiveManage::where('year',$year)->where('month',$month)->first();
-        $monthGoalImageManage = MonthGoalImageManage::where('year',$year)->where('month',$month)->first();
-        $monthPassionManage = MonthPassionManage::where('year',$year)->where('month',$month)->first();
+        $monthPurposeManage = MonthPurposeManage::where('user_id',$request->loginId)->where('year',$year)->where('month',$month)->first();
+        $monthAchiveManage = MonthAchiveManage::where('user_id',$request->loginId)->where('year',$year)->where('month',$month)->first();
+        $monthGoalImageManage = MonthGoalImageManage::where('user_id',$request->loginId)->where('year',$year)->where('month',$month)->first();
+        $monthPassionManage = MonthPassionManage::where('user_id',$request->loginId)->where('year',$year)->where('month',$month)->first();
 
         $response = [
             $monthPurposeManage, $monthAchiveManage, $monthGoalImageManage, $monthPassionManage
@@ -84,10 +88,12 @@ class AchiveManageModalController extends Controller
         $purposeText = $request['purposeText'];
         $year = $request['year'];
         $month = $request['month'];
-        if (MonthPurposeManage::where('year',$year)->where('month',$month)->exists()) {
-            MonthPurposeManage::where('year',$year)->where('month',$month)->delete();
+        $loginId = $request['loginId'];
+        if (MonthPurposeManage::where('user_id',$loginId)->where('year',$year)->where('month',$month)->exists()) {
+            MonthPurposeManage::where('user_id',$loginId)->where('year',$year)->where('month',$month)->delete();
         }
         $monthPurposeManage = new MonthPurposeManage();
+        $monthPurposeManage->user_id = $loginId;
         $monthPurposeManage->year = $year;
         $monthPurposeManage->month = $month;
         $monthPurposeManage->purpose = $purposeText;
@@ -99,10 +105,12 @@ class AchiveManageModalController extends Controller
         $achiveText = $request['achiveText'];
         $year = $request['year'];
         $month = $request['month'];
-        if (MonthAchiveManage::where('year',$year)->where('month',$month)->exists()) {
-            MonthAchiveManage::where('year',$year)->where('month',$month)->delete();
+        $loginId = $request['loginId'];
+        if (MonthAchiveManage::where('user_id',$loginId)->where('year',$year)->where('month',$month)->exists()) {
+            MonthAchiveManage::where('user_id',$loginId)->where('year',$year)->where('month',$month)->delete();
         }
         $monthAchiveManage = new MonthAchiveManage();
+        $monthAchiveManage->user_id = $loginId;
         $monthAchiveManage->year = $year;
         $monthAchiveManage->month = $month;
         $monthAchiveManage->achive = $achiveText;
@@ -114,10 +122,12 @@ class AchiveManageModalController extends Controller
         $goalImageText = $request['goalImageText'];
         $year = $request['year'];
         $month = $request['month'];
-        if (MonthGoalImageManage::where('year',$year)->where('month',$month)->exists()) {
-            MonthGoalImageManage::where('year',$year)->where('month',$month)->delete();
+        $loginId = $request['loginId'];
+        if (MonthGoalImageManage::where('user_id',$loginId)->where('year',$year)->where('month',$month)->exists()) {
+            MonthGoalImageManage::where('user_id',$loginId)->where('year',$year)->where('month',$month)->delete();
         }
         $monthGoalImageManage = new MonthGoalImageManage();
+        $monthGoalImageManage->user_id = $loginId;
         $monthGoalImageManage->year = $year;
         $monthGoalImageManage->month = $month;
         $monthGoalImageManage->goal_image = $goalImageText;
@@ -129,10 +139,12 @@ class AchiveManageModalController extends Controller
         $passionText = $request['passionText'];
         $year = $request['year'];
         $month = $request['month'];
-        if (MonthPassionManage::where('year',$year)->where('month',$month)->exists()) {
-            MonthPassionManage::where('year',$year)->where('month',$month)->delete();
+        $loginId = $request['loginId'];
+        if (MonthPassionManage::where('user_id',$loginId)->where('year',$year)->where('month',$month)->exists()) {
+            MonthPassionManage::where('user_id',$loginId)->where('year',$year)->where('month',$month)->delete();
         }
         $monthPassionManage = new MonthPassionManage();
+        $monthPassionManage->user_id = $loginId;
         $monthPassionManage->year = $year;
         $monthPassionManage->month = $month;
         $monthPassionManage->passion = $passionText;

@@ -18,30 +18,32 @@ class HabitController extends Controller
     public function habitPost(Request $request) {
         // 習慣登録モーダルから送られてきたデータを保存する
         $habitPost = new HabitPost();
+        $habitPost->user_id = $request->id;
         $habitPost->year = $request->year;
         $habitPost->month = $request->month;
         $habitPost->item = $request->habitText;
         $habitPost->save();
 
         // 上記で登録した習慣項目データを取得する
-        $habitPost = HabitPost::orderBy('id','desc')->first();
+        $habitPost = HabitPost::where('user_id',$request->id)->orderBy('id','desc')->first();
         $id = $habitPost->id;
 
         // 習慣項目の目標達成指標を登録する（habit_achive_ratesテーブル）
         // デフォルト値を「0」とする
         $habitAchiveRate = new HabitAchiveRate();
+        $habitAchiveRate->user_id = $request->id;
         $habitAchiveRate->habit_post_id = $id;
         $habitAchiveRate->achive_rate = 0;
         $habitAchiveRate->save();
 
         // 習慣項目登録後、最新のデータを取得する（habit_postsテーブル）
-        $habitPosts = HabitPost::where('year',$request->year)->where('month',$request->month)->get();
+        $habitPosts = HabitPost::where('user_id',$request->id)->where('year',$request->year)->where('month',$request->month)->get();
         return response()->json($habitPosts);
     }
 
     // 該当年月の習慣項目を取得する（habit_postsテーブル）
     public function habitGet(Request $request) {
-        $habitPosts = HabitPost::where('year',$request->year)->where('month',$request->month)->get();
+        $habitPosts = HabitPost::where('user_id',$request->loginId)->where('year',$request->year)->where('month',$request->month)->get();
         return response()->json($habitPosts);
     }
 
@@ -60,9 +62,10 @@ class HabitController extends Controller
     // 習慣項目を削除する
     public function habitDelete(Request $request) {
         $id = $request->id;
-        HabitPost::where('id',$id)->delete();
+        $user_id = $request->loginId;
+        HabitPost::where('user_id',$user_id)->where('id',$id)->delete();
         // 削除後、最新の該当年月の習慣項目を取得する（habit_postsテーブル）
-        $habitPosts = HabitPost::where('year',$request->year)->where('month',$request->month)->get();
+        $habitPosts = HabitPost::where('user_id',$user_id)->where('year',$request->year)->where('month',$request->month)->get();
         return response()->json($habitPosts);
     }
 
