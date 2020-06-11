@@ -33,6 +33,12 @@
           <div class="user-login-input"><input type="text" placeholder="メールアドレス" ref="userLoginMail"></div>
           <div class="user-login-input"><input type="text" placeholder="パスワード" ref="userLoginPassword"></div>
           <div class="user-login-button" @click="userLogin"><button>ログイン</button></div>
+          <button @click="googleLogin">Google</button>
+          <button @click="facebookLogin">Facebook</button>
+          <button @click="twitterLogin">Twitter</button>
+          <a href="https://accounts.google.com/o/oauth2/auth?client_id=13838527038-8f8mochnuj64db5fci9vpfvqe7vod0g0.apps.googleusercontent.com&redirect_uri=http%3A%2F%2Flocalhost%3A100%2Flogin%2Fgoogle%2Fcallback&scope=openid+profile+email&response_type=code&state=6nqJsHchSyZEnoCgcPi2cquETNZz7ynQER4NAEhm">google</a>
+          <a href="https://www.facebook.com/v3.3/dialog/oauth?client_id=676523443187863&redirect_uri=http%3A%2F%2Flocalhost%3A100%2Fauth%2Ffacebook%2Fcallback&scope=email&response_type=code&state=qPwmflsORzmwoo63b37Ki8oGTUuJUg5zelfCUxNE">facebook</a>
+          <a href="https://api.twitter.com/oauth/authenticate?oauth_token=bCsApAAAAAABFCeBAAABcp5j53s">twitter</a>
           <div class="user-login-move-register">アカウントをお持ちでないですか？ <span @click="closeLoginModalAndOpenRegisterModal">新規登録</span></div>
         </div>
       </div>
@@ -43,6 +49,8 @@
 <script>
 /* 共通関数ファイルのインポート */
 import CF from "./../commonFunctions";
+console.log(document.querySelector('meta[name="csrf-token"]').getAttribute('content'));
+
 export default {
   data: function() {
     return {
@@ -52,6 +60,24 @@ export default {
     }
   },
   methods: {
+    twitterLogin: function() {
+      axios.get('http://localhost:100/auth/login/twitter')
+        .then(function(response) {
+          console.log(reponse);
+        }).catch(function(error) {console.log(error)})
+    },
+    googleLogin: function() {
+      axios.get('http://localhost:100/login/google')
+        .then(function(response) {
+          console.log(reponse);
+        }).catch(function(error) {console.log(error)})
+    },
+    facebookLogin: function() {
+      axios.get('http://localhost:100/auth/login/facebook')
+        .then(function(response) {
+          console.log(reponse);
+        }).catch(function(error) {console.log(error)})
+    },
     closeLoginModalAndOpenRegisterModal: function() {
       this.userLoginModalDispFlag = false;
       this.userRegisterModalDispFlag = true;

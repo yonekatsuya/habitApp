@@ -54,3 +54,10 @@ Route::get('passionEdit', 'AchiveManageModalController@passionEdit')->name('pass
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('login/google', 'Auth\LoginController@redirectGoogle');
+Route::get('auth/login/facebook', 'Auth\LoginController@redirectFacebook');
+Route::get('auth/login/twitter', 'Auth\LoginController@redirectTwitter');
+Route::get('login/google/callback', 'Auth\LoginController@handleGoogleCallback');
+Route::get('auth/facebook/callback', 'Auth\LoginController@handleFacebookProviderCallback');
+Route::get('auth/twitter/callback', 'Auth\LoginController@handleTwitterCallback');
